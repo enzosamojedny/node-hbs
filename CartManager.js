@@ -1,7 +1,7 @@
 const uuidv4 = require("uuid").v4;
 const fs = require("fs");
 
-class CartManager {
+export default class CartManager {
   constructor(cart, path) {
     this.cart = cart;
     this.path = path;
@@ -54,5 +54,3 @@ class CartManager {
     return undefined;
   }
 }
-
-module.exports = CartManager;

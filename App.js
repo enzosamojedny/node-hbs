@@ -3,6 +3,8 @@ import { createServer } from "node:http";
 import morgan from "morgan";
 import { engine } from "express-handlebars";
 import { Server as IOServer } from "socket.io";
+import router from "./src/routes/routes.js";
+
 const server = express();
 const port = 3001;
 
@@ -10,6 +12,7 @@ const port = 3001;
 server.engine("hbs", engine({ extname: ".hbs" }));
 server.set("views", "./views");
 server.set("view engine", "hbs");
+router.use("/", router);
 server.use(
   "/static",
   express.static("./static", {
