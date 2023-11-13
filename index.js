@@ -1,11 +1,11 @@
-import express from "express";
-import ProductManager from "./ProductManager";
-import CartManager from "./CartManager";
+const express = require("express");
+const ProductManager = require("./ProductManager");
+const CartManager = require("./CartManager");
 const router = express.Router();
 const productManager = new ProductManager([], "./src/Logs/Logs.json");
 const cartManager = new CartManager([], "./src/Logs/Cart.json");
 
-export const Products = router.get("/products", (req, res) => {
+const Products = router.get("/products", (req, res) => {
   try {
     const products = productManager.getProducts();
     if (req.query.limit) {
@@ -22,7 +22,7 @@ export const Products = router.get("/products", (req, res) => {
   }
 });
 
-export const ProductId = router.get("/products/:id", (req, res) => {
+const ProductId = router.get("/products/:id", (req, res) => {
   try {
     const { id } = req.params;
     const products = productManager.getProductById(id);
@@ -37,7 +37,7 @@ export const ProductId = router.get("/products/:id", (req, res) => {
     }
   }
 });
-export const AddProduct = router.post("/products", (req, res) => {
+const AddProduct = router.post("/products", (req, res) => {
   try {
     const productDetails = req.body;
     if (!productDetails) {
@@ -51,7 +51,7 @@ export const AddProduct = router.post("/products", (req, res) => {
     }
   }
 });
-export const UpdateProduct = router.put("/products/:id", (req, res) => {
+const UpdateProduct = router.put("/products/:id", (req, res) => {
   try {
     const { id } = req.params;
     const productToUpdate = req.body;
@@ -66,7 +66,7 @@ export const UpdateProduct = router.put("/products/:id", (req, res) => {
     }
   }
 });
-export const DeleteProduct = router.delete("/products/:id", (req, res) => {
+const DeleteProduct = router.delete("/products/:id", (req, res) => {
   try {
     const { id } = req.params;
     const deleteProduct = productManager.deleteProduct(id);
@@ -77,7 +77,7 @@ export const DeleteProduct = router.delete("/products/:id", (req, res) => {
     }
   }
 });
-export const PostCart = router.post("/api/carts", (req, res) => {
+const PostCart = router.post("/api/carts", (req, res) => {
   try {
     const productDetails = req.body;
 
@@ -93,7 +93,7 @@ export const PostCart = router.post("/api/carts", (req, res) => {
   }
 });
 
-export const GetCartId = router.get("/api/carts/:id", (req, res) => {
+const GetCartId = router.get("/api/carts/:id", (req, res) => {
   try {
     const { id } = req.params;
     if (!id) {
@@ -107,7 +107,7 @@ export const GetCartId = router.get("/api/carts/:id", (req, res) => {
     }
   }
 });
-export const PostCartProduct = router.post(
+const PostCartProduct = router.post(
   "/api/:cartid/product/:productid",
   (req, res) => {
     try {
@@ -129,3 +129,13 @@ export const PostCartProduct = router.post(
     }
   }
 );
+module.exports = {
+  Products,
+  ProductId,
+  AddProduct,
+  UpdateProduct,
+  DeleteProduct,
+  PostCart,
+  GetCartId,
+  PostCartProduct,
+};

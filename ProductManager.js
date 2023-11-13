@@ -1,7 +1,7 @@
 const uuidv4 = require("uuid").v4;
 const fs = require("fs");
 
-export default class ProductManager {
+class ProductManager {
   constructor(products, path) {
     this.products = products;
     this.path = path;
@@ -88,3 +88,4 @@ export default class ProductManager {
     }
   }
 }
+module.exports = ProductManager;

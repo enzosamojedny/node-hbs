@@ -1,18 +1,17 @@
-import express from "express";
-import { createServer } from "node:http";
-import morgan from "morgan";
-import { engine } from "express-handlebars";
-import { Server as IOServer } from "socket.io";
-import router from "./src/routes/routes.js";
+const express = require("express");
+const router = require("./src/routes/routes");
+const http = require("http");
+const morgan = require("morgan");
+const { engine } = require("express-handlebars");
+const { Server: IOServer } = require("socket.io");
 
 const server = express();
 const port = 3001;
 
-//HANDLEBARS
+// HANDLEBARS
 server.engine("hbs", engine({ extname: ".hbs" }));
 server.set("views", "./views");
 server.set("view engine", "hbs");
-router.use("/", router);
 server.use(
   "/static",
   express.static("./static", {
@@ -20,26 +19,21 @@ server.use(
   })
 );
 
-//EXPRESS SERVER
-const httpServer = createServer(server);
+// EXPRESS SERVER
+const httpServer = http.createServer(server);
 server.set("engine", engine());
 server.use(morgan("dev"));
 server.use(express.json());
-server.use("/", (req, res) => {
-  res.render("home");
-});
-const messages = [];
+server.use("/", router);
+
 const serverListener = httpServer.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+
 const ioServer = new IOServer(serverListener);
 ioServer.on("connection", (socket) => {
   console.log("new connection: ", socket.id);
-  socket.emit("messages", messages);
-  socket.on("message", (data) => {
-    messages.push(data);
-    console.log(messages);
-    ioServer.sockets.emit("messages", messages);
-  });
+  socket.emit("message", "test message");
 });
-export default httpServer;
+
+module.exports = httpServer;

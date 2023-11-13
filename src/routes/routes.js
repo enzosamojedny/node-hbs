@@ -1,6 +1,6 @@
-import { Router } from "express";
+const Router = require("express").Router;
 const router = Router();
-import {
+const {
   Products,
   ProductId,
   AddProduct,
@@ -9,7 +9,7 @@ import {
   PostCart,
   GetCartId,
   PostCartProduct,
-} from "../../index.js";
+} = require("../../index.js");
 
 router.get("/", (req, res) => {
   res.render("home.hbs", { titulo: "inicio" });
@@ -23,4 +23,4 @@ router.delete("/products/:id", DeleteProduct);
 router.post("/api/carts", PostCart);
 router.get("/api/carts/:id", GetCartId);
 
-export default router;
+module.exports = router;
