@@ -8,7 +8,18 @@ const server = express();
 const port = 3001;
 const fs = require("fs").promises;
 // HANDLEBARS
-server.engine("hbs", engine({ extname: ".hbs" }));
+const handlebars = engine({
+  extname: ".hbs",
+  helpers: {
+    debug: function (optionalValue) {
+      console.log("Current Context:", this);
+      if (optionalValue) {
+        console.log("Value:", optionalValue);
+      }
+    },
+  },
+});
+server.engine("hbs", handlebars);
 server.set("views", "./views");
 server.set("view engine", "hbs");
 server.use(
@@ -19,11 +30,12 @@ server.use(
 );
 
 //FS PROMISES
-let products;
+let products = [];
 (async () => {
   try {
     const data = await fs.readFile("./src/Logs/Logs.json", "utf8");
     products = JSON.parse(data);
+    //console.log("Products loaded successfully:", products);
   } catch (error) {
     console.error("Error reading Logs.json:", error.message);
     products = [];
@@ -33,6 +45,7 @@ server.use((req, res, next) => {
   req.products = products;
   next();
 });
+
 server.use("/realtimeproducts", router);
 server.use("/", router);
 
