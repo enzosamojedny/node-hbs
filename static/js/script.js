@@ -1,6 +1,6 @@
-const ul = document.querySelector("#ul");
-document.querySelector("#button").addEventListener("click", () => {
-  const input = document.querySelector("#input");
+const ul = document.querySelector("#productList");
+document.querySelector("#productButton").addEventListener("click", () => {
+  const input = document.querySelector("#productInput");
   if (input && input.value) {
     socket.emit("message", input.value);
     input.value = "";

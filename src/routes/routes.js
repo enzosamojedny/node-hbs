@@ -12,8 +12,9 @@ const {
 } = require("../../index.js");
 
 router.get("/", (req, res) => {
-  res.render("home.hbs", { titulo: "inicio" });
+  res.render("home.hbs", { title: "Main" });
 });
+
 router.post("/api/:cartid/product/:productid", PostCartProduct);
 router.get("/products", Products);
 router.get("/products/:id", ProductId);
@@ -23,4 +24,7 @@ router.delete("/products/:id", DeleteProduct);
 router.post("/api/carts", PostCart);
 router.get("/api/carts/:id", GetCartId);
 
+router.get("/api/realtimeproducts", (req, res) => {
+  res.render("realTimeProducts.hbs", { title: "realTimeProducts" });
+});
 module.exports = router;
