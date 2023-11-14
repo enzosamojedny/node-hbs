@@ -1,5 +1,3 @@
-const socket = io();
-
 const ul = document.querySelector("#ul");
 document.querySelector("#button").addEventListener("click", () => {
   const input = document.querySelector("#input");
@@ -9,12 +7,10 @@ document.querySelector("#button").addEventListener("click", () => {
   }
 });
 socket.on("messages", (data) => {
-  if (ul) {
-    ul.innerHTML = "";
-    for (const message of data) {
-      const liMessage = document.createElement("li");
-      liMessage.innerHTML = message;
-      ul.appendChild(liMessage);
-    }
+  if (data.length > 0) {
+    const lastMessage = data[data.length - 1];
+    const liLastMessage = document.createElement("li");
+    liLastMessage.innerHTML = lastMessage;
+    ul.appendChild(liLastMessage);
   }
 });
