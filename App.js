@@ -6,8 +6,7 @@ const { engine } = require("express-handlebars");
 const { Server: IOServer } = require("socket.io");
 const server = express();
 const port = 3001;
-const routerHome = express.Router();
-const routerRealTimeProducts = express.Router();
+const fs = require("fs").promises;
 // HANDLEBARS
 server.engine("hbs", engine({ extname: ".hbs" }));
 server.set("views", "./views");
@@ -18,6 +17,22 @@ server.use(
     setHeaders: (res) => res.setHeader("Content-Type", "text/javascript"),
   })
 );
+
+//FS PROMISES
+let products;
+(async () => {
+  try {
+    const data = await fs.readFile("./src/Logs/Logs.json", "utf8");
+    products = JSON.parse(data);
+  } catch (error) {
+    console.error("Error reading Logs.json:", error.message);
+    products = [];
+  }
+})();
+server.use((req, res, next) => {
+  req.products = products;
+  next();
+});
 server.use("/realtimeproducts", router);
 server.use("/", router);
 

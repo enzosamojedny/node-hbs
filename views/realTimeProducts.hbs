@@ -3,16 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="/socket.io/socket.io.js"></script>
-            <script>
-  const socket = io();
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
     </script>
-        <script defer  type="module" src="/static/js/script.js"></script>
+    <script defer type="module" src="/static/js/script.js"></script>
     <title>Real Time Products</title>
 </head>
 <body>
     <h1>Real-Time Products</h1>
-    <ul id="productList"></ul>
+    <ul id="productList">
+        {{#each products}}
+            <li>
+                <strong>Title:</strong> {{title}}<br>
+                <strong>Description:</strong> {{description}}<br>
+                <strong>Code:</strong> {{code}}<br>
+                <strong>Price:</strong> ${{price}}<br>
+                <strong>Status:</strong> {{#if status}}Available{{else}}Not Available{{/if}}<br>
+                <strong>Stock:</strong> {{stock}}<br>
+                <strong>Category:</strong> {{category}}<br>
+                <img src="{{thumbnail}}" alt="Product Thumbnail" width="100" height="100">
+            </li>
+        {{/each}}
+    </ul>
     <input type="text" id="productInput" placeholder="Enter something..">
     <button id="productButton">Send</button>
 </body>
