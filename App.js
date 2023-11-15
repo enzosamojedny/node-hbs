@@ -53,7 +53,7 @@ server.use((req, res, next) => {
   next();
 });
 const messages = [];
-server.post("/api/messages", (req, res) => {
+server.post("/api/realtimeproducts", (req, res) => {
   messages.push(req.body.message);
   req["io"].sockets.emit("messages", messages);
   res.status(200).send();
