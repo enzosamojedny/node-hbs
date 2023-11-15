@@ -1,25 +1,14 @@
-const express = require("express");
 const router = require("./src/routes/routes");
 const { createServer } = require("node:http");
 const morgan = require("morgan");
 const { engine } = require("express-handlebars");
 const { Server: IOServer } = require("socket.io");
+const fs = require("fs").promises;
+const express = require("express");
 const server = express();
 const port = 3001;
-const fs = require("fs").promises;
-// HANDLEBARS
-const handlebars = engine({
-  extname: ".hbs",
-  helpers: {
-    debug: function (optionalValue) {
-      console.log("Current Context:", this);
-      if (optionalValue) {
-        console.log("Value:", optionalValue);
-      }
-    },
-  },
-});
-server.engine("hbs", handlebars);
+
+server.engine("hbs", engine({ extname: ".hbs" }));
 server.set("views", "./views");
 server.set("view engine", "hbs");
 server.use(
