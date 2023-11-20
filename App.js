@@ -55,7 +55,7 @@ const messages = [];
 //socket emite un mensaje del servidor al cliente con el json de productos
 server.post("/api/realtimeproducts", (req, res) => {
   messages.push(req.body.message);
-  req["io"].sockets.emit("messages", messages);
+  req["io"].sockets.emit("message", messages);
   res.status(200).send();
 });
 //socket escucha y emite un mensaje al cliente con el array de mensajes
