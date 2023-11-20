@@ -35,8 +35,7 @@ server.use((req, res, next) => {
   next();
 });
 
-server.use("/realtimeproducts", router);
-server.use("/", router);
+server.use(router);
 
 // EXPRESS SERVER
 const httpServer = createServer(server);
@@ -53,19 +52,23 @@ server.use((req, res, next) => {
   next();
 });
 const messages = [];
+//socket emite un mensaje del servidor al cliente con el json de productos
 server.post("/api/realtimeproducts", (req, res) => {
   messages.push(req.body.message);
   req["io"].sockets.emit("messages", messages);
   res.status(200).send();
 });
-
+//socket escucha y emite un mensaje al cliente con el array de mensajes
 ioServer.on("connection", (socket) => {
   console.log("new connection: ", socket.id);
   socket.emit("message", messages);
 
+  //socket recibe un mensaje del cliente con el valor del input
   socket.on("message", (data) => {
     messages.push(data);
-    ioServer.sockets.emit("messages", messages);
+
+    //socket emite un mensaje al cliente con
+    ioServer.sockets.emit("message", messages);
   });
 });
 module.exports = { httpServer };
