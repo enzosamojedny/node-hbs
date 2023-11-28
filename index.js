@@ -7,9 +7,9 @@ const cartManager = new CartManager([], "./src/Logs/Cart.json");
 const ProductManagerMongoDB = require("./dao/ProductManagerMongoDB");
 const productManagerMongoDB = new ProductManagerMongoDB();
 
-const Products = router.get("/products", (req, res) => {
+const Products = router.get("/products", async (req, res) => {
   try {
-    const products = productManagerMongoDB.getProducts();
+    const products = await productManagerMongoDB.getProducts();
     if (req.query.limit) {
       const limit = req.query.limit;
       const limitedProducts = products.slice(0, limit);
@@ -24,10 +24,10 @@ const Products = router.get("/products", (req, res) => {
   }
 });
 
-const ProductId = router.get("/products/:id", (req, res) => {
+const ProductId = router.get("/products/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const products = productManagerMongoDB.getProductById(id);
+    const products = await productManagerMongoDB.getProductById(id);
     if (products) {
       res.status(200).json({ products });
     } else {
@@ -39,7 +39,7 @@ const ProductId = router.get("/products/:id", (req, res) => {
     }
   }
 });
-const AddProduct = router.post("/products", (req, res) => {
+const AddProduct = router.post("/products", async (req, res) => {
   try {
     const productDetails = req.body;
     if (!productDetails) {
@@ -47,7 +47,7 @@ const AddProduct = router.post("/products", (req, res) => {
         "Product data not provided in the request body when adding a new product"
       );
     }
-    const addedProduct = productManagerMongoDB.addProduct(productDetails);
+    const addedProduct = await productManagerMongoDB.addProduct(productDetails);
     res.status(200).json({ product: addedProduct });
   } catch (error) {
     if (error) {
@@ -55,14 +55,14 @@ const AddProduct = router.post("/products", (req, res) => {
     }
   }
 });
-const UpdateProduct = router.put("/products/:id", (req, res) => {
+const UpdateProduct = router.put("/products/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const productToUpdate = req.body;
     if (!productToUpdate) {
       throw new Error("Product details not provided in the request body");
     }
-    const updateProduct = productManagerMongoDB.updateProduct(
+    const updateProduct = await productManagerMongoDB.updateProduct(
       id,
       productToUpdate
     );
@@ -73,10 +73,10 @@ const UpdateProduct = router.put("/products/:id", (req, res) => {
     }
   }
 });
-const DeleteProduct = router.delete("/products/:id", (req, res) => {
+const DeleteProduct = router.delete("/products/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const deleteProduct = productManagerMongoDB.deleteProduct(id);
+    const deleteProduct = await productManagerMongoDB.deleteProduct(id);
     res.status(200).json({ deleteProduct });
   } catch (error) {
     if (error) {
@@ -84,14 +84,14 @@ const DeleteProduct = router.delete("/products/:id", (req, res) => {
     }
   }
 });
-const PostCart = router.post("/api/carts", (req, res) => {
+const PostCart = router.post("/api/carts", async (req, res) => {
   try {
     const productDetails = req.body;
 
     if (!productDetails) {
       throw new Error("Product details not provided in the request body");
     }
-    const addedProduct = cartManager.addCart(productDetails);
+    const addedProduct = await cartManager.addCart(productDetails);
     res.status(200).json({ product: addedProduct });
   } catch (error) {
     if (error) {
@@ -100,13 +100,13 @@ const PostCart = router.post("/api/carts", (req, res) => {
   }
 });
 
-const GetCartId = router.get("/api/carts/:id", (req, res) => {
+const GetCartId = router.get("/api/carts/:id", async (req, res) => {
   try {
     const { id } = req.params;
     if (!id) {
       throw new Error("Product ID not provided in the request");
     }
-    const idCart = cartManager.getCartById(id);
+    const idCart = await cartManager.getCartById(id);
     res.status(200).json({ product: idCart });
   } catch (error) {
     if (error) {
