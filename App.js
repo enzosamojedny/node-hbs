@@ -3,8 +3,12 @@ const { createServer } = require("node:http");
 const morgan = require("morgan");
 const { engine } = require("express-handlebars");
 const { Server: IOServer } = require("socket.io");
-const fs = require("fs").promises;
 const express = require("express");
+const { MONGODB_CNX_STR } = require("./config.js");
+const { default: mongoose } = require("mongoose");
+
+mongoose.connect(MONGODB_CNX_STR);
+console.log("db connected to: ", MONGODB_CNX_STR);
 const server = express();
 const port = 3001;
 
@@ -17,23 +21,6 @@ server.use(
     setHeaders: (res) => res.setHeader("Content-Type", "text/javascript"),
   })
 );
-
-//FS PROMISES
-let products = [];
-(async () => {
-  try {
-    const data = await fs.readFile("./src/Logs/Logs.json", "utf8");
-    products = JSON.parse(data);
-    //console.log("Products loaded successfully:", products);
-  } catch (error) {
-    console.error("Error reading Logs.json:", error.message);
-    products = [];
-  }
-})();
-server.use((req, res, next) => {
-  req.products = products;
-  next();
-});
 
 server.use(router);
 
