@@ -6,6 +6,7 @@ const { Server: IOServer } = require("socket.io");
 const express = require("express");
 const { MONGODB_CNX_STR } = require("./config.js");
 const { default: mongoose } = require("mongoose");
+const bodyParser = require("body-parser");
 
 mongoose.connect(MONGODB_CNX_STR);
 console.log("db connected to: ", MONGODB_CNX_STR);
@@ -22,6 +23,7 @@ server.use(
   })
 );
 
+server.use(bodyParser.json());
 server.use(router);
 
 // EXPRESS SERVER
