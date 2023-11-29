@@ -9,6 +9,11 @@ const {
   PostCart,
   GetCartId,
   PostCartProduct,
+  PostMessages,
+  GetMessages,
+  GetMessagesId,
+  DeleteMessages,
+  UpdateMessages,
 } = require("../../index.js");
 
 router.post("/api/:cartid/product/:productid", PostCartProduct);
@@ -27,5 +32,10 @@ router.get("/", (req, res) => {
 router.get("/api/realtimeproducts", (req, res) => {
   res.render("realTimeProducts.hbs", { title: "realTimeProducts" });
 });
+router.get("/api/messages/:id", GetMessagesId);
+router.get("/api/messages", GetMessages);
+router.delete("/api/messages/:id", DeleteMessages);
+router.post("/api/messages", PostMessages);
+router.put("/api/messages/:id", UpdateMessages);
 
 module.exports = router;
