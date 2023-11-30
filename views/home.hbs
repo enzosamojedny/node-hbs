@@ -1,29 +1,37 @@
-<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script defer type="module" src="/static/js/script.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
     <title>Real Time Products</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Handlebars Products</h1>
     <ul id="productList">
-        {{#each products}}
-            <li>
-                <strong>Title:</strong> {{title}}<br>
-                <strong>Description:</strong> {{description}}<br>
-                <strong>Code:</strong> {{code}}<br>
-                <strong>Price:</strong> ${{price}}<br>
-                <strong>Status:</strong> {{#if status}}Available{{else}}Not Available{{/if}}<br>
-                <strong>Stock:</strong> {{stock}}<br>
-                <strong>Category:</strong> {{category}}<br>
-                <strong>Thumbnail:</strong> {{thumbnail}}<br>
-            </li>
-        {{/each}}
+      {{#each products}}
+        <li>
+          <strong>Title:</strong>
+          {{title}}<br />
+          <strong>Description:</strong>
+          {{description}}<br />
+          <strong>Code:</strong>
+          {{code}}<br />
+          <strong>Price:</strong>
+          ${{price}}<br />
+          <strong>Status:</strong>
+          {{#if status}}Available{{else}}Not Available{{/if}}<br />
+          <strong>Stock:</strong>
+          {{stock}}<br />
+          <strong>Category:</strong>
+          {{category}}<br />
+          <strong>Thumbnail:</strong>
+          {{thumbnail}}<br />
+        </li>
+      {{/each}}
     </ul>
-    <input type="text" id="productInput" placeholder="Enter something..">
+    <input type="text" id="productInput" placeholder="Enter something.." />
     <button id="productButton">Send</button>
     {{debug}}
-</body>
+  </body>
 </html>

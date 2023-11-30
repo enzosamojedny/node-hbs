@@ -29,11 +29,11 @@ router.post("/api/carts", PostCart);
 router.get("/api/carts/:id", GetCartId);
 
 //MESSAGES
-router.get("/api/messages/:id", GetMessagesId);
 router.get("/api/messages", GetMessages);
-router.delete("/api/messages/:id", DeleteMessages);
+router.get("/api/messages/:id", GetMessagesId);
 router.post("/api/messages", PostMessages);
 router.put("/api/messages/:id", UpdateMessages);
+router.delete("/api/messages/:id", DeleteMessages);
 
 router.get("/", (req, res) => {
   res.render("home.hbs", { title: "Main" });
@@ -41,6 +41,9 @@ router.get("/", (req, res) => {
 
 router.get("/api/realtimeproducts", (req, res) => {
   res.render("realTimeProducts.hbs", { title: "realTimeProducts" });
+});
+router.get("/messages", (req, res) => {
+  res.render("chat.hbs", { title: "chat" });
 });
 
 module.exports = router;

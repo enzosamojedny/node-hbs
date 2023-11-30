@@ -47,6 +47,11 @@ server.post("/api/realtimeproducts", (req, res) => {
   req["io"].sockets.emit("message", messages);
   res.status(200).send();
 });
+server.post("/api/messages", (req, res) => {
+  messages.push(req.body);
+  req["io"].sockets.emit("message", messages);
+  res.status(200).send();
+});
 //socket escucha y emite un mensaje al cliente con el array de mensajes
 ioServer.on("connection", (socket) => {
   console.log("new connection: ", socket.id);
