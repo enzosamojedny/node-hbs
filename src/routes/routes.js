@@ -43,7 +43,7 @@ router.get("/api/realtimeproducts", (req, res) => {
   res.render("realTimeProducts.hbs", { title: "realTimeProducts" });
 });
 router.get("/messages", (req, res) => {
-  res.render("chat.hbs", { title: "chat" });
+  res.render("chat.hbs", { title: "Handlebars Chat" });
 });
 
 module.exports = router;

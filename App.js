@@ -47,8 +47,8 @@ server.post("/api/realtimeproducts", (req, res) => {
   req["io"].sockets.emit("message", messages);
   res.status(200).send();
 });
-server.post("/api/messages", (req, res) => {
-  messages.push(req.body);
+server.post("/messages", (req, res) => {
+  messages.push(req.body.message);
   req["io"].sockets.emit("message", messages);
   res.status(200).send();
 });

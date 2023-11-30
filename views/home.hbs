@@ -8,6 +8,9 @@
   </head>
   <body>
     <h1>Handlebars Products</h1>
+
+    <input type="text" id="productInput" placeholder="Enter something.." />
+    <button id="productButton">Send</button>
     <ul id="productList">
       {{#each products}}
         <li>
@@ -30,8 +33,6 @@
         </li>
       {{/each}}
     </ul>
-    <input type="text" id="productInput" placeholder="Enter something.." />
-    <button id="productButton">Send</button>
     {{debug}}
   </body>
 </html>

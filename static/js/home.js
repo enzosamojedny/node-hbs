@@ -1,3 +1,4 @@
+const socket = io();
 const ul = document.querySelector("#productList");
 document.querySelector("#productButton").addEventListener("click", () => {
   const input = document.querySelector("#productInput");
