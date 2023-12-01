@@ -7,7 +7,8 @@ const express = require("express");
 const { MONGODB_CNX_STR } = require("./config.js");
 const { default: mongoose } = require("mongoose");
 const bodyParser = require("body-parser");
-
+const MessagesManager = require("./dao/MessagesManager");
+const messagesManager = new MessagesManager();
 mongoose.connect(MONGODB_CNX_STR);
 console.log("db connected to: ", MONGODB_CNX_STR);
 const server = express();
@@ -40,7 +41,7 @@ server.use((req, res, next) => {
   req["io"] = ioServer;
   next();
 });
-const messages = [];
+
 //socket emite un mensaje del servidor al cliente con el json de productos
 server.post("/api/realtimeproducts", (req, res) => {
   messages.push(req.body.message);
@@ -52,17 +53,36 @@ server.post("/messages", (req, res) => {
   req["io"].sockets.emit("message", messages);
   res.status(200).send();
 });
-//socket escucha y emite un mensaje al cliente con el array de mensajes
-ioServer.on("connection", (socket) => {
-  console.log("new connection: ", socket.id);
-  socket.emit("message", messages);
 
-  //socket recibe un mensaje del cliente con el valor del input
-  socket.on("message", (data) => {
-    messages.push(data);
+//socket escucha y emite un mensaje al cliente con el objeto del mensaje creado
+server.get("/messages", (req, res) => {
+  try {
+    const ioServer = req.io;
+    ioServer.on("connection", async (socket) => {
+      let messages = await messagesManager.getMessages();
+      console.log("new connection: ", socket.id);
+      socket.emit("messages", messages);
 
-    //socket emite un mensaje al cliente con
-    ioServer.sockets.emit("message", messages);
-  });
+      //socket recibe un mensaje del cliente con el valor del input
+      socket.on("message", async (data) => {
+        const messageCreated = await messagesManager.addMessage({
+          user: data.user,
+          message: data.message,
+        });
+        console.log(messageCreated, "message created");
+        messages = await messagesManager.getMessages();
+        //socket emite un mensaje al cliente con el objeto del mensaje creado
+        ioServer.sockets.emit("messages", messages);
+      });
+
+      socket.on("disconnect", () => {
+        console.log("User disconnected:", socket.id);
+      });
+    });
+    return res.render("chat.hbs", { title: "Handlebars chat" });
+  } catch (error) {
+    res.status(400).send({ status: "Error", message: error.message });
+  }
 });
+
 module.exports = { httpServer };

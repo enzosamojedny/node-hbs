@@ -1,10 +1,14 @@
 const socket = io();
+let user = "defaultUser";
 const ul = document.querySelector("#productList");
 document.querySelector("#productButton").addEventListener("click", () => {
   const input = document.querySelector("#productInput");
   if (input && input.value) {
     //socket emite un mensaje al servidor con el valor del input
-    socket.emit("message", input.value);
+    socket.emit("message", {
+      message: input.value,
+      user: user,
+    });
     input.value = "";
   }
 });

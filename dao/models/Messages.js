@@ -5,7 +5,7 @@ const messagesSchema = new mongoose.Schema(
     _id: { type: String, required: true },
     user: { type: String, required: true },
     message: { type: String, required: true },
-    date: { type: String, required: false },
+    date: { type: Date, default: Date.now() },
   },
   { versionKey: false, strict: "throw" }
 );
