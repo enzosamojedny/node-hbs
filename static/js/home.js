@@ -13,12 +13,15 @@ document.querySelector("#productButton").addEventListener("click", () => {
   }
 });
 //socket escucha un mensaje del servidor con el mensaje del array
-socket.on("message", (data) => {
-  console.log(data);
-  if (data.length > 0) {
-    const lastMessage = data[data.length - 1];
-    const liLastMessage = document.createElement("li");
-    liLastMessage.innerHTML = lastMessage;
-    ul.appendChild(liLastMessage);
+socket.on("messages", (messages) => {
+  console.log(messages);
+
+  if (messages.length > 0) {
+    messages.forEach((message) => {
+      const liLastMessage = document.createElement("li");
+      liLastMessage.innerHTML = `<strong>${message.user}:</strong> ${message.message} ${message.date}`;
+      ul.appendChild(liLastMessage);
+    });
+    //const lastMessage = data[data.length - 1];
   }
 });

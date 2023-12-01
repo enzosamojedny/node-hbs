@@ -70,7 +70,7 @@ server.get("/messages", (req, res) => {
           message: data.message,
         });
         console.log(messageCreated, "message created");
-        messages = await messagesManager.getMessages();
+        
         //socket emite un mensaje al cliente con el objeto del mensaje creado
         ioServer.sockets.emit("messages", messages);
       });
