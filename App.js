@@ -42,50 +42,42 @@ server.use((req, res, next) => {
   next();
 });
 
-//socket emite un mensaje del servidor al cliente con el json de productos
-server.post("/api/realtimeproducts", (req, res) => {
-  messages.push(req.body.message);
-  req["io"].sockets.emit("message", messages);
-  res.status(200).send();
-});
-server.post("/messages", (req, res) => {
-  messages.push(req.body.message);
-  req["io"].sockets.emit("message", messages);
-  res.status(200).send();
-});
-
-//socket escucha y emite un mensaje al cliente con el objeto del mensaje creado
-server.get("/messages", (req, res) => {
+ioServer.on("connection", async (socket) => {
   try {
-    const ioServer = req.io;
+    // Gets the initial set of messages
+    let messages = await messagesManager.getMessages();
+    console.log("new connection: ", socket.id);
+    socket.emit("messages", messages);
+    console.log("Messages sent to client:", messages);
 
-    ioServer.on("connection", async (socket) => {
-      // Get the initial set of messages
-      let messages = await messagesManager.getMessages();
-      console.log("new connection: ", socket.id);
-      socket.emit("messages", messages);
-      console.log(messages, "messages");
-
-      // Socket receives a message from the client with the value of the input
-      socket.on("message", async (data) => {
-        try {
-          console.log("Message received in App.js:", data);
-          const messageCreated = await messagesManager.addMessage({
-            user: data.user,
-            message: data.message,
-          });
-
-          ioServer.emit("messages", [messageCreated]);
-        } catch (error) {
-          console.error("Error adding message:", error.message);
-        }
-      });
-
-      socket.on("disconnect", () => {
-        console.log("User disconnected:", socket.id);
-      });
+    // CLIENT EMITS MESSAGE
+    socket.on("message", async (data) => {
+      try {
+        console.log("Message received in App.js:", data);
+        const messageCreated = await messagesManager.addMessage({
+          user: data.user,
+          message: data.message,
+        });
+        console.log("Message created in DB:", messageCreated);
+        // SERVER EMITS MESSAGES ARRAY TO ALL CONNECTED CLIENTS
+        ioServer.emit("messages", [messageCreated]);
+      } catch (error) {
+        console.error("Error adding message:", error.message);
+      }
     });
 
+    // DISCONNECT EVENT
+    socket.on("disconnect", () => {
+      console.log("User disconnected:", socket.id);
+    });
+  } catch (error) {
+    console.error("Error:", error.message);
+  }
+});
+
+// Move this outside of the connection event
+server.get("/messages", async (req, res) => {
+  try {
     return res.render("chat.hbs", { title: "Handlebars chat" });
   } catch (error) {
     res.status(400).send({ status: "Error", message: error.message });
