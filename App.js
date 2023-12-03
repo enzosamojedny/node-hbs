@@ -75,13 +75,6 @@ ioServer.on("connection", async (socket) => {
   }
 });
 
-// Move this outside of the connection event
-server.get("/messages", async (req, res) => {
-  try {
-    return res.render("chat.hbs", { title: "Handlebars chat" });
-  } catch (error) {
-    res.status(400).send({ status: "Error", message: error.message });
-  }
-});
+
 
 module.exports = { httpServer };

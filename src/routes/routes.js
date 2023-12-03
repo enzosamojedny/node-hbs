@@ -42,8 +42,12 @@ router.get("/", (req, res) => {
 router.get("/api/realtimeproducts", (req, res) => {
   res.render("realTimeProducts.hbs", { title: "realTimeProducts" });
 });
-// router.get("/messages", (req, res) => {
-//   res.render("chat.hbs", { title: "Handlebars Chat" });
-// });
+router.get("/messages", async (req, res) => {
+  try {
+    return res.render("chat.hbs", { title: "Handlebars chat" });
+  } catch (error) {
+    res.status(400).send({ status: "Error", message: error.message });
+  }
+});
 
 module.exports = router;
