@@ -1,20 +1,23 @@
 const socket = io();
 let user = "defaultUser";
 const ul = document.querySelector("#productList");
+const form = document.querySelector("form");
 
-document.querySelector("#productButton").addEventListener("click", () => {
+function handleFormSubmission(event) {
+  event.preventDefault();
+
   const input = document.querySelector("#productInput");
   if (input && input.value) {
-    //socket emite un mensaje al servidor con el valor del input
     socket.emit("message", {
       message: input.value,
       user: user,
     });
     input.value = "";
   }
-});
+}
 
-//socket escucha un mensaje del servidor con el mensaje del array
+form.addEventListener("submit", handleFormSubmission);
+
 socket.on("messages", (messages) => {
   console.log("Messages received in client:", messages);
 
@@ -25,4 +28,12 @@ socket.on("messages", (messages) => {
     liMessage.innerHTML = `<strong>${message.user}:</strong> ${message.message} ${message.date}`;
     ul.appendChild(liMessage);
   });
+});
+
+window.addEventListener("beforeunload", () => {
+  form.removeEventListener("submit", handleFormSubmission);
+});
+
+window.addEventListener("focus", () => {
+  form.addEventListener("submit", handleFormSubmission);
 });

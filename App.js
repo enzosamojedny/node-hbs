@@ -69,7 +69,7 @@ server.get("/messages", (req, res) => {
       // Socket receives a message from the client with the value of the input
       socket.on("message", async (data) => {
         try {
-          console.log("Message received in App.js:", data.message, data.user);
+          console.log("Message received in App.js:", data);
           const messageCreated = await messagesManager.addMessage({
             user: data.user,
             message: data.message,
