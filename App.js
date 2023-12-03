@@ -58,27 +58,34 @@ server.post("/messages", (req, res) => {
 server.get("/messages", (req, res) => {
   try {
     const ioServer = req.io;
+
     ioServer.on("connection", async (socket) => {
+      // Get the initial set of messages
       let messages = await messagesManager.getMessages();
       console.log("new connection: ", socket.id);
       socket.emit("messages", messages);
+      console.log(messages, "messages");
 
-      //socket recibe un mensaje del cliente con el valor del input
+      // Socket receives a message from the client with the value of the input
       socket.on("message", async (data) => {
-        const messageCreated = await messagesManager.addMessage({
-          user: data.user,
-          message: data.message,
-        });
-        console.log(messageCreated, "message created");
-        
-        //socket emite un mensaje al cliente con el objeto del mensaje creado
-        ioServer.sockets.emit("messages", messages);
+        try {
+          console.log("Message received in App.js:", data.message, data.user);
+          const messageCreated = await messagesManager.addMessage({
+            user: data.user,
+            message: data.message,
+          });
+
+          ioServer.emit("messages", [messageCreated]);
+        } catch (error) {
+          console.error("Error adding message:", error.message);
+        }
       });
 
       socket.on("disconnect", () => {
         console.log("User disconnected:", socket.id);
       });
     });
+
     return res.render("chat.hbs", { title: "Handlebars chat" });
   } catch (error) {
     res.status(400).send({ status: "Error", message: error.message });

@@ -1,6 +1,7 @@
 const socket = io();
 let user = "defaultUser";
 const ul = document.querySelector("#productList");
+
 document.querySelector("#productButton").addEventListener("click", () => {
   const input = document.querySelector("#productInput");
   if (input && input.value) {
@@ -12,16 +13,16 @@ document.querySelector("#productButton").addEventListener("click", () => {
     input.value = "";
   }
 });
+
 //socket escucha un mensaje del servidor con el mensaje del array
 socket.on("messages", (messages) => {
-  console.log(messages);
+  console.log("Messages received in client:", messages);
 
-  if (messages.length > 0) {
-    messages.forEach((message) => {
-      const liLastMessage = document.createElement("li");
-      liLastMessage.innerHTML = `<strong>${message.user}:</strong> ${message.message} ${message.date}`;
-      ul.appendChild(liLastMessage);
-    });
-    //const lastMessage = data[data.length - 1];
-  }
+  ul.innerHTML = "";
+
+  messages.forEach((message) => {
+    const liMessage = document.createElement("li");
+    liMessage.innerHTML = `<strong>${message.user}:</strong> ${message.message} ${message.date}`;
+    ul.appendChild(liMessage);
+  });
 });
