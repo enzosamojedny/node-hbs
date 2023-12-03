@@ -1,14 +1,13 @@
-//const ProductManager = require("./dao/ProductManagerFS");
-//const productManager = new ProductManager([], "./src/Logs/Logs.json");
 const express = require("express");
-const CartManager = require("./dao/CartManager");
-const cartManager = new CartManager([], "./src/Logs/Cart.json");
 const ProductManagerMongoDB = require("./dao/ProductManagerMongoDB");
 const productManagerMongoDB = new ProductManagerMongoDB();
 const messagesManager = require("./dao/MessagesManager");
+const CartManagerMongoDB = require("./dao/CartManagerMongoDB");
 const messagesManagerMongoDB = new messagesManager();
+const cartManagerMongoDB = new CartManagerMongoDB();
 const router = express.Router();
 
+//PRODUCTS
 const Products = router.get("/products", async (req, res) => {
   try {
     const products = await productManagerMongoDB.getProducts();
@@ -86,6 +85,9 @@ const DeleteProduct = router.delete("/products/:id", async (req, res) => {
     }
   }
 });
+
+//CART
+//POST CART TO DB
 const PostCart = router.post("/api/carts", async (req, res) => {
   try {
     const productDetails = req.body;
@@ -93,7 +95,7 @@ const PostCart = router.post("/api/carts", async (req, res) => {
     if (!productDetails) {
       throw new Error("Product details not provided in the request body");
     }
-    const addedProduct = await cartManager.addCart(productDetails);
+    const addedProduct = await cartManagerMongoDB.addCart(productDetails);
     res.status(200).json({ product: addedProduct });
   } catch (error) {
     if (error) {
@@ -108,7 +110,7 @@ const GetCartId = router.get("/api/carts/:id", async (req, res) => {
     if (!id) {
       throw new Error("Product ID not provided in the request");
     }
-    const idCart = await cartManager.getCartById(id);
+    const idCart = await cartManagerMongoDB.getCartById(id);
     res.status(200).json({ product: idCart });
   } catch (error) {
     if (error) {
@@ -116,6 +118,8 @@ const GetCartId = router.get("/api/carts/:id", async (req, res) => {
     }
   }
 });
+
+//POST PRODUCT TO CART
 const PostCartProduct = router.post(
   "/api/:cartid/product/:productid",
   (req, res) => {
@@ -125,7 +129,7 @@ const PostCartProduct = router.post(
         throw new Error("Missing data in request");
       }
       const quantity = 1;
-      const postCartProduct = cartManager.addProductToCart(
+      const postCartProduct = cartManagerMongoDB.addProductToCart(
         cartid,
         productid,
         quantity
@@ -138,6 +142,67 @@ const PostCartProduct = router.post(
     }
   }
 );
+
+//DELETE PRODUCT FROM CART
+const DeleteProductFromCart = router.delete(
+  "/api/:cartid/product/:productid",
+  (req, res) => {
+    try {
+      const { cartid, productid } = req.params;
+      if (!cartid || !productid) {
+        throw new Error("Missing data in request");
+      }
+      const deleteProductFromCart = cartManagerMongoDB.deleteProductFromCart(
+        cartid,
+        productid
+      );
+      res.status(200).json({ cart: deleteProductFromCart });
+    } catch (error) {
+      if (error) {
+        res.status(400).send({ message: error.message });
+      }
+    }
+  }
+);
+
+//UPDATE CART PRODUCT QUANTITY
+const UpdateCartProductQuantity = router.put(
+  "/api/:cartid/product/:productid",
+  (req, res) => {
+    try {
+      const { cartid, productid } = req.params;
+      if (!cartid || !productid) {
+        throw new Error("Missing data in request");
+      }
+      const quantity = req.body.quantity;
+      const updateCartProductQuantity =
+        cartManagerMongoDB.updateCartProductQuantity(
+          //* I DELETED DATA FROM HERE SO THAT ONLY THE QUANTITY IS UPDATED
+          quantity
+        );
+      res.status(200).json({ cart: updateCartProductQuantity });
+    } catch (error) {
+      if (error) {
+        res.status(400).send({ message: error.message });
+      }
+    }
+  }
+);
+
+// DELETES THE WHOLE CART
+const DeleteCart = router.delete("/api/carts/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deleteCart = await cartManagerMongoDB.deleteCart(id);
+    res.status(200).json({ deleteCart });
+  } catch (error) {
+    if (error) {
+      res.status(400).send({ message: error.message });
+    }
+  }
+});
+
+//MESSAGES
 const PostMessages = router.post("/api/messages", async (req, res) => {
   try {
     const messageDetails = req.body;
@@ -223,6 +288,9 @@ module.exports = {
   PostCart,
   GetCartId,
   PostCartProduct,
+  DeleteProductFromCart,
+  UpdateCartProductQuantity,
+  DeleteCart,
   productManagerMongoDB,
   PostMessages,
   GetMessages,
