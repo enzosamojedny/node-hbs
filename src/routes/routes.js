@@ -1,20 +1,24 @@
 const Router = require("express").Router;
 const router = Router();
 const {
-  Products,
-  ProductId,
-  AddProduct,
-  UpdateProduct,
-  DeleteProduct,
-  PostCart,
-  GetCartId,
-  PostCartProduct,
   PostMessages,
   GetMessages,
   GetMessagesId,
   DeleteMessages,
   UpdateMessages,
 } = require("../../index.js");
+const {
+  Products,
+  ProductId,
+  AddProduct,
+  UpdateProduct,
+  DeleteProduct,
+} = require("../../handlers/Products/ProductHandler.js");
+const {
+  PostCartProduct,
+  PostCart,
+  GetCartId,
+} = require("../../handlers/Carts/CartHandler.js");
 
 //PRODUCTS
 router.get("/products", Products);
