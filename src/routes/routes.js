@@ -7,30 +7,6 @@ const {
   DeleteMessages,
   UpdateMessages,
 } = require("../../index.js");
-const {
-  Products,
-  ProductId,
-  AddProduct,
-  UpdateProduct,
-  DeleteProduct,
-} = require("../../handlers/Products/ProductHandler.js");
-const {
-  PostCartProduct,
-  PostCart,
-  GetCartId,
-} = require("../../handlers/Carts/CartHandler.js");
-
-//PRODUCTS
-router.get("/products", Products);
-router.get("/products/:id", ProductId);
-router.post("/products", AddProduct);
-router.put("/products/:id", UpdateProduct);
-router.delete("/products/:id", DeleteProduct);
-
-//CARTS
-router.post("/api/:cartid/product/:productid", PostCartProduct);
-router.post("/api/carts", PostCart);
-router.get("/api/carts/:id", GetCartId);
 
 //MESSAGES
 router.get("/api/messages", GetMessages);

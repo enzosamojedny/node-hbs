@@ -1,4 +1,6 @@
 const router = require("./src/routes/routes");
+const productRouter = require("./src/routes/ProductRoutes");
+const cartRouter = require("./src/routes/CartRoutes");
 const { createServer } = require("node:http");
 const morgan = require("morgan");
 const { engine } = require("express-handlebars");
@@ -25,7 +27,7 @@ server.use(
 );
 
 server.use(bodyParser.json());
-server.use(router);
+server.use(router, productRouter, cartRouter);
 
 // EXPRESS SERVER
 const httpServer = createServer(server);
@@ -74,7 +76,5 @@ ioServer.on("connection", async (socket) => {
     console.error("Error:", error.message);
   }
 });
-
-
 
 module.exports = { httpServer };
