@@ -7,17 +7,23 @@ const router = express.Router();
 const Products = router.get("/products", async (req, res) => {
   try {
     const products = await productManagerMongoDB.getProducts();
-    if (req.query.limit) {
-      const limit = req.query.limit;
-      const limitedProducts = products.slice(0, limit);
+    const limit = parseInt(req.query.limit);
+    const page = parseInt(req.query.page);
+    const sort = req.query.sort;
+    if (!isNaN(limit) && limit > 0 && !isNaN(page) && page > 0 && sort) {
+      const startIndex = (page - 1) * limit;
+      const endIndex = page * limit;
+      const sortedProducts = products.sort((a, b) =>
+        sort === "asc" ? a.price - b.price : b.price - a.price
+      );
+      const limitedProducts = sortedProducts.slice(startIndex, endIndex);
+
       res.status(200).json({ products: limitedProducts });
     } else {
       res.status(200).json({ products: products });
     }
   } catch (error) {
-    if (error) {
-      res.status(404).send({ message: error.message });
-    }
+    res.status(500).send({ message: error.message });
   }
 });
 
@@ -31,9 +37,7 @@ const ProductId = router.get("/products/:id", async (req, res) => {
       throw new Error(`Product with ID ${id} not found in the database`);
     }
   } catch (error) {
-    if (error) {
-      res.status(404).send({ message: error.message });
-    }
+    res.status(500).send({ message: error.message });
   }
 });
 const AddProduct = router.post("/products", async (req, res) => {
@@ -47,9 +51,7 @@ const AddProduct = router.post("/products", async (req, res) => {
     const addedProduct = await productManagerMongoDB.addProduct(productDetails);
     res.status(200).json({ product: addedProduct });
   } catch (error) {
-    if (error) {
-      res.status(400).send({ message: error.message });
-    }
+    res.status(500).send({ message: error.message });
   }
 });
 const UpdateProduct = router.put("/products/:id", async (req, res) => {
@@ -63,22 +65,18 @@ const UpdateProduct = router.put("/products/:id", async (req, res) => {
       id,
       productToUpdate
     );
-    res.status(200).json({ updateProduct });
+    res.status(200).json({ message: "Product updated successfully" });
   } catch (error) {
-    if (error) {
-      res.status(400).send({ message: error.message });
-    }
+    res.status(500).send({ message: error.message });
   }
 });
 const DeleteProduct = router.delete("/products/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const deleteProduct = await productManagerMongoDB.deleteProduct(id);
-    res.status(200).json({ deleteProduct });
+    res.status(200).json({ message: "Product deleted successfully" });
   } catch (error) {
-    if (error) {
-      res.status(400).send({ message: error.message });
-    }
+    res.status(500).send({ message: error.message });
   }
 });
 module.exports = {

@@ -10,8 +10,16 @@ const { MONGODB_CNX_STR } = require("./config.js");
 const { default: mongoose } = require("mongoose");
 const bodyParser = require("body-parser");
 const MessagesManager = require("./dao/MessagesManager");
+const Products = require("./dao/models/Products.js");
 const messagesManager = new MessagesManager();
-mongoose.connect(MONGODB_CNX_STR);
+
+//! DB CONNECTION
+const enviroment = async () => {
+  await mongoose.connect(MONGODB_CNX_STR);
+  await Products.paginate({}, { limit: 10, page: 1 });
+};
+enviroment();
+
 console.log("db connected to: ", MONGODB_CNX_STR);
 const server = express();
 const port = 3001;

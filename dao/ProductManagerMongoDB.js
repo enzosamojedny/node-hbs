@@ -1,7 +1,8 @@
 const Products = require("../dao/models/Products");
-
+const { randomUUID } = require("crypto");
 class ProductManagerMongoDB {
   async addProduct(product) {
+    product._id = randomUUID();
     const productCreated = await Products.create(product);
     return productCreated.toObject();
   }

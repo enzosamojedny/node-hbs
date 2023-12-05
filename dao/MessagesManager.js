@@ -1,6 +1,8 @@
 const Messages = require("./models/Messages");
+const { randomUUID } = require("crypto");
 class MessagesManager {
   async addMessage(message) {
+    message._id = randomUUID();
     const messageCreated = await Messages.create(message);
     return messageCreated.toObject();
   }

@@ -23,6 +23,7 @@
     "express-handlebars": "^7.1.2",
     "handlebars": "^4.7.8",
     "mongoose": "^8.0.1",
+    "mongoose-paginate-v2": "^1.7.4",
     "morgan": "^1.10.0",
     "socket.io": "^4.7.2",
     "socket.io-client": "^4.7.2",

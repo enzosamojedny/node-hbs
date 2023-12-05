@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
-const { randomUUID } = require("crypto");
 const CartSchema = new mongoose.Schema(
   {
-    _id: { type: String, required: true, default: randomUUID() },
+    _id: { type: String, required: true },
     products: [{ type: String, required: true, ref: "products" }], //product ID's in cart
     quantity: { type: Number, required: true }, //quantity of products
     date: { type: Date, default: Date.now(), index: true },

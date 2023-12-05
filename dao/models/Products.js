@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
-const { randomUUID } = require("crypto");
+const mongoosePaginate = require("mongoose-paginate-v2");
+
 const productSchema = new mongoose.Schema(
   {
-    _id: { type: String, required: true, default: randomUUID() },
+    _id: { type: String, required: true },
     title: { type: String, required: true },
     description: { type: String, required: false },
     code: { type: String, required: false },
@@ -14,7 +15,7 @@ const productSchema = new mongoose.Schema(
   },
   { versionKey: false, strict: "throw" }
 );
-
+productSchema.plugin(mongoosePaginate);
 const Products = mongoose.model("Products", productSchema);
 
 module.exports = Products;
