@@ -64,5 +64,19 @@ class CartManagerMongoDB {
       return cartToUpdate;
     }
   }
+  async updateCartProductQuantity(cartId, productId, quantity) {
+    const cartToUpdate = await Cart.findByIdAndUpdate(
+      { cartId, productId },
+      quantity,
+      {
+        new: true,
+      }
+    ).lean();
+    if (!cartToUpdate) {
+      throw new Error(`Cart with id ${cartId} couldnt be updated`);
+    } else {
+      return cartToUpdate;
+    }
+  }
 }
 module.exports = CartManagerMongoDB;

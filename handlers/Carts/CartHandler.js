@@ -2,6 +2,7 @@ const CartManagerMongoDB = require("../../dao/CartManagerMongoDB");
 const cartManagerMongoDB = new CartManagerMongoDB();
 const express = require("express");
 const router = express.Router();
+
 //CART
 //POST CART TO DB
 const PostCart = router.post("/api/carts", async (req, res) => {
@@ -14,9 +15,7 @@ const PostCart = router.post("/api/carts", async (req, res) => {
     const addedProduct = await cartManagerMongoDB.addCart(productDetails);
     res.status(200).json({ product: addedProduct });
   } catch (error) {
-    if (error) {
-      res.status(400).send({ message: error.message });
-    }
+    res.status(500).send({ message: error.message });
   }
 });
 
@@ -29,15 +28,13 @@ const GetCartId = router.get("/api/carts/:id", async (req, res) => {
     const idCart = await cartManagerMongoDB.getCartById(id);
     res.status(200).json({ product: idCart });
   } catch (error) {
-    if (error) {
-      res.status(400).send({ message: error.message });
-    }
+    res.status(500).send({ message: error.message });
   }
 });
 
 //POST PRODUCT TO CART
 const PostCartProduct = router.post(
-  "/api/:cartid/product/:productid",
+  "/api/carts/:cartid/products/:productid",
   (req, res) => {
     try {
       const { cartid, productid } = req.params;
@@ -52,16 +49,14 @@ const PostCartProduct = router.post(
       );
       res.status(200).json({ cart: postCartProduct });
     } catch (error) {
-      if (error) {
-        res.status(400).send({ message: error.message });
-      }
+      res.status(500).send({ message: error.message });
     }
   }
 );
 
-//DELETE PRODUCT FROM CART
+//DELETE 1 PRODUCT FROM CART
 const DeleteProductFromCart = router.delete(
-  "/api/:cartid/product/:productid",
+  "/api/carts/:cartid/products/:productid",
   (req, res) => {
     try {
       const { cartid, productid } = req.params;
@@ -74,16 +69,14 @@ const DeleteProductFromCart = router.delete(
       );
       res.status(200).json({ cart: deleteProductFromCart });
     } catch (error) {
-      if (error) {
-        res.status(400).send({ message: error.message });
-      }
+      res.status(500).send({ message: error.message });
     }
   }
 );
 
 //UPDATE CART PRODUCT QUANTITY
 const UpdateCartProductQuantity = router.put(
-  "/api/:cartid/product/:productid",
+  "/api/carts/:cartid/products/:productid",
   (req, res) => {
     try {
       const { cartid, productid } = req.params;
@@ -98,12 +91,24 @@ const UpdateCartProductQuantity = router.put(
         );
       res.status(200).json({ cart: updateCartProductQuantity });
     } catch (error) {
-      if (error) {
-        res.status(400).send({ message: error.message });
-      }
+      res.status(500).send({ message: error.message });
     }
   }
 );
+
+const UpdateCart = router.put("/api/carts/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const cartToUpdate = req.body;
+    if (!cartToUpdate) {
+      throw new Error("Cart details not provided in the request body");
+    }
+    const updateCart = await cartManagerMongoDB.updateCart(id, cartToUpdate);
+    res.status(200).json({ cart: updateCart });
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+});
 
 // DELETES THE WHOLE CART
 const DeleteCart = router.delete("/api/carts/:id", async (req, res) => {
@@ -112,9 +117,7 @@ const DeleteCart = router.delete("/api/carts/:id", async (req, res) => {
     const deleteCart = await cartManagerMongoDB.deleteCart(id);
     res.status(200).json({ deleteCart });
   } catch (error) {
-    if (error) {
-      res.status(400).send({ message: error.message });
-    }
+    res.status(500).send({ message: error.message });
   }
 });
 module.exports = {
@@ -124,5 +127,6 @@ module.exports = {
   DeleteProductFromCart,
   UpdateCartProductQuantity,
   DeleteCart,
+  UpdateCart,
   cartManagerMongoDB,
 };
