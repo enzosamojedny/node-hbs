@@ -2,26 +2,38 @@ const ProductManagerMongoDB = require("../../dao/ProductManagerMongoDB");
 const productManagerMongoDB = new ProductManagerMongoDB();
 const express = require("express");
 const router = express.Router();
-
+const ProductPaginationModel = require("../../dao/models/Products");
 //PRODUCTS
 const Products = router.get("/products", async (req, res) => {
   try {
     const products = await productManagerMongoDB.getProducts();
-    const limit = parseInt(req.query.limit);
-    const page = parseInt(req.query.page);
-    const sort = req.query.sort;
-    if (!isNaN(limit) && limit > 0 && !isNaN(page) && page > 0 && sort) {
-      const startIndex = (page - 1) * limit;
-      const endIndex = page * limit;
-      const sortedProducts = products.sort((a, b) =>
-        sort === "asc" ? a.price - b.price : b.price - a.price
-      );
-      const limitedProducts = sortedProducts.slice(startIndex, endIndex);
+    const limit = parseInt(req.query.limit) || 10;
+    const page = parseInt(req.query.page) || 1;
+    const sort = req.query.sort || "asc";
+    const options = {
+      page,
+      limit,
+      sort: { price: sort === "asc" ? 1 : -1 },
+      collation: { locale: "en" },
+    };
 
-      res.status(200).json({ products: limitedProducts });
-    } else {
-      res.status(200).json({ products: products });
-    }
+    const result = await ProductPaginationModel.paginate({}, options);
+    res.status(200).json({
+      status: "success" || "error",
+      payload: result.docs,
+      totalPages: result.totalPages,
+      prevPage: result.hasPrevPage ? result.prevPage : null,
+      nextPage: result.hasNextPage ? result.nextPage : null,
+      page: result.page,
+      hasPrevPage: result.hasPrevPage,
+      hasNextPage: result.hasNextPage,
+      prevLink: result.hasPrevPage
+        ? `/products?page=${result.prevPage}&limit=${limit}&sort=${sort}`
+        : null,
+      nextLink: result.hasNextPage
+        ? `/products?page=${result.nextPage}&limit=${limit}&sort=${sort}`
+        : null,
+    });
   } catch (error) {
     res.status(500).send({ message: error.message });
   }
