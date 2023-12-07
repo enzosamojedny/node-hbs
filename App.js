@@ -11,6 +11,7 @@ const { default: mongoose } = require("mongoose");
 const bodyParser = require("body-parser");
 const MessagesManager = require("./dao/MessagesManager");
 const Products = require("./dao/models/Products.js");
+const cookieParser = require("cookie-parser");
 const messagesManager = new MessagesManager();
 
 //! DB CONNECTION
@@ -24,17 +25,22 @@ console.log("db connected to: ", MONGODB_CNX_STR);
 const server = express();
 const port = 3001;
 
-server.engine("hbs", engine({ extname: ".hbs" }));
-server.set("views", "./views");
-server.set("view engine", "hbs");
-server.use(
-  "/static",
-  express.static("./static", {
-    setHeaders: (res) => res.setHeader("Content-Type", "text/javascript"),
+server.engine(
+  "hbs",
+  engine({
+    extname: ".hbs",
+    defaultLayout: "main.hbs",
+    layoutsDir: "./views/layouts",
+    partialsDir: "./views/partials",
   })
 );
+server.set("views", "./views/partials");
+server.set("view engine", "hbs");
+server.use("/static", express.static("static"));
 
 server.use(bodyParser.json());
+server.use(bodyParser.urlencoded({ extended: true }));
+server.use(cookieParser());
 server.use(router, productRouter, cartRouter);
 
 // EXPRESS SERVER
