@@ -1,4 +1,4 @@
-const router = require("./src/routes/routes");
+const messagesRouter = require("./src/routes/MessageRoutes.js");
 const productRouter = require("./src/routes/ProductRoutes");
 const cartRouter = require("./src/routes/CartRoutes");
 const { createServer } = require("node:http");
@@ -13,6 +13,7 @@ const MessagesManager = require("./dao/MessagesManager");
 const Products = require("./dao/models/Products.js");
 const cookieParser = require("cookie-parser");
 const messagesManager = new MessagesManager();
+const path = require("path");
 
 //! DB CONNECTION
 const enviroment = async () => {
@@ -29,19 +30,20 @@ server.engine(
   "hbs",
   engine({
     extname: ".hbs",
-    defaultLayout: "main.hbs",
-    layoutsDir: "./views/layouts",
-    partialsDir: "./views/partials",
+    defaultLayout: "main",
+    layoutsDir: path.join(__dirname, "/views/layouts"),
+    partialsDir: path.join(__dirname, "/views/partials"),
   })
 );
-server.set("views", "./views/partials");
+server.set("views", path.join(__dirname, "/views/partials"));
 server.set("view engine", "hbs");
-server.use("/static", express.static("static"));
+
+server.use("/static", express.static(path.join(__dirname, "static")));
 
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(cookieParser());
-server.use(router, productRouter, cartRouter);
+server.use(messagesRouter, productRouter, cartRouter);
 
 // EXPRESS SERVER
 const httpServer = createServer(server);

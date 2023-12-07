@@ -2,10 +2,9 @@ const socket = io();
 let user = "defaultUser";
 const ul = document.querySelector("#productList");
 const form = document.querySelector("form");
+const button = document.querySelector("#productButton");
 
-function handleFormSubmission(event) {
-  event.preventDefault();
-
+function handleFormSubmission() {
   //we emit the message to server
   const input = document.querySelector("#productInput");
   if (input && input.value) {
