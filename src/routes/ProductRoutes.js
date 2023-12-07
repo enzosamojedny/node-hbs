@@ -9,10 +9,14 @@ const {
 } = require("../../handlers/Products/ProductHandler.js");
 
 //PRODUCTS
-productRouter.get("/products", Products);
-productRouter.get("/products/:id", ProductId);
-productRouter.post("/products", AddProduct);
-productRouter.put("/products/:id", UpdateProduct);
-productRouter.delete("/products/:id", DeleteProduct);
+productRouter.get("/api/products", Products);
+productRouter.get("/api/products/:id", ProductId);
+productRouter.post("/api/products", AddProduct);
+productRouter.put("/api/products/:id", UpdateProduct);
+productRouter.delete("/api/products/:id", DeleteProduct);
+
+productRouter.get("/products", (req, res) => {
+  res.render("products.hbs", { title: "Products", isHomePage: false });
+});
 
 module.exports = productRouter;

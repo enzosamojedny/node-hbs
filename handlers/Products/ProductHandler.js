@@ -4,7 +4,7 @@ const express = require("express");
 const router = express.Router();
 const ProductPaginationModel = require("../../dao/models/Products");
 //PRODUCTS
-const Products = router.get("/products", async (req, res) => {
+const Products = router.get("/api/products", async (req, res) => {
   try {
     const products = await productManagerMongoDB.getProducts();
     const limit = parseInt(req.query.limit) || 10;
@@ -28,10 +28,10 @@ const Products = router.get("/products", async (req, res) => {
       hasPrevPage: result.hasPrevPage,
       hasNextPage: result.hasNextPage,
       prevLink: result.hasPrevPage
-        ? `/products?page=${result.prevPage}&limit=${limit}&sort=${sort}`
+        ? `/api/products?page=${result.prevPage}&limit=${limit}&sort=${sort}`
         : null,
       nextLink: result.hasNextPage
-        ? `/products?page=${result.nextPage}&limit=${limit}&sort=${sort}`
+        ? `/api/products?page=${result.nextPage}&limit=${limit}&sort=${sort}`
         : null,
     });
   } catch (error) {
@@ -39,7 +39,7 @@ const Products = router.get("/products", async (req, res) => {
   }
 });
 
-const ProductId = router.get("/products/:id", async (req, res) => {
+const ProductId = router.get("/api/products/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const products = await productManagerMongoDB.getProductById(id);
@@ -66,7 +66,7 @@ const AddProduct = router.post("/products", async (req, res) => {
     res.status(500).send({ message: error.message });
   }
 });
-const UpdateProduct = router.put("/products/:id", async (req, res) => {
+const UpdateProduct = router.put("/api/products/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const productToUpdate = req.body;
@@ -82,7 +82,7 @@ const UpdateProduct = router.put("/products/:id", async (req, res) => {
     res.status(500).send({ message: error.message });
   }
 });
-const DeleteProduct = router.delete("/products/:id", async (req, res) => {
+const DeleteProduct = router.delete("/api/products/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const deleteProduct = await productManagerMongoDB.deleteProduct(id);

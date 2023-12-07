@@ -1,6 +1,7 @@
 const messagesRouter = require("./src/routes/MessageRoutes.js");
 const productRouter = require("./src/routes/ProductRoutes");
 const cartRouter = require("./src/routes/CartRoutes");
+const indexRouter = require("./src/routes/defaultRoute.js");
 const { createServer } = require("node:http");
 const morgan = require("morgan");
 const { engine } = require("express-handlebars");
@@ -14,7 +15,6 @@ const Products = require("./dao/models/Products.js");
 const cookieParser = require("cookie-parser");
 const messagesManager = new MessagesManager();
 const path = require("path");
-
 //! DB CONNECTION
 const enviroment = async () => {
   await mongoose.connect(MONGODB_CNX_STR);
@@ -43,7 +43,7 @@ server.use("/static", express.static(path.join(__dirname, "static")));
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(cookieParser());
-server.use(messagesRouter, productRouter, cartRouter);
+server.use(indexRouter, messagesRouter, productRouter, cartRouter);
 
 // EXPRESS SERVER
 const httpServer = createServer(server);
