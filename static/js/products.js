@@ -41,7 +41,7 @@ function renderProducts(products) {
       <p class="card-text">${product.category}</p>
       <p class="card-text">${product.description}</p>
       <p class="card-text">${"$ " + product.price}</p>
-      <button type="button" class="btn btn-primary"
+      <button type="button" class="btn btn-secondary"
         style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
   Add to Cart
 </button>
