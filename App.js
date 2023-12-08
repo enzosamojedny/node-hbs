@@ -62,7 +62,6 @@ server.use((req, res, next) => {
 
 ioServer.on("connection", async (socket) => {
   try {
-    // Gets the initial set of messages
     let messages = await messagesManager.getMessages();
     console.log("new connection: ", socket.id);
     socket.emit("messages", messages);
