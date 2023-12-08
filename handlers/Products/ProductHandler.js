@@ -52,7 +52,7 @@ const ProductId = router.get("/api/products/:id", async (req, res) => {
     res.status(500).send({ message: error.message });
   }
 });
-const AddProduct = router.post("/products", async (req, res) => {
+const AddProduct = router.post("/api/products", async (req, res) => {
   try {
     const productDetails = req.body;
     if (!productDetails) {
