@@ -1,6 +1,6 @@
 async function fetchProducts() {
   try {
-    const response = await fetch("/api/products");
+    const response = await fetch(`/api/products?page=1&limit=10&sort=asc`);
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
@@ -11,7 +11,10 @@ async function fetchProducts() {
     }
 
     const products = data.payload;
-    return products;
+    const nextPageLink = data.nextLink;
+    const prevPageLink = data.prevLink;
+
+    return { products, nextPageLink, prevPageLink };
   } catch (error) {
     console.error("Error fetching products:", error);
     throw error;
@@ -21,8 +24,8 @@ async function fetchProducts() {
 function renderProducts(products) {
   const productsContainer = document.getElementById("products-container");
   productsContainer.innerHTML = "";
-
-  products.forEach((product) => {
+  console.log(products);
+  products.products.forEach((product) => {
     const card = document.createElement("div");
     card.className = "card";
     card.style = "width: 18rem;";
@@ -45,14 +48,26 @@ function renderProducts(products) {
         style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
   Add to Cart
 </button>
-    </div>
-    `;
+    </div>`;
 
     card.appendChild(img);
     card.appendChild(cardBody);
 
     productsContainer.appendChild(card);
   });
+  const prevPageButton = document.getElementById("prevPageBtn");
+  const prevPageAnchor = document.createElement("a");
+  prevPageAnchor.className = "page-link";
+  prevPageAnchor.innerHTML = "<";
+  prevPageAnchor.href = `${products.prevPageLink}`;
+  prevPageButton.appendChild(prevPageAnchor);
+
+  const nextPageButton = document.getElementById("nextPageBtn");
+  const nextPageAnchor = document.createElement("a");
+  nextPageAnchor.className = "page-link";
+  nextPageAnchor.innerHTML = ">";
+  nextPageAnchor.href = `${products.nextPageLink}`;
+  nextPageButton.appendChild(nextPageAnchor);
 }
 
 async function init() {
