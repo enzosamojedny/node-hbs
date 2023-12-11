@@ -47,11 +47,16 @@ async function handlePageChange(page) {
 function renderProducts(products) {
   const productsContainer = document.getElementById("products-container");
   productsContainer.innerHTML = "";
-  console.log(products);
+
+  const row = document.createElement("div");
+  row.className = "row";
+
   products.products.forEach((product) => {
+    const col = document.createElement("div");
+    col.className = "col-md-4";
+
     const card = document.createElement("div");
-    card.className = "card";
-    card.style = "width: 18rem;";
+    card.className = "card mb-3";
 
     const img = document.createElement("img");
     img.src = product.thumbnail;
@@ -62,22 +67,22 @@ function renderProducts(products) {
     cardBody.className = "card-body";
 
     cardBody.innerHTML = `
-    <div class="card-row">
       <h5 class="card-title">${product.title}</h5>
       <p class="card-text">${product.category}</p>
       <p class="card-text">${product.description}</p>
       <p class="card-text">${"$ " + product.price}</p>
       <button type="button" class="btn btn-secondary"
         style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
-  Add to Cart
-</button>
-    </div>`;
+        Add to Cart
+      </button>
+    `;
 
     card.appendChild(img);
     card.appendChild(cardBody);
-
-    productsContainer.appendChild(card);
+    col.appendChild(card);
+    row.appendChild(col);
   });
+  productsContainer.appendChild(row);
   const prevPageButton = document.getElementById("prevPageBtn");
   const prevPageAnchor = document.createElement("a");
   prevPageAnchor.className = "page-link";
