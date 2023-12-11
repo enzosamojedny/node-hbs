@@ -20,15 +20,5 @@ productRouter.get("/products", (req, res) => {
   res.render("products.hbs", { title: "Products", isHomePage: false });
 });
 
-// productRouter.get("/products/:page", async (req, res) => {
-//   const page = req.params.page;
-//   const response = await fetch(`/api/products?page=${page}&limit=10&sort=asc`);
-//   const data = await response.json();
-//   res.render("products.hbs", {
-//     title: "Products",
-//     isHomePage: false,
-//     products: data.payload,
-//   });
-// });
 
 module.exports = productRouter;
