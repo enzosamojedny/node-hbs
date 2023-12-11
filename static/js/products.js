@@ -1,31 +1,46 @@
+let allUniqueIds = new Set();
+
 async function fetchProducts(page = 1, category = "") {
   const limit = 10;
   const sort = "asc";
   const categoryQuery = category ? `&category=${category}` : "";
+
   try {
     const response = await fetch(
       `/api/products?page=${page}&limit=${limit}&sort=${sort}${categoryQuery}`
     );
+
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
+
     const data = await response.json();
 
     if (!data.payload) {
       throw new Error('The data received does not contain "payload".');
     }
 
+    const filtered = data.payload.filter((p) => {
+      if (!allUniqueIds.has(p._id)) {
+        allUniqueIds.add(p._id);
+        return true;
+      }
+      console.log(`Duplicate _id found: ${p._id}`);
+      return false;
+    });
+
     const { payload: products, nextLink, prevLink, page: currentPage } = data;
 
     const nextPageLink = nextLink && new URL(nextLink, window.location.origin);
     const prevPageLink = prevLink && new URL(prevLink, window.location.origin);
 
-    return { products, nextPageLink, prevPageLink, currentPage };
+    return { products: filtered, nextPageLink, prevPageLink, currentPage };
   } catch (error) {
     console.error("Error fetching products:", error);
     throw error;
   }
 }
+
 async function handleCategoryChange(category) {
   try {
     const productsData = await fetchProducts(1, category);
@@ -109,11 +124,6 @@ function renderProducts(products) {
     handlePageChange(products.currentPage - 1);
   });
 
-  nextPageButton.addEventListener("click", (e) => {
-    e.preventDefault();
-    current.innerHTML = "";
-    handlePageChange(products.currentPage + 1);
-  });
   // document
   //   .getElementById("categoryFilter")
   //   .addEventListener("change", function (e) {
@@ -125,6 +135,14 @@ async function init() {
   try {
     const products = await fetchProducts();
     renderProducts(products);
+
+    const uniqueIds = products.uniqueIds;
+
+    document.getElementById("nextPageBtn").addEventListener("click", (e) => {
+      e.preventDefault();
+      document.getElementById("currentPage").innerHTML = "";
+      handlePageChange(products.currentPage + 1, uniqueIds);
+    });
   } catch (error) {
     console.error("Failed to initialize:", error);
   }
