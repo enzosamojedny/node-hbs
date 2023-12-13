@@ -1,7 +1,7 @@
 let allUniqueIds = new Set();
 
 async function fetchProducts(page = 1, category = "") {
-  const limit = 10;
+  const limit = 13;
   const sort = "asc";
   const categoryQuery = category ? `&category=${category}` : "";
 
@@ -147,7 +147,15 @@ async function init() {
     console.error("Failed to initialize:", error);
   }
 }
+document.addEventListener("searchChanged", function (event) {
+  const searchTerm = event.detail;
 
+  // Now you have the search term, and you can use it as needed
+  console.log("Received search term:", searchTerm);
+
+  // Assuming you have a function to handle the category change
+  handleCategoryChange(searchTerm);
+});
 window.onload = function () {
   init();
 };

@@ -12,9 +12,13 @@ const { default: mongoose } = require("mongoose");
 const bodyParser = require("body-parser");
 const MessagesManager = require("./dao/MessagesManager");
 const Products = require("./dao/models/Products.js");
-const cookieParser = require("cookie-parser");
 const messagesManager = new MessagesManager();
 const path = require("path");
+const session = require("express-session");
+const MongoStore = require("connect-mongo");
+
+// server.use(cookieParser("secretword"));
+
 //! DB CONNECTION
 const enviroment = async () => {
   await mongoose.connect(MONGODB_CNX_STR);
@@ -25,6 +29,28 @@ enviroment();
 console.log("db connected to: ", MONGODB_CNX_STR);
 const server = express();
 const port = 3001;
+//?COOKIES
+
+function showCookies(req, res, next) {
+  console.dir(req.session);
+  next();
+}
+server.use(showCookies);
+server.use(session, {
+  store: MongoStore.create({
+    mongoUrl: MONGODB_CNX_STR,
+    mongoOptions: {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    },
+    ttl: 3600,
+  }),
+  secret: "secretword",
+  //* resave mantiene la coneccion activa aunque se cierre
+  resave: true,
+  //*saveUnitialized guarda cualquier sesion aunque el objeto este vacio
+  saveUnitialized: true,
+});
 
 server.engine(
   "hbs",
@@ -42,7 +68,6 @@ server.use("/static", express.static(path.join(__dirname, "static")));
 
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
-server.use(cookieParser());
 server.use(indexRouter, messagesRouter, productRouter, cartRouter);
 
 // EXPRESS SERVER
