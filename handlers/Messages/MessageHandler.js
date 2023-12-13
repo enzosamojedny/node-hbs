@@ -15,9 +15,7 @@ const PostMessages = messagesRouter.post("/api/messages", async (req, res) => {
     );
     res.status(200).json({ message: addedMessage });
   } catch (error) {
-    if (error) {
-      res.status(400).send({ message: error.message });
-    }
+    res.status(400).send({ message: error.message });
   }
 });
 const GetMessages = messagesRouter.get("/api/messages", async (req, res) => {
@@ -31,9 +29,7 @@ const GetMessages = messagesRouter.get("/api/messages", async (req, res) => {
       res.status(200).json({ messages: messages });
     }
   } catch (error) {
-    if (error) {
-      res.status(404).send({ message: error.message });
-    }
+    res.status(400).send({ message: error.message });
   }
 });
 const GetMessagesId = messagesRouter.get(
@@ -48,9 +44,7 @@ const GetMessagesId = messagesRouter.get(
         throw new Error(`Message with ID ${id} not found in the database`);
       }
     } catch (error) {
-      if (error) {
-        res.status(404).send({ message: error.message });
-      }
+      res.status(404).send({ message: error.message });
     }
   }
 );
@@ -62,9 +56,7 @@ const DeleteMessages = messagesRouter.delete(
       const deleteMessage = await messagesManagerMongoDB.deleteMessage(id);
       res.status(200).json({ deleteMessage });
     } catch (error) {
-      if (error) {
-        res.status(400).send({ message: error.message });
-      }
+      res.status(400).send({ message: error.message });
     }
   }
 );
@@ -83,9 +75,7 @@ const UpdateMessages = messagesRouter.put(
       );
       res.status(200).json({ updateMessage });
     } catch (error) {
-      if (error) {
-        res.status(400).send({ message: error.message });
-      }
+      res.status(400).send({ message: error.message });
     }
   }
 );

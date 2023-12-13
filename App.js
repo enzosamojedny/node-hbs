@@ -2,6 +2,8 @@ const messagesRouter = require("./src/routes/MessageRoutes.js");
 const productRouter = require("./src/routes/ProductRoutes");
 const cartRouter = require("./src/routes/CartRoutes");
 const indexRouter = require("./src/routes/defaultRoute.js");
+const cookiesRouter = require("./src/routes/SessionRoutes.js");
+const usersRouter = require("./src/routes/UsersRoutes.js");
 const { createServer } = require("node:http");
 const morgan = require("morgan");
 const { engine } = require("express-handlebars");
@@ -16,8 +18,6 @@ const messagesManager = new MessagesManager();
 const path = require("path");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
-
-// server.use(cookieParser("secretword"));
 
 //! DB CONNECTION
 const enviroment = async () => {
@@ -35,7 +35,7 @@ function showCookies(req, res, next) {
   console.dir(req.session);
   next();
 }
-server.use(showCookies);
+/*server.use(showCookies);
 server.use(session, {
   store: MongoStore.create({
     mongoUrl: MONGODB_CNX_STR,
@@ -50,7 +50,7 @@ server.use(session, {
   resave: true,
   //*saveUnitialized guarda cualquier sesion aunque el objeto este vacio
   saveUnitialized: true,
-});
+});*/
 
 server.engine(
   "hbs",
@@ -68,7 +68,7 @@ server.use("/static", express.static(path.join(__dirname, "static")));
 
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
-server.use(indexRouter, messagesRouter, productRouter, cartRouter);
+server.use(indexRouter, messagesRouter, productRouter, cartRouter, usersRouter);
 
 // EXPRESS SERVER
 const httpServer = createServer(server);

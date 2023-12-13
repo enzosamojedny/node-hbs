@@ -1,16 +1,12 @@
-const Router = require("express").Router;
-
+/*const Router = require("express").Router;
+const usersRouter = require("./UsersRoutes");
 const cookiesRouter = Router();
 
-cookiesRouter.get("/", (req, res) => {
+cookiesRouter.get("/api/cookies", (req, res) => {
   res.send("Welcome");
 });
-cookiesRouter.get("/logout", (req, res) => {
-  req.session.destroy((error) => {
-    if (error) {
-      return res
-        .status(500)
-        .json({ status: "Error logging out, please try again" });
-    }
-  });
-});
+
+cookiesRouter.use("/session");
+cookiesRouter.use("/user");
+
+module.exports = cookiesRouter;*/
