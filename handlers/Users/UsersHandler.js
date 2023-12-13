@@ -3,18 +3,6 @@ const UsersManager = require("../../dao/UsersManager");
 const usersManagerMongoDB = new UsersManager();
 const usersRouter = Router();
 
-const Login = usersRouter.post("/login", async (req, res) => {
-  try {
-    let user = req.body;
-    if (!user.username || !user.password) {
-      throw new Error("Missing username or password");
-    }
-    const postLogin = await usersManagerMongoDB.addUser();
-    res.status(200).json({ message: postLogin });
-  } catch (error) {
-    res.status(400).send({ message: error.message });
-  }
-});
 
 const PostUser = usersRouter.post("/api/users", async (req, res) => {
   try {
@@ -77,7 +65,6 @@ const UpdateUser = usersRouter.put("/api/users/:id", async (req, res) => {
   }
 });
 module.exports = {
-  Login,
   PostUser,
   GetUsers,
   getUserId,
