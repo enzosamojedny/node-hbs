@@ -16,11 +16,12 @@ const sessionMiddleware = createSessionMiddleware({
   saveUninitialized: true,
 });
 
+//! DEAD CODE
 function onlyLogged(req, res, next) {
-  if (req.session["user"]) {
+  if (!req.session["user"]) {
     return res
-      .status(200)
-      .json({ status: "success", message: "You have successfully logged in" });
+      .status(400)
+      .json({ status: "error", message: "You have to log in first" });
   }
   next();
 }

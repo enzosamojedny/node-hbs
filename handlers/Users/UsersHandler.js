@@ -38,18 +38,23 @@ const getUsername = usersRouter.get(
   "/api/users/myprofile",
   async (req, res) => {
     try {
-      if (!req.session["user"] || !req.session["user"].email) {
-        throw new Error(`User not logged in`);
+      // Check if user is logged in
+      if (!req.session["user"]) {
+        return res
+          .status(400)
+          .json({ status: "error", message: "You have to log in first" });
+      }
+
+      const data = {
+        email: req.session["user"].email,
+      };
+
+      const getUserByEmail = await usersManagerMongoDB.getUserByEmail(data);
+
+      if (getUserByEmail) {
+        res.status(200).json({ status: "success", message: getUserByEmail });
       } else {
-        const data = {
-          email: req.session["user"].email,
-        };
-        const getUserByEmail = await usersManagerMongoDB.getUserByEmail(data);
-        if (getUserByEmail) {
-          res.status(200).json({ status: "success", message: getUserByEmail });
-        } else {
-          throw new Error(`User not found in the database`);
-        }
+        throw new Error(`User not found in the database`);
       }
     } catch (error) {
       res.status(400).json({ status: "error", message: error.message });
