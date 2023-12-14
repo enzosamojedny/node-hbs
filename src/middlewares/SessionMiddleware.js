@@ -19,10 +19,10 @@ const sessionMiddleware = createSessionMiddleware({
 function onlyLogged(req, res, next) {
   if (req.session["user"]) {
     return res
-      .status(400)
-      .json({ status: "error", message: "You need to login first" });
+      .status(200)
+      .json({ status: "success", message: "You have successfully logged in" });
   }
   next();
 }
 
-module.exports = { sessionMiddleware, onlyLogged };
+module.exports = { sessionMiddleware };

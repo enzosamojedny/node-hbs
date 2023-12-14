@@ -1,9 +1,16 @@
 const Router = require("express").Router;
 const UsersManager = require("../../dao/UsersManager");
-const { onlyLogged } = require("../../src/middlewares/SessionMiddleware");
 const usersManagerMongoDB = new UsersManager();
 const usersRouter = Router();
 
+function onlyLogged(req, res, next) {
+  if (req.session["user"]) {
+    return res
+      .status(200)
+      .json({ status: "success", message: "You have successfully logged in" });
+  }
+  next();
+}
 const PostUser = usersRouter.post("/api/users", async (req, res) => {
   try {
     const userDetails = req.body;
@@ -29,25 +36,23 @@ const GetUsers = usersRouter.get("/api/users", async (req, res) => {
 });
 const getUsername = usersRouter.get(
   "/api/users/myprofile",
-  onlyLogged,
   async (req, res) => {
     try {
       if (!req.session["user"] || !req.session["user"].email) {
         throw new Error(`User not logged in`);
-      }
-      const data = {
-        email: req.session["user"].email,
-      };
-
-      const getUserByEmail = await usersManagerMongoDB.getUserByEmail(data);
-
-      if (getUserByEmail) {
-        res.status(200).json({ message: getUserByEmail });
       } else {
-        throw new Error(`User not found in the database`);
+        const data = {
+          email: req.session["user"].email,
+        };
+        const getUserByEmail = await usersManagerMongoDB.getUserByEmail(data);
+        if (getUserByEmail) {
+          res.status(200).json({ status: "success", message: getUserByEmail });
+        } else {
+          throw new Error(`User not found in the database`);
+        }
       }
     } catch (error) {
-      res.status(400).send({ message: error.message });
+      res.status(400).json({ status: "error", message: error.message });
     }
   }
 );
