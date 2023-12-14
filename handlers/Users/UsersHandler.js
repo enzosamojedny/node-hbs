@@ -32,7 +32,14 @@ const getUsername = usersRouter.get(
   onlyLogged,
   async (req, res) => {
     try {
-      const getUserByEmail = await usersManagerMongoDB.getUserByEmail();
+      if (!req.session["user"] || !req.session["user"].email) {
+        throw new Error(`User not logged in`);
+      }
+      const data = {
+        email: req.session["user"].email,
+      };
+
+      const getUserByEmail = await usersManagerMongoDB.getUserByEmail(data);
 
       if (getUserByEmail) {
         res.status(200).json({ message: getUserByEmail });
