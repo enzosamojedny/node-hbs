@@ -1,8 +1,8 @@
 const Router = require("express").Router;
 const UsersManager = require("../../dao/UsersManager");
+const { onlyLogged } = require("../../src/middlewares/SessionMiddleware");
 const usersManagerMongoDB = new UsersManager();
 const usersRouter = Router();
-
 
 const PostUser = usersRouter.post("/api/users", async (req, res) => {
   try {
@@ -27,6 +27,23 @@ const GetUsers = usersRouter.get("/api/users", async (req, res) => {
     res.status(400).send({ message: error.message });
   }
 });
+const getUsername = usersRouter.get(
+  "/api/users/myprofile",
+  onlyLogged,
+  async (req, res) => {
+    try {
+      const getUserByEmail = await usersManagerMongoDB.getUserByEmail();
+
+      if (getUserByEmail) {
+        res.status(200).json({ message: getUserByEmail });
+      } else {
+        throw new Error(`User not found in the database`);
+      }
+    } catch (error) {
+      res.status(400).send({ message: error.message });
+    }
+  }
+);
 
 const getUserId = usersRouter.get("/api/users/:id", async (req, res) => {
   try {
@@ -70,4 +87,5 @@ module.exports = {
   getUserId,
   DeleteUser,
   UpdateUser,
+  getUsername,
 };

@@ -10,7 +10,19 @@ class UsersManager {
     const userCreated = await Users.create(user);
     return userCreated.toObject();
   }
-
+  async getUserByEmail() {
+    const found = await Users.findOne(
+      {
+        email: req.session["user"].email,
+      },
+      { password: 0 }
+    ).lean();
+    if (!found) {
+      throw new Error(`User not found`);
+    } else {
+      return found;
+    }
+  }
   async getUserById(userId) {
     const found = await Users.findById({ userId }).lean();
     if (!found) {

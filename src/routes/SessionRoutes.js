@@ -6,21 +6,27 @@ sessionRouter.get("/api/session", (req, res) => {
   res.send("Welcome");
 });
 
-const user = sessionRouter.post("/login", async (req, res) => {
+const user = sessionRouter.post("/api/login", async (req, res) => {
   const { email, password } = req.body;
 
   const userFound = await Users.findOne({ email }).lean();
   if (!userFound) {
-    res.status(400).send("Login failed.");
+    return res.status(400).json({
+      status: "error",
+      message: "Login failed. User not found.",
+    });
   }
   const userData = {
-    email: user.email,
-    name: user.name,
-    last_name: user.last_name,
+    email: userFound.email,
+    name: userFound.name,
+    last_name: userFound.last_name,
   };
 
   if (password !== userFound.password) {
-    return res.status(400).send("username and password are incorrect");
+    return res.status(400).json({
+      status: "error",
+      message: "username and password are incorrect",
+    });
   }
   req.session["user"] = userData;
   req.session["admin"] = true;
@@ -28,7 +34,16 @@ const user = sessionRouter.post("/login", async (req, res) => {
     .status(201)
     .json({ status: "success", message: "You have successfully logged in" });
 });
-
+sessionRouter.get("/api/session/current", (req, res) => {
+  if (req.session["user"]) {
+    res.json(req.session["user"]);
+  } else {
+    res.json(400).json({
+      status: "error",
+      message: "No session saved, you need to login first!",
+    });
+  }
+});
 sessionRouter.post("/logout", (req, res) => {
   req.session.destroy((error) => {
     if (error) {

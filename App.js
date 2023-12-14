@@ -4,7 +4,10 @@ const cartRouter = require("./src/routes/CartRoutes");
 const indexRouter = require("./src/routes/defaultRoute.js");
 const sessionRouter = require("./src/routes/SessionRoutes.js");
 const usersRouter = require("./src/routes/UsersRoutes.js");
-const sessionMiddleware = require("./src/middlewares/SessionMiddleware.js");
+const {
+  sessionMiddleware,
+  onlyLogged,
+} = require("./src/middlewares/SessionMiddleware.js");
 const { createServer } = require("node:http");
 const morgan = require("morgan");
 const { engine } = require("express-handlebars");
