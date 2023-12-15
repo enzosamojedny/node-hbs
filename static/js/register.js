@@ -10,7 +10,14 @@ const submit = document.getElementById("submit-btn");
 function validation() {
   let isValidated = true;
 
+  const firstName = document.getElementById("first-name");
+  const lastName = document.getElementById("last-name");
+  const email = document.getElementById("email");
+  const password = document.getElementById("password");
+  const gender = document.getElementById("gender");
+
   const fields = [firstName, lastName, email, password, gender];
+
   fields.forEach((field) => {
     if (!field.value.trim()) {
       makeRed(field);
@@ -63,17 +70,36 @@ formInputs.forEach((input) => {
   });
 });
 
-submit.addEventListener("click", (event) => {
-  event.preventDefault();
-  if (validation()) {
-    Swal.fire({
-      icon: "success",
-      title: "Thank you for registering!",
-      text: "You will be redirected to login",
-    });
+document.addEventListener("DOMContentLoaded", function () {
+  const submit = document.getElementById("submit-btn");
 
-    setTimeout(() => {
-      window.location.href = "/login";
-    }, 3000);
-  }
+  submit.addEventListener("click", function (event) {
+    event.preventDefault();
+
+    if (validation()) {
+      const formData = {
+        firstName: document.getElementById("first-name").value,
+        lastName: document.getElementById("last-name").value,
+        email: document.getElementById("email").value,
+        password: document.getElementById("password").value,
+        gender: document.getElementById("gender").value,
+      };
+
+      Swal.fire({
+        icon: "success",
+        title: "Thank you for registering!",
+        text: "You will be redirected to login",
+      });
+
+      let dispatchedEvent = new CustomEvent("dispatchedEvent", {
+        detail: formData,
+      });
+
+      console.log("Dispatched Event:", dispatchedEvent);
+      document.dispatchEvent(dispatchedEvent);
+      setTimeout(() => {
+        window.location.href = "/login";
+      }, 3000);
+    }
+  });
 });
