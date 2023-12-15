@@ -5,6 +5,8 @@ const password = document.getElementById("password");
 const gender = document.getElementById("gender");
 const submit = document.getElementById("submit-btn");
 
+//! FORM VALIDATION
+
 function validation() {
   let isValidated = true;
 
@@ -15,7 +17,7 @@ function validation() {
       displayError("This field cannot be left blank.");
       isValidated = false;
     } else {
-      removeError(field);
+      makeGreen(field);
     }
   });
 
@@ -44,14 +46,16 @@ function displayError(message) {
 function makeRed(input) {
   input.style.borderColor = "red";
 }
-
+function makeGreen(input) {
+  input.style.borderColor = "green";
+}
 function removeError(input) {
   input.style.borderColor = "";
 }
 
 const formInputs = [firstName, lastName, email, password, gender];
 formInputs.forEach((input) => {
-  input.addEventListener("focus", () => removeError(input));
+  input.addEventListener("focus", () => makeGreen(input));
   input.addEventListener("blur", () => {
     if (!input.value.trim()) {
       makeRed(input);
@@ -64,8 +68,12 @@ submit.addEventListener("click", (event) => {
   if (validation()) {
     Swal.fire({
       icon: "success",
-      title: "Form Submitted!",
-      text: "Thank you for registering.",
+      title: "Thank you for registering!",
+      text: "You will be redirected to login",
     });
+
+    setTimeout(() => {
+      window.location.href = "/login";
+    }, 3000);
   }
 });
