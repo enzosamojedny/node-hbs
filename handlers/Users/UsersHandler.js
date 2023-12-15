@@ -38,7 +38,6 @@ const getUsername = usersRouter.get(
   "/api/users/myprofile",
   async (req, res) => {
     try {
-      // Check if user is logged in
       if (!req.session["user"]) {
         return res
           .status(400)
