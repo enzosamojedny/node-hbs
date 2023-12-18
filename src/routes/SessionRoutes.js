@@ -1,7 +1,7 @@
 const Users = require("../../dao/models/Users");
 const Router = require("express").Router;
 const sessionRouter = Router();
-
+const bcrypt = require("bcrypt");
 sessionRouter.get("/api/session", (req, res) => {
   res.send("Welcome");
 });
@@ -16,21 +16,26 @@ sessionRouter.post("/api/login", async (req, res, next) => {
       message: "Login failed. User not found.",
     });
   }
+
+  const passwordMatch = await bcrypt.compare(password, userFound.password);
+
+  if (!passwordMatch) {
+    return res.status(400).json({
+      status: "error",
+      message: "Email and password combination is incorrect",
+    });
+  }
+
   const userData = {
     email: userFound.email,
-    name: userFound.name,
+    first_name: userFound.name,
     last_name: userFound.last_name,
     gender: userFound.gender,
   };
-  console.log(userData);
-  if (password !== userFound.password) {
-    return res.status(400).json({
-      status: "error",
-      message: "username and password are incorrect",
-    });
-  }
+
   req.session["user"] = userData;
   req.session["admin"] = true;
+
   res
     .status(201)
     .json({ status: "success", message: "You have successfully logged in" });

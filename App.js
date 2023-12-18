@@ -20,7 +20,6 @@ const MessagesManager = require("./dao/MessagesManager");
 const Products = require("./dao/models/Products.js");
 const messagesManager = new MessagesManager();
 const path = require("path");
-const cors = require("cors");
 
 //! DB CONNECTION
 const enviroment = async () => {
@@ -46,7 +45,7 @@ server.set("views", path.join(__dirname, "/views/partials"));
 server.set("view engine", "hbs");
 
 server.use("/static", express.static(path.join(__dirname, "static")));
-server.use(sessionMiddleware); //!
+server.use(sessionMiddleware);
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(

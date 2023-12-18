@@ -1,12 +1,14 @@
 const Users = require("./models/Users.js");
 const { randomUUID } = require("crypto");
-
+const bcrypt = require("bcrypt");
 class UsersManager {
   async getUsers() {
     return await Users.find().lean();
   }
   async addUser(user) {
     user._id = randomUUID();
+    const hashedPassword = await bcrypt.hash(user.password, 10);
+    user.password = hashedPassword;
     const userCreated = await Users.create(user);
     return userCreated.toObject();
   }

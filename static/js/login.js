@@ -80,7 +80,9 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       axios
-        .post("http://localhost:3001/api/login", formData)
+        .post("http://localhost:3001/api/login", formData, {
+          withCredentials: true,
+        })
         .then((response) => {
           console.log("Server response:", response.data);
 
