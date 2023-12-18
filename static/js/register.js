@@ -77,11 +77,12 @@ document.addEventListener("DOMContentLoaded", function () {
     event.preventDefault();
 
     if (validation()) {
+      submit.disabled = true;
       const formData = {
-        firstName: document.getElementById("first-name").value,
-        lastName: document.getElementById("last-name").value,
         email: document.getElementById("email").value,
         password: document.getElementById("password").value,
+        first_name: document.getElementById("first-name").value,
+        last_name: document.getElementById("last-name").value,
         gender: document.getElementById("gender").value,
       };
 
@@ -90,13 +91,25 @@ document.addEventListener("DOMContentLoaded", function () {
         title: "Thank you for registering!",
         text: "You will be redirected to login",
       });
-
-      let dispatchedEvent = new CustomEvent("dispatchedEvent", {
-        detail: formData,
-      });
-
-      console.log("Dispatched Event:", dispatchedEvent);
-      document.dispatchEvent(dispatchedEvent);
+      axios
+        .post("http://localhost:3001/api/users", formData)
+        .then((response) => {
+          console.log("Server response:", response.data);
+          Swal.fire({
+            icon: "success",
+            title: "Success!",
+            text: "You will be redirected shortly.",
+          });
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Oops. Something happened.",
+          });
+        })
+        .finally(() => {});
       setTimeout(() => {
         window.location.href = "/login";
       }, 3000);

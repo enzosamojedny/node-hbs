@@ -20,6 +20,7 @@ const MessagesManager = require("./dao/MessagesManager");
 const Products = require("./dao/models/Products.js");
 const messagesManager = new MessagesManager();
 const path = require("path");
+const cors = require("cors");
 
 //! DB CONNECTION
 const enviroment = async () => {
@@ -61,7 +62,7 @@ server.use(
 const httpServer = createServer(server);
 server.set("engine", engine());
 server.use(morgan("dev"));
-server.use(express.json());
+// server.use(express.json());
 
 const serverListener = httpServer.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

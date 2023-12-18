@@ -14,6 +14,7 @@ function onlyLogged(req, res, next) {
 const PostUser = usersRouter.post("/api/users", async (req, res) => {
   try {
     const userDetails = req.body;
+    console.log(userDetails);
     if (!userDetails) {
       throw new Error("user details not provided in the request body");
     }
