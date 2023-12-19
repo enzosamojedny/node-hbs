@@ -127,10 +127,8 @@ async function init() {
 document.addEventListener("searchChanged", function (event) {
   const searchTerm = event.detail;
 
-  // Now you have the search term, and you can use it as needed
   console.log("Received search term:", searchTerm);
 
-  // Assuming you have a function to handle the category change
   handleCategoryChange(searchTerm);
 });
 window.onload = function () {

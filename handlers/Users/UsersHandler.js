@@ -98,6 +98,27 @@ const UpdateUser = usersRouter.put("/api/users/:id", async (req, res) => {
     res.status(400).send({ message: error.message });
   }
 });
+const ResetPassword = usersRouter.post(
+  "/api/resetpassword",
+  async function registerUser(req, res) {
+    try {
+      const email = req.body.email;
+      const password = req.body.password;
+      if (!password || !email) {
+        throw new Error(
+          "User password or email not provided in the request body"
+        );
+      }
+      const updatePassword = await usersManagerMongoDB.resetUserPassword(
+        email,
+        password
+      );
+      res.status(200).json({ updatePassword });
+    } catch (error) {
+      res.status(400).send({ message: error.message });
+    }
+  }
+);
 module.exports = {
   PostUser,
   GetUsers,
@@ -105,4 +126,5 @@ module.exports = {
   DeleteUser,
   UpdateUser,
   getUsername,
+  ResetPassword,
 };

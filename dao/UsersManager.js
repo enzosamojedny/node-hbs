@@ -48,5 +48,21 @@ class UsersManager {
       return userToUpdate;
     }
   }
+  // async comparePasswords(password, passwordFromDB) {
+  //   return await bcrypt.compare(password, passwordFromDB);
+  //   }
+  async resetUserPassword(email, password) {
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const updated = await Users.findOneAndUpdate(
+      { email: email },
+      { $set: { password: hashedPassword } },
+      { new: true }
+    ).lean();
+    if (!updated) {
+      throw new Error("Can't reset password: user not found");
+    } else {
+      return updated;
+    }
+  }
 }
 module.exports = UsersManager;
