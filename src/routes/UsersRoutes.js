@@ -23,4 +23,10 @@ usersRouter.get("/register", (req, res) => {
 usersRouter.get("/login", (req, res) => {
   res.render("login.hbs", { title: "Login", isHomePage: false });
 });
+usersRouter.get("/resetpassword", (req, res) => {
+  res.render("passwordreset.hbs", {
+    title: "Reset password",
+    isHomePage: false,
+  });
+});
 module.exports = usersRouter;

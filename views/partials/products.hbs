@@ -27,15 +27,22 @@
       <div class="row justify-content-center">
         <div class="col-md-6 text-center">
 
-          <button
+          {{!-- <button
             type="button"
             class="btn btn-primary mr-2"
             id="prevPageBtn"
-          ></button>
+          ></button> --}}
           <div id="currentPage"></div>
-          <button type="button" class="btn btn-primary" id="nextPageBtn">
-          </button>
+          {{!-- <button type="button" class="btn btn-primary" id="nextPageBtn">
+          </button> --}}
         </div>
+  <ul class="pagination">
+    <li class="page-item"id="prevPageBtn"><a class="page-link text-white bg-dark" id="prev-a" >Previous</a></li>
+    <li class="page-item"><a class="page-link text-white bg-dark" href="#">1</a></li>
+    <li class="page-item"><a class="page-link text-white bg-dark" href="#">2</a></li>
+    <li class="page-item"><a class="page-link text-white bg-dark" href="#">3</a></li>
+    <li class="page-item"id="nextPageBtn"><a class="page-link text-white bg-dark" id="next-a">Next</a></li>
+  </ul>
       </div>
     </div>
     </div>

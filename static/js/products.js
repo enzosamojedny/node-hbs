@@ -1,5 +1,3 @@
-let allUniqueIds = new Set();
-
 async function fetchProducts(page = 1, category = "") {
   const limit = 13;
   const sort = "asc";
@@ -20,21 +18,12 @@ async function fetchProducts(page = 1, category = "") {
       throw new Error('The data received does not contain "payload".');
     }
 
-    const filtered = data.payload.filter((p) => {
-      if (!allUniqueIds.has(p._id)) {
-        allUniqueIds.add(p._id);
-        return true;
-      }
-      console.log(`Duplicate _id found: ${p._id}`);
-      return false;
-    });
-
     const { payload: products, nextLink, prevLink, page: currentPage } = data;
 
     const nextPageLink = nextLink && new URL(nextLink, window.location.origin);
     const prevPageLink = prevLink && new URL(prevLink, window.location.origin);
 
-    return { products: filtered, nextPageLink, prevPageLink, currentPage };
+    return { products: products, nextPageLink, prevPageLink, currentPage };
   } catch (error) {
     console.error("Error fetching products:", error);
     throw error;
@@ -99,31 +88,27 @@ function renderProducts(products) {
   });
   productsContainer.appendChild(row);
   const prevPageButton = document.getElementById("prevPageBtn");
-  const prevPageAnchor = document.createElement("a");
-  prevPageAnchor.className = "page-link";
-  prevPageAnchor.innerHTML = "<";
+  const prevPageAnchor = document.getElementById("prev-a");
   prevPageAnchor.href = `${products.prevPageLink}`;
-  prevPageButton.appendChild(prevPageAnchor);
 
-  const current = document.getElementById("currentPage");
-  const createPageNumber = document.createElement("p");
-  createPageNumber.className = "p-page-number";
-  createPageNumber.innerHTML = `${products.currentPage}`;
-  current.appendChild(createPageNumber);
+  // const current = document.getElementById("currentPage");
+  // const createPageNumber = document.createElement("p");
+  // createPageNumber.className = "p-page-number";
+  // createPageNumber.innerHTML = `${products.currentPage}`;
+  // current.appendChild(createPageNumber);
 
   const nextPageButton = document.getElementById("nextPageBtn");
-  const nextPageAnchor = document.createElement("a");
-  nextPageAnchor.className = "page-link";
-  nextPageAnchor.innerHTML = ">";
+  const nextPageAnchor = document.getElementById("next-a");
   nextPageAnchor.href = `${products.nextPageLink}`;
-  nextPageButton.appendChild(nextPageAnchor);
 
   prevPageButton.addEventListener("click", (e) => {
     e.preventDefault();
-    current.innerHTML = "";
     handlePageChange(products.currentPage - 1);
   });
-
+  nextPageButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    handlePageChange(products.currentPage + 1);
+  });
   // document
   //   .getElementById("categoryFilter")
   //   .addEventListener("change", function (e) {
@@ -135,14 +120,6 @@ async function init() {
   try {
     const products = await fetchProducts();
     renderProducts(products);
-
-    const uniqueIds = products.uniqueIds;
-
-    document.getElementById("nextPageBtn").addEventListener("click", (e) => {
-      e.preventDefault();
-      document.getElementById("currentPage").innerHTML = "";
-      handlePageChange(products.currentPage + 1, uniqueIds);
-    });
   } catch (error) {
     console.error("Failed to initialize:", error);
   }
