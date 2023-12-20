@@ -2,6 +2,9 @@ const Users = require("../../dao/models/Users");
 const Router = require("express").Router;
 const sessionRouter = Router();
 const bcrypt = require("bcrypt");
+const { onlyLoggedApi } = require("../middlewares/auth");
+const UsersManager = require("../../dao/UsersManager");
+
 sessionRouter.get("/api/session", (req, res) => {
   res.send("Welcome");
 });
@@ -33,7 +36,11 @@ sessionRouter.post("/api/login", async (req, res, next) => {
     gender: userFound.gender,
   };
 
-  req.session["user"] = userData;
+  req.login(userData, (error) => {
+    if (error) {
+      console.log(error);
+    }
+  });
   req.session["admin"] = true;
 
   res
@@ -41,7 +48,13 @@ sessionRouter.post("/api/login", async (req, res, next) => {
     .json({ status: "success", message: "You have successfully logged in" });
 });
 
-sessionRouter.get("/api/session/current", (req, res) => {
+//!auth in profile.hbs API
+sessionRouter.get("/api/session/current", onlyLoggedApi, async (req, res) => {
+  const userFound = await Users.findOne(
+    { email: req.session["user"].email },
+    { password: 0 }
+  ).lean();
+  res.json({ status: "success", payload: userFound });
   if (req.session["user"]) {
     res.json(req.session["user"]);
   } else {
@@ -51,15 +64,14 @@ sessionRouter.get("/api/session/current", (req, res) => {
     });
   }
 });
+
+//! passport logout
 sessionRouter.post("/api/logout", (req, res) => {
-  req.session.destroy((error) => {
+  req.logout((error) => {
     if (error) {
-      return res.status(500).json({ status: "logout error", body: error });
+      console.log(error);
     }
-    res.send({
-      status: "success",
-      message: "you have successfully logged out",
-    });
+    res.redirect("/login");
   });
 });
 

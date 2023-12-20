@@ -1,6 +1,16 @@
 const createSessionMiddleware = require("express-session");
 const MongoStore = require("connect-mongo");
 const { MONGODB_CNX_STR } = require("../../config");
+const passport = require("passport");
+passport.serializeUser((user, next) => {
+  next(null, user);
+});
+passport.deserializeUser((user, next) => {
+  next(null, user);
+});
+const passportInitialize = passport.initialize();
+const PassportSession = passport.session();
+
 const sessionMiddleware = createSessionMiddleware({
   store: MongoStore.create({
     mongoUrl: MONGODB_CNX_STR,
@@ -16,14 +26,10 @@ const sessionMiddleware = createSessionMiddleware({
   saveUninitialized: true,
 });
 
-//! DEAD CODE
-function onlyLogged(req, res, next) {
-  if (!req.session["user"]) {
-    return res
-      .status(400)
-      .json({ status: "error", message: "You have to log in first" });
-  }
-  next();
+function auth(req, res, next) {
+  passportInitialize(req, res, () => {
+    PassportSession(req, res, next);
+  });
 }
 
-module.exports = { sessionMiddleware };
+module.exports = { sessionMiddleware, auth };

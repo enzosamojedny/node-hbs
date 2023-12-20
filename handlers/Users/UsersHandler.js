@@ -3,22 +3,22 @@ const UsersManager = require("../../dao/UsersManager");
 const usersManagerMongoDB = new UsersManager();
 const usersRouter = Router();
 
-function onlyLogged(req, res, next) {
-  if (req.session["user"]) {
-    return res
-      .status(200)
-      .json({ status: "success", message: "You have successfully logged in" });
-  }
-  next();
-}
 const PostUser = usersRouter.post("/api/users", async (req, res) => {
   try {
-    const userDetails = req.body;
-    console.log(userDetails);
-    if (!userDetails) {
-      throw new Error("user details not provided in the request body");
+    const userData = req.body;
+    console.log(userData);
+    if (!userData) {
+      throw new Error("user data not provided in the request body");
     }
-    const addedUser = await usersManagerMongoDB.addUser(userDetails);
+    const addedUser = await usersManagerMongoDB.addUser(userData);
+
+    //* passport
+    req.login(userData, (error) => {
+      if (error) {
+        return res.redirect("/register");
+      }
+      res.redirect("/profile");
+    });
     res.status(200).json({ message: addedUser });
   } catch (error) {
     res.status(400).send({ message: error.message });
@@ -35,6 +35,7 @@ const GetUsers = usersRouter.get("/api/users", async (req, res) => {
     res.status(400).send({ message: error.message });
   }
 });
+
 const getUsername = usersRouter.get(
   "/api/users/myprofile",
   async (req, res) => {
@@ -76,6 +77,7 @@ const getUserId = usersRouter.get("/api/users/:id", async (req, res) => {
     res.status(400).send({ message: error.message });
   }
 });
+
 const DeleteUser = usersRouter.delete("/api/users/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -85,6 +87,7 @@ const DeleteUser = usersRouter.delete("/api/users/:id", async (req, res) => {
     res.status(400).send({ message: error.message });
   }
 });
+
 const UpdateUser = usersRouter.put("/api/users/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -98,6 +101,7 @@ const UpdateUser = usersRouter.put("/api/users/:id", async (req, res) => {
     res.status(400).send({ message: error.message });
   }
 });
+
 const ResetPassword = usersRouter.post(
   "/api/resetpassword",
   async function registerUser(req, res) {

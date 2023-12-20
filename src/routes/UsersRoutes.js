@@ -1,4 +1,5 @@
 const Router = require("express").Router;
+const { onlyLoggedClient } = require("../middlewares/auth");
 const usersRouter = Router();
 const {
   PostUser,
@@ -25,10 +26,24 @@ usersRouter.get("/register", (req, res) => {
 usersRouter.get("/login", (req, res) => {
   res.render("login.hbs", { title: "Login", isHomePage: false });
 });
+
+// usersRouter.post("/logout", (req, res) => {
+//   res.render("logout.hbs", { title: "Logout", isHomePage: false });
+// });
+
 usersRouter.get("/resetpassword", (req, res) => {
   res.render("resetpassword.hbs", {
     title: "Reset password",
     isHomePage: false,
+  });
+});
+
+//! adjust logic so only logged users can see this page
+usersRouter.get("/profile", onlyLoggedClient, function profileView(req, res) {
+  res.render("profile.hbs", {
+    title: "Profile",
+    isHomePage: false,
+    user: req.session[user],
   });
 });
 module.exports = usersRouter;

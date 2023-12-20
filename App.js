@@ -6,7 +6,7 @@ const sessionRouter = require("./src/routes/SessionRoutes.js");
 const usersRouter = require("./src/routes/UsersRoutes.js");
 const {
   sessionMiddleware,
-  onlyLogged,
+  auth,
 } = require("./src/middlewares/SessionMiddleware.js");
 const { createServer } = require("node:http");
 const morgan = require("morgan");
@@ -46,6 +46,7 @@ server.set("view engine", "hbs");
 
 server.use("/static", express.static(path.join(__dirname, "static")));
 server.use(sessionMiddleware);
+server.use(auth);
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(
