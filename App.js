@@ -7,7 +7,7 @@ const usersRouter = require("./src/routes/UsersRoutes.js");
 const {
   sessionMiddleware,
   auth,
-} = require("./src/middlewares/SessionMiddleware.js");
+} = require("./src/middlewares/Passport.js");
 const { createServer } = require("node:http");
 const morgan = require("morgan");
 const { engine } = require("express-handlebars");

@@ -7,7 +7,13 @@ const Users = require("../../dao/models/Users");
 const UsersManager = require("../../dao/UsersManager");
 const bcrypt = require("bcrypt");
 const usersManagerMongoDB = new UsersManager();
-
+const { Strategy: GithubStrategy } = require("passport-github2");
+const {
+  githubAppId,
+  githubCallback,
+  githubClientId,
+  githubSecret,
+} = require("../../config");
 passport.serializeUser((user, next) => {
   next(null, user);
 });
@@ -37,6 +43,43 @@ function auth(req, res, next) {
     PassportSession(req, res, next);
   });
 }
+passport.use(
+  "github",
+  new GithubStrategy(
+    {
+      clientID: githubClientId,
+      clientSecret: githubSecret,
+      callbackURL: githubCallback,
+    },
+    async function verify(accessToken, refreshToken, profile, done) {
+      const user = await Users.findOne({
+        email: profile.username,
+      });
+      if (user) {
+        return done(null, {
+          ...user.publicInfo(),
+          // admin: false
+        });
+      }
+      try {
+        const registered = await Users.create({
+          email: profile.username,
+          password: "(undefined)",
+          first_name: profile.displayName,
+          last_name: "(undefined)",
+          gender: "(undefined)",
+        });
+        done(null, {
+          ...registered.publicInfo(),
+          // admin: false
+        });
+      } catch (error) {
+        done(error);
+      }
+    }
+  )
+);
+
 passport.use(
   "register",
   new Strategy(
@@ -88,14 +131,10 @@ passport.use(
         const userData = await authenticateUser(email, password);
         console.log("Authentication result:", userData);
         if (!userData) {
-          // No user found or invalid credentials
           return done(null, false, { message: "Invalid email or password" });
         }
-
-        // Authentication successful
         return done(null, userData);
       } catch (error) {
-        // Handle other errors during authentication
         console.error("Authentication error:", error);
         return done(null, false, { message: "Internal Server Error" });
       }
