@@ -5,13 +5,14 @@ class UsersManager {
   async getUsers() {
     return await Users.find().lean();
   }
-  async addUser(user) {
-    user._id = randomUUID();
-    const hashedPassword = await bcrypt.hash(user.password, 10);
-    user.password = hashedPassword;
-    const userCreated = await Users.create(user);
+  async registerUser(userData) {
+    userData._id = randomUUID();
+    const hashedPassword = await bcrypt.hash(userData.password, 10);
+    userData.password = hashedPassword;
+    const userCreated = await Users.create(userData);
     return userCreated.toObject();
   }
+
   async getUserByEmail(data) {
     const found = await Users.findOne(data).lean();
     if (!found) {
@@ -48,9 +49,7 @@ class UsersManager {
       return userToUpdate;
     }
   }
-  // async comparePasswords(password, passwordFromDB) {
-  //   return await bcrypt.compare(password, passwordFromDB);
-  //   }
+
   async resetUserPassword(email, password) {
     const hashedPassword = await bcrypt.hash(password, 10);
     const updated = await Users.findOneAndUpdate(

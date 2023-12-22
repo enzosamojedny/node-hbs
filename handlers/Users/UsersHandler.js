@@ -3,27 +3,6 @@ const UsersManager = require("../../dao/UsersManager");
 const usersManagerMongoDB = new UsersManager();
 const usersRouter = Router();
 
-const PostUser = usersRouter.post("/api/users", async (req, res) => {
-  try {
-    const userData = req.body;
-    console.log(userData);
-    if (!userData) {
-      throw new Error("user data not provided in the request body");
-    }
-    const addedUser = await usersManagerMongoDB.addUser(userData);
-
-    //* passport
-    req.login(userData, (error) => {
-      if (error) {
-        return res.redirect("/register");
-      }
-      res.redirect("/profile");
-    });
-    res.status(200).json({ message: addedUser });
-  } catch (error) {
-    res.status(400).send({ message: error.message });
-  }
-});
 
 const GetUsers = usersRouter.get("/api/users", async (req, res) => {
   try {
@@ -124,7 +103,6 @@ const ResetPassword = usersRouter.post(
   }
 );
 module.exports = {
-  PostUser,
   GetUsers,
   getUserId,
   DeleteUser,
