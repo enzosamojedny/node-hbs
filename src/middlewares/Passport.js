@@ -8,11 +8,16 @@ const UsersManager = require("../../dao/UsersManager");
 const bcrypt = require("bcrypt");
 const usersManagerMongoDB = new UsersManager();
 const { Strategy: GithubStrategy } = require("passport-github2");
+const { Strategy: GoogleStrategy } = require("passport-google-oauth20");
+
 const {
   githubAppId,
   githubCallback,
   githubClientId,
   githubSecret,
+  googleClientId,
+  googleSecret,
+  googleCallback,
 } = require("../../config");
 passport.serializeUser((user, next) => {
   next(null, user);
@@ -43,6 +48,62 @@ function auth(req, res, next) {
     PassportSession(req, res, next);
   });
 }
+
+function getTokenFromQuery(paramName = "authorization") {
+  return function (req, res, next) {
+    req.accessToken = req.query[paramName];
+    next();
+  };
+}
+let cookieExtractor = function (req) {
+  let token = null;
+  if (req && req.cookies) {
+    token = req.cookies["jwt"];
+  }
+  return token;
+};
+
+passport.use(
+  "google",
+  new GoogleStrategy(
+    {
+      clientID: googleClientId,
+      clientSecret: googleSecret,
+      callbackURL: googleCallback,
+      scope: ["profile", "email"],
+    },
+    async function verify(accessToken, refreshToken, profile, done) {
+      try {
+        console.log("Received profile from Google:", profile);
+
+        if (!profile.emails || profile.emails.length === 0) {
+          throw new Error("Google profile does not contain email information.");
+        }
+
+        const email = profile.emails[0].value;
+        const user = await Users.findOne({ email });
+
+        if (user) {
+          return done(null, { ...user.publicInfo() });
+        }
+
+        const registered = await Users.create({
+          email,
+          password: "(undefined)",
+          first_name: profile.name.givenName || "(undefined)",
+          last_name: profile.name.familyName || "(undefined)",
+          gender: (profile._json && profile._json.gender) || "(undefined)",
+        });
+
+        done(null, { ...registered.publicInfo() });
+      } catch (error) {
+        console.error("Error in Google authentication strategy:", error);
+        done(error);
+      }
+    }
+  )
+);
+
 passport.use(
   "github",
   new GithubStrategy(
@@ -52,6 +113,7 @@ passport.use(
       callbackURL: githubCallback,
     },
     async function verify(accessToken, refreshToken, profile, done) {
+      console.log(profile);
       const user = await Users.findOne({
         email: profile.username,
       });
@@ -97,6 +159,7 @@ passport.use(
     }
   )
 );
+//! aca iria JWT, habria que borrar esto
 async function authenticateUser(username, password) {
   const userFound = await Users.findOne({ email: username }).lean();
   if (!userFound) {

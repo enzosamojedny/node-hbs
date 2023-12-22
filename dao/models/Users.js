@@ -14,7 +14,6 @@ const userSchema = new mongoose.Schema(
     versionKey: false,
     strict: "throw",
     methods: {
-      //! recheck this later
       publicInfo: function () {
         return {
           email: this.email,
