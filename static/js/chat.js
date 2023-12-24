@@ -6,7 +6,7 @@ const button = document.querySelector("#productButton");
 
 function handleFormSubmission() {
   //we emit the message to server
-  const input = document.querySelector("#productInput");
+  const input = document.getElementById("productInput");
   if (input && input.value) {
     socket.emit("message", {
       message: input.value,
