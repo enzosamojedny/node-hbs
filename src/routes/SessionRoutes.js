@@ -23,7 +23,7 @@ sessionRouter.get(
 
 //* This route is used for handling the callback after a user has been redirected from GitHub to our server
 sessionRouter.get(
-  "/oauth2/redirect/google",
+  "/api/github/callback",
   passport.authenticate("github", {
     successRedirect: "/products",
     failureRedirect: "/login",

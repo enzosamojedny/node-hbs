@@ -127,9 +127,11 @@ passport.use(
         const registered = await Users.create({
           email: profile.username,
           password: "(undefined)",
-          first_name: profile.displayName,
-          last_name: "(undefined)",
-          gender: "(undefined)",
+          first_name: profile.displayName || "(undefined)",
+          last_name: profile.name
+            ? profile.name.familyName || "(undefined)"
+            : "(undefined)",
+          gender: profile.gender || "(undefined)",
         });
         done(null, {
           ...registered.publicInfo(),
