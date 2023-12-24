@@ -85,12 +85,6 @@ document.addEventListener("DOMContentLoaded", function () {
         last_name: document.getElementById("last-name").value,
         gender: document.getElementById("gender").value,
       };
-
-      Swal.fire({
-        icon: "success",
-        title: "Thank you for registering!",
-        text: "You will be redirected to login",
-      });
       axios
         .post("http://localhost:3001/api/users", formData)
         .then((response) => {

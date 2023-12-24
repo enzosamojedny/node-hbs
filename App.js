@@ -1,13 +1,9 @@
 const messagesRouter = require("./src/routes/MessageRoutes.js");
 const productRouter = require("./src/routes/ProductRoutes");
 const cartRouter = require("./src/routes/CartRoutes");
-const indexRouter = require("./src/routes/defaultRoute.js");
 const sessionRouter = require("./src/routes/SessionRoutes.js");
 const usersRouter = require("./src/routes/UsersRoutes.js");
-const {
-  sessionMiddleware,
-  auth,
-} = require("./src/middlewares/Passport.js");
+const { sessionMiddleware, auth } = require("./src/middlewares/Passport.js");
 const { createServer } = require("node:http");
 const morgan = require("morgan");
 const { engine } = require("express-handlebars");
@@ -50,7 +46,6 @@ server.use(auth);
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(
-  indexRouter,
   messagesRouter,
   productRouter,
   cartRouter,
