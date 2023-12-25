@@ -1,6 +1,6 @@
 const socket = io();
 let user = "defaultUser";
-const ul = document.getElementById("chat-list");
+const chatList = document.getElementById("chat-list");
 const form = document.getElementById("chat-form");
 const button = document.getElementById("chat-button");
 const messageBot = document.getElementById("message-bot");
@@ -22,20 +22,37 @@ form.addEventListener("submit", handleFormSubmission);
 //   e.preventDefault(); //?THIS WORKS BUT IT DOESNT RENDER THE MESSAGES CORRECTLY
 //   handleFormSubmission();
 // });
+
 //we listen to the messages event from server
 socket.on("messages", (messages) => {
   console.log("Messages received in client:", messages);
 
-  ul.innerHTML = "";
+  chatList.innerHTML = "";
 
   messages.forEach((message) => {
+    const chatHistory = document.createElement("div");
+    chatHistory.className = "chat-history";
+
     const liMessage = document.createElement("li");
+    liMessage.className = "clearfix";
+
+    const messageData = document.createElement("div");
+    messageData.className = "message-data text-right";
+    const messageDataTime = document.createElement("span");
+    messageDataTime.className = "message-data-time";
+    messageDataTime.textContent = "10:10 AM, Today";
+    messageData.appendChild(messageDataTime);
+
     const divMessage = document.createElement("div");
+    divMessage.className = "message other-message float-right";
     divMessage.innerHTML = `<strong>${message.user}:</strong> ${message.message} ${message.date}`;
-    divMessage.className = "message my-message";
-    // messageBot.appendChild(divMessage)
-    liMessage.innerHTML = `<strong>${message.user}:</strong> ${message.message} ${message.date}`;
-    ul.appendChild(liMessage);
+
+    liMessage.appendChild(messageData);
+    liMessage.appendChild(divMessage);
+
+    chatHistory.appendChild(liMessage);
+
+    chatList.appendChild(chatHistory);
   });
 });
 
