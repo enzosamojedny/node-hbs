@@ -16,7 +16,7 @@ messagesRouter.put("/api/messages/:id", UpdateMessages);
 messagesRouter.delete("/api/messages/:id", DeleteMessages);
 
 messagesRouter.get("/messages", (req, res) => {
-  res.render("chat.hbs", { title: "Messages", isHomePage: false });
+  res.render("chat.hbs", { title: "Alus | Support", isHomePage: false });
 });
 
 module.exports = messagesRouter;

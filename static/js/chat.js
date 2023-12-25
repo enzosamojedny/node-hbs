@@ -1,12 +1,12 @@
 const socket = io();
 let user = "defaultUser";
-const ul = document.querySelector("#productList");
-const form = document.querySelector("form");
-const button = document.querySelector("#productButton");
+const ul = document.getElementById("chat-list");
+const form = document.getElementById("chat-form");
+const button = document.getElementById("chat-button");
 
 function handleFormSubmission() {
   //we emit the message to server
-  const input = document.getElementById("productInput");
+  const input = document.getElementById("chat-input");
   if (input && input.value) {
     socket.emit("message", {
       message: input.value,
@@ -18,6 +18,10 @@ function handleFormSubmission() {
 }
 
 form.addEventListener("submit", handleFormSubmission);
+// form.addEventListener("submit", function (e) {
+//   e.preventDefault(); //?THIS WORKS BUT IT DOESNT RENDER THE MESSAGES CORRECTLY
+//   handleFormSubmission();
+// });
 //we listen to the messages event from server
 socket.on("messages", (messages) => {
   console.log("Messages received in client:", messages);

@@ -21,7 +21,7 @@ productRouter.get("/", (req, res) => {
 });
 
 productRouter.get("/products", (req, res) => {
-  res.render("products.hbs", { title: "Products", isHomePage: false });
+  res.render("products.hbs", { title: "Alus | Products", isHomePage: false });
 });
 
 module.exports = productRouter;

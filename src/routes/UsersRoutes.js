@@ -36,11 +36,11 @@ usersRouter.delete("/api/users/:id", UpdateUser);
 usersRouter.post("/api/resetpassword", ResetPassword);
 
 usersRouter.get("/register", (req, res) => {
-  res.render("register.hbs", { title: "Register", isHomePage: false });
+  res.render("register.hbs", { title: "Alus | Register", isHomePage: false });
 });
 
 usersRouter.get("/login", (req, res) => {
-  res.render("login.hbs", { title: "Login", isHomePage: false });
+  res.render("login.hbs", { title: "Alus | Login", isHomePage: false });
 });
 
 // usersRouter.post("/logout", (req, res) => {
@@ -58,7 +58,10 @@ usersRouter.get("/resetpassword", (req, res) => {
 usersRouter.get("/api/session/current", onlyLoggedApi, async (req, res) => {
   if (req.isAuthenticated()) {
     const userFound = await Users.findOne(
-      { email: req.session.user.email },
+      //!ERROR HERE, IT CANT ACCESS EMAIL PROPERTY
+      {
+        email: req.session.user.email,
+      },
       { password: 0 }
     ).lean();
 
@@ -75,7 +78,7 @@ usersRouter.get("/api/session/current", onlyLoggedApi, async (req, res) => {
 //? bug is in onlyLoggedClient
 usersRouter.get("/profile", onlyLoggedClient, function profileView(req, res) {
   res.render("profile.hbs", {
-    title: "Profile",
+    title: "Alus | My profile",
     isHomePage: false,
     user: req.session.user,
   });
