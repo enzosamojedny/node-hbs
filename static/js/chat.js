@@ -30,28 +30,48 @@ socket.on("messages", (messages) => {
   chatList.innerHTML = "";
 
   messages.forEach((message) => {
+    const timeStamp = `${message.date}`;
+    const date = new Date(timeStamp);
+    const options = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+      timeZoneName: "short",
+    };
+
+    const readableDate = date.toLocaleString("en-US", options);
+
     const chatHistory = document.createElement("div");
     chatHistory.className = "chat-history";
 
-    const liMessage = document.createElement("li");
-    liMessage.className = "clearfix";
+    const chatUl = document.createElement("ul");
+    chatUl.className = "m-b-0";
+
+    const liClearfix = document.createElement("li");
+    liClearfix.className = "clearfix";
 
     const messageData = document.createElement("div");
     messageData.className = "message-data text-right";
+    //DATE
     const messageDataTime = document.createElement("span");
     messageDataTime.className = "message-data-time";
-    messageDataTime.textContent = "10:10 AM, Today";
+
+    messageDataTime.textContent = readableDate;
     messageData.appendChild(messageDataTime);
 
     const divMessage = document.createElement("div");
     divMessage.className = "message other-message float-right";
-    divMessage.innerHTML = `<strong>${message.user}:</strong> ${message.message} ${message.date}`;
+    divMessage.innerHTML = `<strong>${message.user}:</strong> ${message.message}`;
 
-    liMessage.appendChild(messageData);
-    liMessage.appendChild(divMessage);
+    liClearfix.appendChild(messageData);
+    liClearfix.appendChild(divMessage);
+    chatUl.appendChild(liClearfix);
+    chatHistory.appendChild(chatUl);
 
-    chatHistory.appendChild(liMessage);
-
+    const chatList = document.getElementById("chat-list");
     chatList.appendChild(chatHistory);
   });
 });
