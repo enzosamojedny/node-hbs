@@ -33,7 +33,6 @@
   </head>
   <body>
     <div class="container mt-5">
-      {{! <ul id="chat-list" class="list-group"></ul> }}
       <form id="chat-form">
         <div class="container">
           <div class="row clearfix">
@@ -100,19 +99,7 @@
                     </div>
                   </div>
                   <div class="chat-history">
-                    <ul class="m-b-0">
-                      <li class="clearfix">
-                        <div class="message-data text-right">
-                          <span class="message-data-time">10:10 AM, Today</span>
-                        </div>
-                        {{!HERE IS WHERE MESSAGES ARE DISPLAYED}}
-                        <div
-                          id="chat-list"
-                          class="message other-message float-right"
-                        >
-                        </div>
-                      </li>
-                      {{!FROM HERE}}
+                    <ul class="m-b-0 chat-ul">
                       <li class="clearfix">
                         <div class="message-data">
                           <span class="message-data-time">10:12 AM, Today</span>

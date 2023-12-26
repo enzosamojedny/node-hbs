@@ -1,6 +1,5 @@
 const socket = io();
 let user = "defaultUser";
-const chatList = document.getElementById("chat-list");
 const form = document.getElementById("chat-form");
 const button = document.getElementById("chat-button");
 const messageBot = document.getElementById("message-bot");
@@ -27,8 +26,6 @@ form.addEventListener("submit", handleFormSubmission);
 socket.on("messages", (messages) => {
   console.log("Messages received in client:", messages);
 
-  chatList.innerHTML = "";
-
   messages.forEach((message) => {
     const timeStamp = `${message.date}`;
     const date = new Date(timeStamp);
@@ -44,11 +41,9 @@ socket.on("messages", (messages) => {
 
     const readableDate = date.toLocaleString("en-US", options);
 
-    const chatHistory = document.createElement("div");
-    chatHistory.className = "chat-history";
+    const chatHistory = document.getElementsByClassName("chat-history")[0];
 
-    const chatUl = document.createElement("ul");
-    chatUl.className = "m-b-0";
+    const chatUl = document.getElementsByClassName("chat-ul")[0];
 
     const liClearfix = document.createElement("li");
     liClearfix.className = "clearfix";
@@ -70,9 +65,6 @@ socket.on("messages", (messages) => {
     liClearfix.appendChild(divMessage);
     chatUl.appendChild(liClearfix);
     chatHistory.appendChild(chatUl);
-
-    const chatList = document.getElementById("chat-list");
-    chatList.appendChild(chatHistory);
   });
 });
 

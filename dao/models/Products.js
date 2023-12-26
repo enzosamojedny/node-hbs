@@ -8,9 +8,12 @@ const productSchema = new mongoose.Schema(
     description: { type: String, required: false },
     code: { type: String, required: false },
     price: { type: Number, required: true },
-    thumbnail: { type: String, required: false },
+    thumbnail: { type: String, required: false }, //! change thumbnail to image
     stock: { type: Number, required: true },
-    rating: { type: Number, required: false },
+    rating: {
+      rate: { type: Number, required: false },
+      count: { type: Number, required: false },
+    },
     category: { type: String, required: true, index: true },
     status: { type: String, required: true, index: true },
   },
