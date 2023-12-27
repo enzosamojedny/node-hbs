@@ -16,6 +16,8 @@ const MessagesManager = require("./dao/MessagesManager");
 const Products = require("./dao/models/Products.js");
 const messagesManager = new MessagesManager();
 const path = require("path");
+const Chatbot = require("./bot/chatbot.js");
+const chatbot = new Chatbot();
 
 //! DB CONNECTION
 const enviroment = async () => {
@@ -72,6 +74,12 @@ ioServer.on("connection", async (socket) => {
   try {
     let messages = await messagesManager.getMessages();
     console.log("new connection: ", socket.id);
+
+    chatbot.initialize().then(()=>{
+
+
+    })
+    // Send all the existing messages to the client when a user connects
     socket.emit("messages", messages);
     console.log("Messages sent to client:", messages);
 

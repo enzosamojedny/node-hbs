@@ -10,7 +10,7 @@ sessionRouter.post("/api/login", async (req, res, next) => {
     if (!userData) {
       return res.status(400).json({ error: info.message || "Login failed" });
     }
-
+    console.log("Session Data:", req.session);
     res.status(200).json({ message: "Login successful", userData });
   })(req, res, next);
 });
@@ -46,11 +46,11 @@ sessionRouter.get(
 
 //! passport logout
 sessionRouter.post("/api/logout", (req, res) => {
-  req.logout((error) => {
-    if (error) {
-      console.log(error);
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
     }
-    res.redirect("/login");
+    res.status(200).json({ status: "success", message: "logout OK" });
   });
 });
 

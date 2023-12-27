@@ -1,6 +1,8 @@
 const jwt = require("jsonwebtoken");
 const PRIVATE_KEY = "myprivatekey";
 
+//! CLASE JWT SIN PASSPORT
+
 function encrypt(user) {
   return new Promise((resolve, reject) => {
     jwt.sign(user, PRIVATE_KEY, { expiresIn: "24h" }, (error, encoded) => {
@@ -15,11 +17,11 @@ function encrypt(user) {
 
 function decrypt(token) {
   return new Promise((resolve, reject) => {
-    jwt.sign(token, PRIVATE_KEY, (error, encoded) => {
+    jwt.verify(token, PRIVATE_KEY, (error, decoded) => {
       if (error) {
         reject(error);
       } else {
-        resolve(encoded);
+        resolve(decoded);
       }
     });
   });
@@ -36,7 +38,11 @@ function onlyLoggedApi(req, res, next) {
 }
 function onlyLoggedClient(req, res, next) {
   if (!req.isAuthenticated()) {
+    console.log("Not logged in:", req.headers.cookie);
     return res.redirect("/login");
+  } else {
+    //! SI AUTENTICA SI LOGUEO CON GOOGLE Y GITHUB
+    console.log("Client logged in:", req.headers.cookie);
   }
   next();
 }

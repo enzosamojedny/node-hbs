@@ -19,14 +19,13 @@ const {
   googleSecret,
   googleCallback,
 } = require("../../config");
+//! keep this as is
 passport.serializeUser((user, next) => {
   next(null, user);
 });
 passport.deserializeUser((user, next) => {
   next(null, user);
 });
-const passportInitialize = passport.initialize();
-const PassportSession = passport.session();
 
 const sessionMiddleware = createSessionMiddleware({
   store: MongoStore.create({
@@ -44,11 +43,11 @@ const sessionMiddleware = createSessionMiddleware({
 });
 
 function auth(req, res, next) {
-  passportInitialize(req, res, () => {
-    PassportSession(req, res, next);
+  passport.initialize()(req, res, () => {
+    passport.session()(req, res, next);
   });
 }
-
+//! CLASE JWT SIN PASSPORT
 function getTokenFromQuery(paramName = "authorization") {
   return function (req, res, next) {
     req.accessToken = req.query[paramName];

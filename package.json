@@ -36,6 +36,7 @@
     "passport-google-oauth20": "^2.0.0",
     "passport-local": "^1.0.0",
     "passport-oauth2": "^1.7.0",
+    "rivescript": "^2.2.1",
     "socket.io": "^4.7.2",
     "socket.io-client": "^4.7.2",
     "sweetalert2": "^11.10.1",

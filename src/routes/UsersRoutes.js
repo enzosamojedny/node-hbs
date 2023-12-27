@@ -43,10 +43,6 @@ usersRouter.get("/login", (req, res) => {
   res.render("login.hbs", { title: "Alus | Login", isHomePage: false });
 });
 
-// usersRouter.post("/logout", (req, res) => {
-//   res.render("logout.hbs", { title: "Logout", isHomePage: false });
-// });
-
 usersRouter.get("/resetpassword", (req, res) => {
   res.render("resetpassword.hbs", {
     title: "Reset password",
@@ -56,20 +52,41 @@ usersRouter.get("/resetpassword", (req, res) => {
 
 //!auth in profile.hbs API
 usersRouter.get("/api/session/current", onlyLoggedApi, async (req, res) => {
-  if (req.isAuthenticated()) {
-    const userFound = await Users.findOne(
-      //!ERROR HERE, IT CANT ACCESS EMAIL PROPERTY
-      {
-        email: req.session.user.email,
-      },
-      { password: 0 }
-    ).lean();
+  try {
+    console.log("Is Authenticated:", req.isAuthenticated());
+    console.log("Session Data:", req.session);
+    console.log("User Data:", req.user);
 
-    res.json({ status: "success", payload: userFound });
-  } else {
-    res.status(400).json({
+    if (req.isAuthenticated()) {
+      const userFound = await Users.findOne(
+        { email: req.session.user.email },
+        { password: 0 }
+      ).lean();
+
+      console.log("User Found in Database:", userFound);
+
+      if (userFound) {
+        res.json({
+          status: "success",
+          payload: userFound,
+        });
+      } else {
+        res.status(400).json({
+          status: "error",
+          message: "User not found in the database",
+        });
+      }
+    } else {
+      res.status(400).json({
+        status: "error",
+        message: "No session saved, you need to log in first!",
+      });
+    }
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    res.status(500).json({
       status: "error",
-      message: "No session saved, you need to login first!",
+      message: "Internal Server Error",
     });
   }
 });
