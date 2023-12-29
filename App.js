@@ -18,7 +18,8 @@ const Products = require("./dao/models/Products.js");
 const messagesManager = new MessagesManager();
 const path = require("path");
 const Chatbot = require("./bot/chatbot.js");
-const bot = new Chatbot();
+const bot = new Chatbot({ utf8: true, forceCase: true });
+bot.unicodePunctuation = new RegExp(/[.,!?;:]/g);
 
 //! DB CONNECTION
 const enviroment = async () => {
@@ -78,7 +79,8 @@ ioServer.on("connection", async (socket) => {
     let messages = await messagesManager.getMessages();
     console.log("new connection: ", socket.id);
 
-    bot.initialize().then(() => {});
+    await bot.initialize(); // Use await to ensure proper initialization
+
     // Send all the existing messages to the client when a user connects
     socket.emit("messages", messages);
     console.log("Messages sent to client:", messages);
@@ -86,18 +88,29 @@ ioServer.on("connection", async (socket) => {
     // CLIENT EMITS MESSAGE
     socket.on("message", async (data) => {
       try {
-        //!bot answer seems to crash socket.io
-        // bot.reply(null, data.message).then(function (reply) {
-        //   console.log("Bot's reply:", reply);
-        // });
-        // socket.emit("bot reply", reply);
         console.log("Message received in App.js:", data);
         const messageCreated = await messagesManager.addMessage({
           user: data.user,
           message: data.message,
         });
         console.log("Message created in DB:", messageCreated);
-        // SERVER EMITS MESSAGES ARRAY TO ALL CONNECTED CLIENTS
+
+        // Move the reply variable outside the try block
+        let reply;
+
+        // Use async/await to handle the asynchronous behavior
+        try {
+          reply = await bot.getResponse(data.message);
+          console.log("Bot's reply:", reply);
+        } catch (botError) {
+          console.error("Error in bot reply:", botError.message);
+          // Handle the error accordingly
+        }
+
+        // Emit bot reply to the current socket
+        socket.emit("bot reply", reply);
+
+        // Emit messages array to all connected clients
         ioServer.emit("messages", [messageCreated]);
       } catch (error) {
         console.error("Error adding message:", error.message);

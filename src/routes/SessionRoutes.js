@@ -72,16 +72,6 @@ sessionRouter.get(
   (req, res) => {}
 );
 
-//! passport logout
-// sessionRouter.delete("/api/logout", (req, res) => {
-//   req.logout(function (err) {
-//     if (err) {
-//       return next(err);
-//     }
-//     res.status(200).json({ status: "success", message: "logout OK" });
-//   });
-// });
-
 sessionRouter.delete("/api/logout", removeJwtFromCookies, (req, res) => {
   res.json({ status: "success", message: "Logout was successful" });
 });

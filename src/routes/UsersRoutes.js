@@ -1,5 +1,9 @@
 const Router = require("express").Router;
-const { onlyLoggedClient, onlyLoggedApi } = require("../middlewares/auth");
+const {
+  onlyLoggedClient,
+  onlyLoggedApi,
+  onlyAdmins,
+} = require("../middlewares/auth");
 const passport = require("passport");
 
 const usersRouter = Router();
@@ -11,7 +15,7 @@ const {
   getUsername,
   ResetPassword,
 } = require("../../handlers/Users/UsersHandler");
-const Users = require("../../dao/models/Users");
+
 const {
   appendJwtAsCookie,
   removeJwtFromCookies,

@@ -1,18 +1,20 @@
 
-+ *hello*
++ hello
 - Hello How can i help you today
+- I'm a virtual assistant powered by computer programs and algorithms How can i assist you today
 
-+ * my name is *
-- Nice to meet you <star>
++ hello
+* <get name> != undefined => Hello there, <get name>.
+- Hi there.
 
 + whats your name *
-- i am a chatbot You can call me Alus It means "fundamentals"
+- I am a chatbot You can call me Alus It means "fundamentals"
 
 + how are you *
-- i'm just a program so i don't have feelings but thanks for asking
+- i'm just a computer program so I don't have any feelings but thank you for asking!
 
 + tell me a joke *
-- Why don't scientists trust atoms Because they make up everything
+- Why don't scientists trust atoms? Because they make up everything!
 
 + what is your favorite color *
 - i don't have personal preferences but i'm happy to assist you with any questions you have
@@ -22,9 +24,6 @@
 
 + can you learn from our conversations *
 - i don't have learning capabilities but i'm designed to provide helpful and relevant information based on the data and patterns i've been trained on
-
-+ * robot *
-- I'm a virtual assistant powered by computer programs and algorithms How can i assist you today
 
 + * fun fact *
 - The shortest war in history was between Britain and Zanzibar on August 27 1896 Zanzibar surrendered after 38 minutes
@@ -58,3 +57,7 @@
 
 + * goodbye *
 - Goodbye! If you have more questions feel free to ask
+
++ *
+- I don't know what to say to that!
+- Can you rephrase it in simpler terms?

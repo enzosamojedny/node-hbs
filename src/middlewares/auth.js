@@ -3,7 +3,7 @@ const JWT_PRIVATE_KEY = require("../../config");
 const JWTKEY = "pepito";
 function encrypt(data) {
   return new Promise((resolve, reject) => {
-    jwt.sign(data, JWTKEY, { expiresIn: "24h" }, (error, encoded) => {
+    jwt.sign(data, JWTKEY, { expiresIn: "1m" }, (error, encoded) => {
       if (error) {
         reject(error);
       } else {
@@ -23,6 +23,18 @@ function decrypt(token) {
       }
     });
   });
+}
+function onlyAdmins(req, res, next) {
+  if (req.user && req.user.admin === true) {
+    // User is an admin, proceed to the next middleware or route handler
+    next();
+  } else {
+    // User is not an admin, send a 403 Forbidden response
+    return res.status(403).json({
+      status: "error",
+      message: "You don't have administration privileges to access this data",
+    });
+  }
 }
 
 function onlyLoggedApi(req, res, next) {
@@ -45,4 +57,4 @@ function onlyLoggedClient(req, res, next) {
   next();
 }
 
-module.exports = { onlyLoggedClient, onlyLoggedApi, encrypt };
+module.exports = { onlyLoggedClient, onlyLoggedApi, encrypt, onlyAdmins };
