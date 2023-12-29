@@ -3,7 +3,6 @@ const UsersManager = require("../../dao/UsersManager");
 const usersManagerMongoDB = new UsersManager();
 const usersRouter = Router();
 
-
 const GetUsers = usersRouter.get("/api/users", async (req, res) => {
   try {
     const users = await usersManagerMongoDB.getUsers();

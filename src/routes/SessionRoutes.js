@@ -1,19 +1,47 @@
 const Router = require("express").Router;
 const sessionRouter = Router();
 const passport = require("passport");
+const {
+  appendJwtAsCookie,
+  removeJwtFromCookies,
+} = require("../middlewares/Passport");
 
-sessionRouter.post("/api/login", async (req, res, next) => {
-  passport.authenticate("login", (err, userData, info) => {
-    if (err) {
-      return res.status(500).json({ error: "Internal Server Error" });
-    }
-    if (!userData) {
-      return res.status(400).json({ error: info.message || "Login failed" });
-    }
-    console.log("Session Data:", req.session);
-    res.status(200).json({ message: "Login successful", userData });
-  })(req, res, next);
-});
+sessionRouter.post(
+  "/api/login",
+  (req, res, next) => {
+    passport.authenticate(
+      "login",
+      { failWithError: true },
+      (error, user, info) => {
+        if (error) {
+          return next(error);
+        }
+        if (!user) {
+          return res
+            .status(401)
+            .json({ status: "error", message: info.message });
+        }
+
+        req.logIn(user, (err) => {
+          if (err) {
+            return next(err);
+          }
+
+          return next();
+        });
+      }
+    )(req, res, next);
+  },
+  appendJwtAsCookie,
+  (req, res) => {
+    console.log("POST api/login router", req.user);
+    res.status(201).json({ message: "Login successful", payload: req.user });
+  },
+  (error, req, res, next) => {
+    console.error("Error in login route:", error);
+    res.status(500).json({ status: "error", message: "Internal Server Error" });
+  }
+);
 
 sessionRouter.get(
   "/api/github",
@@ -45,13 +73,17 @@ sessionRouter.get(
 );
 
 //! passport logout
-sessionRouter.post("/api/logout", (req, res) => {
-  req.logout(function (err) {
-    if (err) {
-      return next(err);
-    }
-    res.status(200).json({ status: "success", message: "logout OK" });
-  });
+// sessionRouter.delete("/api/logout", (req, res) => {
+//   req.logout(function (err) {
+//     if (err) {
+//       return next(err);
+//     }
+//     res.status(200).json({ status: "success", message: "logout OK" });
+//   });
+// });
+
+sessionRouter.delete("/api/logout", removeJwtFromCookies, (req, res) => {
+  res.json({ status: "success", message: "Logout was successful" });
 });
 
 sessionRouter.post("/session", () => {});

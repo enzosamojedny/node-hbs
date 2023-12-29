@@ -8,6 +8,7 @@ class Chatbot {
   initialize() {
     return new Promise((resolve, reject) => {
       this.chatbot.loadFile(
+        //change this to a promise
         path.join(__dirname, "begin.rive"),
         () => {
           console.log("Rivescript Brain Loaded");

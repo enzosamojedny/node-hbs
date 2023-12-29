@@ -12,21 +12,28 @@ const {
   ResetPassword,
 } = require("../../handlers/Users/UsersHandler");
 const Users = require("../../dao/models/Users");
+const {
+  appendJwtAsCookie,
+  removeJwtFromCookies,
+} = require("../middlewares/Passport");
 
-usersRouter.post("/api/users", (req, res, next) => {
-  passport.authenticate("register", (err, user, info) => {
-    if (err) {
-      return res.status(500).json({ error: "Internal Server Error" });
-    }
-    if (!user) {
-      return res
-        .status(400)
-        .json({ error: info.message || "Registration failed" });
-    }
-
-    res.status(200).json({ message: "Registration successful", user });
-  })(req, res, next);
-});
+usersRouter.post(
+  "/api/users",
+  passport.authenticate("register", {
+    failWithError: true,
+  }),
+  appendJwtAsCookie,
+  (req, res) => {
+    res.status(201).json({
+      message: "Registration successful",
+      payload: req.user,
+    });
+    console.log("REGISTER data", req.user);
+  },
+  (error, req, res, next) => {
+    res.status(400).json({ status: "error", message: error.message });
+  }
+);
 
 usersRouter.get("/api/users/:id", getUserId);
 usersRouter.get("/api/users", GetUsers);
@@ -50,47 +57,16 @@ usersRouter.get("/resetpassword", (req, res) => {
   });
 });
 
-//!auth in profile.hbs API
-usersRouter.get("/api/session/current", onlyLoggedApi, async (req, res) => {
-  try {
-    console.log("Is Authenticated:", req.isAuthenticated());
-    console.log("Session Data:", req.session);
-    console.log("User Data:", req.user);
-
-    if (req.isAuthenticated()) {
-      const userFound = await Users.findOne(
-        { email: req.session.user.email },
-        { password: 0 }
-      ).lean();
-
-      console.log("User Found in Database:", userFound);
-
-      if (userFound) {
-        res.json({
-          status: "success",
-          payload: userFound,
-        });
-      } else {
-        res.status(400).json({
-          status: "error",
-          message: "User not found in the database",
-        });
-      }
-    } else {
-      res.status(400).json({
-        status: "error",
-        message: "No session saved, you need to log in first!",
-      });
-    }
-  } catch (error) {
-    console.error("Error fetching user:", error);
-    res.status(500).json({
-      status: "error",
-      message: "Internal Server Error",
-    });
+usersRouter.get(
+  "/api/session/current",
+  passport.authenticate("jwt", { failWithError: true }),
+  async (req, res) => {
+    res.json({ status: "success", payload: req.user });
+  },
+  (error, req, res, next) => {
+    res.status(401).json({ status: "error", message: error.message });
   }
-});
-
+);
 //! adjust logic so only logged users can see this page
 //? bug is in onlyLoggedClient
 usersRouter.get("/profile", onlyLoggedClient, function profileView(req, res) {

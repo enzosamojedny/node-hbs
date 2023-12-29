@@ -1,11 +1,9 @@
 const jwt = require("jsonwebtoken");
-const PRIVATE_KEY = "myprivatekey";
-
-//! CLASE JWT SIN PASSPORT
-
-function encrypt(user) {
+const JWT_PRIVATE_KEY = require("../../config");
+const JWTKEY = "pepito";
+function encrypt(data) {
   return new Promise((resolve, reject) => {
-    jwt.sign(user, PRIVATE_KEY, { expiresIn: "24h" }, (error, encoded) => {
+    jwt.sign(data, JWTKEY, { expiresIn: "24h" }, (error, encoded) => {
       if (error) {
         reject(error);
       } else {
@@ -17,7 +15,7 @@ function encrypt(user) {
 
 function decrypt(token) {
   return new Promise((resolve, reject) => {
-    jwt.verify(token, PRIVATE_KEY, (error, decoded) => {
+    jwt.verify(token, JWT_PRIVATE_KEY, (error, decoded) => {
       if (error) {
         reject(error);
       } else {
@@ -47,4 +45,4 @@ function onlyLoggedClient(req, res, next) {
   next();
 }
 
-module.exports = { onlyLoggedClient, onlyLoggedApi };
+module.exports = { onlyLoggedClient, onlyLoggedApi, encrypt };

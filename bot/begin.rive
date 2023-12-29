@@ -1,61 +1,60 @@
- version = 20
 
-+ hello bot
++ *hello*
 - Hello How can i help you today
 
-+ my name is *
++ * my name is *
 - Nice to meet you <star>
 
-+ whats your name
++ whats your name *
 - i am a chatbot You can call me Alus It means "fundamentals"
 
-+ how are you
++ how are you *
 - i'm just a program so i don't have feelings but thanks for asking
 
-+ tell me a joke
++ tell me a joke *
 - Why don't scientists trust atoms Because they make up everything
 
-+ what is your favorite color
++ what is your favorite color *
 - i don't have personal preferences but i'm happy to assist you with any questions you have
 
-+ what languages do you speak
--i'm programmed to understand and respond only in English
++ what languages do you speak *
+-I'm programmed to understand and respond only in English
 
-+ can you learn from our conversations
++ can you learn from our conversations *
 - i don't have learning capabilities but i'm designed to provide helpful and relevant information based on the data and patterns i've been trained on
 
-+ are you a robot
-- Yes i'm a virtual assistant powered by computer programs and algorithms How can i assist you today
++ * robot *
+- I'm a virtual assistant powered by computer programs and algorithms How can i assist you today
 
-+ tell me a fun fact
++ * fun fact *
 - The shortest war in history was between Britain and Zanzibar on August 27 1896 Zanzibar surrendered after 38 minutes
 
-+ do you dream
++ do you dream *
 - No i don't dream My functionality is focused on providing information and assistance based on user input
 
-+ what products do you offer
++ * products *
 - We offer a wide range of products Feel free to browse our website to explore our complete collection
 
-+ can you help me find a specific item
++ * search *
 - Certainly You can use our search feature to quickly locate products
 
-+ do you have any discounts or promotions
-- Yes we frequently run promotions and discounts Check our "Offers" or "Sale" section on the website to find the latest deals
++ * (discounts|promotions|deals) * 
+- We frequently run promotions and discounts Check our "Offers" or "Sale" section on the website to find the latest deals
 
-+ what payment methods do you accept
++ * payment * 
 - We accept various payment methods including credit/debit cards and MercadoPago You can choose your preferred option during the checkout process
 
-+ can i cancel my order
-- Yes you can cancel your order within 24 hours after placing it Visit the "Order History" section on our website and follow the cancellation instructions
++ * cancel my order *
+- You can cancel your order within 24 hours after placing it Visit the "Order History" section on our website and follow the cancellation instructions
 
-+ whats your business hours
++ * business hours *
 - Our online store is open 24/7 allowing you to shop at any time For customer support inquiries our service hours are also 24/7
 
-+ how do i register
-- Easy Just click on my account and then press the button that says "register"
++ * register *
+- Easy! Just click on my account and then press the button that says "register"
 
-+ how do i login
++ * login *
 - If you already have an account you can login without issues
 
-+ goodbye
-- Goodbye If you have more questions feel free to ask
++ * goodbye *
+- Goodbye! If you have more questions feel free to ask

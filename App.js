@@ -9,15 +9,16 @@ const morgan = require("morgan");
 const { engine } = require("express-handlebars");
 const { Server: IOServer } = require("socket.io");
 const express = require("express");
-const { MONGODB_CNX_STR } = require("./config.js");
+const { MONGODB_CNX_STR, COOKIE_SECRET } = require("./config.js");
 const { default: mongoose } = require("mongoose");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 const MessagesManager = require("./dao/MessagesManager");
 const Products = require("./dao/models/Products.js");
 const messagesManager = new MessagesManager();
 const path = require("path");
 const Chatbot = require("./bot/chatbot.js");
-const chatbot = new Chatbot();
+const bot = new Chatbot();
 
 //! DB CONNECTION
 const enviroment = async () => {
@@ -43,10 +44,12 @@ server.set("views", path.join(__dirname, "/views/partials"));
 server.set("view engine", "hbs");
 
 server.use("/static", express.static(path.join(__dirname, "static")));
+server.use(cookieParser(COOKIE_SECRET));
 server.use(sessionMiddleware);
 server.use(auth);
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
+
 server.use(
   messagesRouter,
   productRouter,
@@ -75,10 +78,7 @@ ioServer.on("connection", async (socket) => {
     let messages = await messagesManager.getMessages();
     console.log("new connection: ", socket.id);
 
-    chatbot.initialize().then(()=>{
-
-
-    })
+    bot.initialize().then(() => {});
     // Send all the existing messages to the client when a user connects
     socket.emit("messages", messages);
     console.log("Messages sent to client:", messages);
@@ -86,6 +86,11 @@ ioServer.on("connection", async (socket) => {
     // CLIENT EMITS MESSAGE
     socket.on("message", async (data) => {
       try {
+        //!bot answer seems to crash socket.io
+        // bot.reply(null, data.message).then(function (reply) {
+        //   console.log("Bot's reply:", reply);
+        // });
+        // socket.emit("bot reply", reply);
         console.log("Message received in App.js:", data);
         const messageCreated = await messagesManager.addMessage({
           user: data.user,

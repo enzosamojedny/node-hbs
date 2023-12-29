@@ -1,6 +1,6 @@
 const createSessionMiddleware = require("express-session");
 const MongoStore = require("connect-mongo");
-const { MONGODB_CNX_STR } = require("../../config");
+const { MONGODB_CNX_STR, JWT_PRIVATE_KEY } = require("../../config");
 const passport = require("passport");
 const { Strategy } = require("passport-local");
 const Users = require("../../dao/models/Users");
@@ -9,6 +9,8 @@ const bcrypt = require("bcrypt");
 const usersManagerMongoDB = new UsersManager();
 const { Strategy: GithubStrategy } = require("passport-github2");
 const { Strategy: GoogleStrategy } = require("passport-google-oauth20");
+let JwtStrategy = require("passport-jwt").Strategy;
+const { encrypt } = require("./auth");
 
 const {
   githubAppId,
@@ -19,6 +21,7 @@ const {
   googleSecret,
   googleCallback,
 } = require("../../config");
+
 //! keep this as is
 passport.serializeUser((user, next) => {
   next(null, user);
@@ -43,24 +46,56 @@ const sessionMiddleware = createSessionMiddleware({
 });
 
 function auth(req, res, next) {
+  //! changed
   passport.initialize()(req, res, () => {
-    passport.session()(req, res, next);
+    passport.session()(req, res, () => {
+      next();
+    });
   });
 }
-//! CLASE JWT SIN PASSPORT
-function getTokenFromQuery(paramName = "authorization") {
-  return function (req, res, next) {
-    req.accessToken = req.query[paramName];
-    next();
-  };
-}
-let cookieExtractor = function (req) {
-  let token = null;
-  if (req && req.cookies) {
-    token = req.cookies["jwt"];
-  }
-  return token;
+
+//! PASSPORT JWT
+
+const COOKIE_OPTIONS = {
+  signed: true,
+  httpOnly: true,
+  maxAge: 24 * 60 * 60 * 1000,
 };
+async function appendJwtAsCookie(req, res, next) {
+  try {
+    const token = await encrypt(req.user);
+    console.log(token);
+    res.cookie("authorization", token, COOKIE_OPTIONS);
+    next();
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function removeJwtFromCookies(req, res, next) {
+  res.clearCookie("authorization", COOKIE_OPTIONS);
+  next();
+}
+
+passport.use(
+  "jwt",
+  new JwtStrategy(
+    {
+      jwtFromRequest: (req) => {
+        let token = null;
+        if (req?.signedCookies) {
+          token = req.signedCookies["authorization"];
+          console.log("signed cookies", token);
+        }
+        return token;
+      },
+      secretOrKey: "pepito",
+    },
+    (payload, done) => {
+      done(null, payload);
+    }
+  )
+);
 
 passport.use(
   "google",
@@ -153,6 +188,7 @@ passport.use(
     async (req, _u, _p, done) => {
       try {
         const userData = await usersManagerMongoDB.registerUser(req.body);
+        console.log("REGISTER strategy", userData);
         done(null, userData);
       } catch (error) {
         return done(null, false, { message: error.message });
@@ -183,6 +219,7 @@ async function authenticateUser(username, password) {
   }
   return userData;
 }
+
 passport.use(
   "login",
   new Strategy(
@@ -206,4 +243,9 @@ passport.use(
   )
 );
 
-module.exports = { sessionMiddleware, auth };
+module.exports = {
+  sessionMiddleware,
+  auth,
+  appendJwtAsCookie,
+  removeJwtFromCookies,
+};

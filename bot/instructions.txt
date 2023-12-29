@@ -1,0 +1,15 @@
+
+- aca puedo agregar muchas respuestas para cada pregunta //!
+^ agregar \n para que se hagan nuevas lineas (ej, poner Productos, Carrito, etc)
+^ muchas respuestas
+^ usar por ejemplo *hola* para que ignore el tiempo atras y el tiempo adelante
+
+
+VARIABLES
+
+lunes
+- <bot estaEsUnaVariable> = 
+!var lunes = -
+^ MENU\n
+^ DE\n
+^ LUNES\n
