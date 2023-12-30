@@ -95,22 +95,16 @@ ioServer.on("connection", async (socket) => {
         });
         console.log("Message created in DB:", messageCreated);
 
-        // Move the reply variable outside the try block
         let reply;
-
-        // Use async/await to handle the asynchronous behavior
         try {
           reply = await bot.getResponse(data.message);
           console.log("Bot's reply:", reply);
         } catch (botError) {
           console.error("Error in bot reply:", botError.message);
-          // Handle the error accordingly
         }
 
-        // Emit bot reply to the current socket
         socket.emit("bot reply", reply);
 
-        // Emit messages array to all connected clients
         ioServer.emit("messages", [messageCreated]);
       } catch (error) {
         console.error("Error adding message:", error.message);

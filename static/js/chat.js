@@ -17,12 +17,13 @@ function handleFormSubmission() {
 }
 
 form.addEventListener("submit", handleFormSubmission);
-// form.addEventListener("submit", function (e) {
-//   e.preventDefault(); //?THIS WORKS BUT IT DOESNT RENDER THE MESSAGES CORRECTLY
-//   handleFormSubmission();
-// });
+form.addEventListener("submit", function (e) {
+  e.preventDefault();
+  handleFormSubmission();
+});
 
 //we listen to the messages event from server
+
 socket.on("messages", (messages) => {
   console.log("Messages received in client:", messages);
 
@@ -66,6 +67,28 @@ socket.on("messages", (messages) => {
     chatUl.appendChild(liClearfix);
     chatHistory.appendChild(chatUl);
   });
+});
+socket.on("bot reply", (botReplies) => {
+  console.log("Messages received in client:", botReplies);
+
+  setTimeout(() => {
+    const chatHistory = document.getElementsByClassName("chat-history")[0];
+    const chatUl = document.getElementsByClassName("chat-ul")[0];
+
+    const liClearfix = document.createElement("li");
+    liClearfix.className = "clearfix";
+
+    const messageData = document.createElement("div");
+    messageData.className = "message-data text-left";
+    const divMessage = document.createElement("div");
+    divMessage.className = "message my-message float-left";
+    divMessage.innerHTML = `<strong>${"Alus Bot"}:</strong> ${botReplies}`;
+
+    liClearfix.appendChild(messageData);
+    liClearfix.appendChild(divMessage);
+    chatUl.appendChild(liClearfix);
+    chatHistory.appendChild(chatUl);
+  }, 1000);
 });
 
 window.addEventListener("beforeunload", () => {

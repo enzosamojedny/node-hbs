@@ -25,11 +25,13 @@ function decrypt(token) {
   });
 }
 function onlyAdmins(req, res, next) {
-  if (req.user && req.user.admin === true) {
+  // if (req.user && req.user.admin === true) {
+  console.log(req.user);
+  if (req.user) {
     // User is an admin, proceed to the next middleware or route handler
     next();
   } else {
-    // User is not an admin, send a 403 Forbidden response
+
     return res.status(403).json({
       status: "error",
       message: "You don't have administration privileges to access this data",

@@ -16,19 +16,21 @@ module.exports = Messages;
 
 // const conversationSchema = new mongoose.Schema(
 //   {
-//?  Assuming each message has a unique ID
-//     _id: { type: String, required: true },
-//?  A conversation ID to group messages from the same chat session
-//     conversationId: { type: String, required: true, index: true },
-//?  Indicates who sent the message - the user or the chatbot
-//     sender: { type: String, required: true, enum: ['user', 'chatbot'] },
-//?  The content of the message
-//     message: { type: String, required: true },
-//?  Timestamp of when the message was sent
-//     date: { type: Date, default: Date.now }
+//     _id: { type: String, required: true }, // Unique conversation ID
+//     user: { type: String, required: true },
+//     chatbot: { type: String, required: true },
+//     messages: [
+//       {
+//         _id: { type: String, required: true },
+//         sender: { type: String, required: true, enum: ['user', 'chatbot'] },
+//         message: { type: String, required: true },
+//         date: { type: Date, default: Date.now() },
+//       },
+//     ],
 //   },
-//   { versionKey: false, strict: 'throw' }
+//   { versionKey: false, strict: "throw" }
 // );
 
-// const Conversation = mongoose.model('Conversation', conversationSchema);
-// module.exports = Conversation;
+// const Conversations = mongoose.model("Conversations", conversationSchema);
+
+// module.exports = Conversations;
