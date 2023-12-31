@@ -7,10 +7,16 @@ class ProductManagerMongoDB {
     return productCreated.toObject();
   }
 
-  async getProducts() {
-    return await Products.find().lean(); //!no funciona en el create
+  async getProductsDetail() {
+    return await Products.find().lean();
   }
-
+  async getProductsOverview() {
+    const result = await Products.find()
+      .select("title price stock discountPercentage category rating thumbnail")
+      .lean();
+    console.log(result);
+    return result;
+  }
   async getProductById(productId) {
     const found = await Products.findById({ productId }).lean();
     if (!found) {

@@ -49,44 +49,39 @@ async function handlePageChange(page) {
 }
 
 function renderProducts(products) {
-  const productsContainer = document.getElementById("products-container");
-  productsContainer.innerHTML = "";
-
-  const row = document.createElement("div");
-  row.className = "row";
-
+  //!append the img to row
   products.products.forEach((product) => {
-    const col = document.createElement("div");
-    col.className = "col-md-4";
-
-    const card = document.createElement("div");
-    card.className = "card mb-3";
-
+    const wrapper = document.getElementById("wrapper");
+    const productsContainer = document.createElement("div");
+    productsContainer.id = "products-container";
+    // productsContainer.innerHTML = "";
+    productsContainer.className = "card w-75 mb-3";
+    //!
+    const row = document.createElement("div");
+    row.className = "card-body d-flex flex-row align-items-center";
     const img = document.createElement("img");
     img.src = product.thumbnail;
-    img.className = "card-img-top";
+    img.className = "card img";
     img.alt = product.title;
+    row.appendChild(img);
 
-    const cardBody = document.createElement("div");
-    cardBody.className = "card-body";
+    const col = document.createElement("div");
+    col.className = "ml-1";
 
-    cardBody.innerHTML = `
+    col.innerHTML = `
       <h5 class="card-title">${product.title}</h5>
       <p class="card-text">${product.category}</p>
-      <p class="card-text">${product.description}</p>
       <p class="card-text">${"$ " + product.price}</p>
-      <button type="button" class="btn btn-secondary"
-        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+      <button type="button" class="btn btn-primary">
         Add to Cart
       </button>
     `;
 
-    card.appendChild(img);
-    card.appendChild(cardBody);
-    col.appendChild(card);
     row.appendChild(col);
+    productsContainer.appendChild(row);
+    wrapper.appendChild(productsContainer);
   });
-  productsContainer.appendChild(row);
+
   const prevPageButton = document.getElementById("prevPageBtn");
   const prevPageAnchor = document.getElementById("prev-a");
   prevPageAnchor.href = `${products.prevPageLink}`;

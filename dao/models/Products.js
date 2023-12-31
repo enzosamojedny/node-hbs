@@ -4,7 +4,12 @@ const { randomUUID } = require("crypto");
 
 const productSchema = new mongoose.Schema(
   {
-    _id: { type: String, required: true, default: () => randomUUID() },
+    _id: {
+      type: String,
+      required: true,
+      default: () => randomUUID(),
+      unique: true,
+    },
     title: { type: String, required: true },
     description: { type: String, required: false, default: "" },
     brand: { type: String, required: false, default: "" },

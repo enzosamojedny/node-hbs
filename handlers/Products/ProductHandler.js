@@ -6,13 +6,14 @@ const ProductPaginationModel = require("../../dao/models/Products");
 //PRODUCTS
 const Products = router.get("/api/products", async (req, res) => {
   try {
-    const products = await productManagerMongoDB.getProducts();
+    const products = await productManagerMongoDB.getProductsOverview();
     const limit = parseInt(req.query.limit) || 10;
     const page = parseInt(req.query.page) || 1;
     const sort = req.query.sort || "asc";
     const options = {
       page,
       limit,
+      select: "title price stock discountPercentage category rating thumbnail",
       sort: { price: sort === "asc" ? 1 : -1 },
       collation: { locale: "en" },
     };
@@ -61,6 +62,7 @@ const AddProduct = router.post("/api/products", async (req, res) => {
       );
     }
     const addedProduct = await productManagerMongoDB.addProduct(productDetails);
+    //! error in res when i post several products
     res.status(200).json({ product: addedProduct });
   } catch (error) {
     res.status(500).send({ message: error.message });
