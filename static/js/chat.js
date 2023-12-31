@@ -82,7 +82,13 @@ socket.on("bot reply", (botReplies) => {
     messageData.className = "message-data text-left";
     const divMessage = document.createElement("div");
     divMessage.className = "message my-message float-left";
-    divMessage.innerHTML = `<strong>${"Alus Bot"}:</strong> ${botReplies}`;
+    const imgElement = document.createElement("img");
+    imgElement.className = "chat-logo-img";
+    imgElement.src = "/static/images/Alus-logos-black.png";
+    imgElement.alt = "Alt logo";
+
+    divMessage.appendChild(imgElement);
+    divMessage.innerHTML += `<strong>${"Alus Bot"}:</strong> ${botReplies}`;
 
     liClearfix.appendChild(messageData);
     liClearfix.appendChild(divMessage);

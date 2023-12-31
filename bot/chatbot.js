@@ -11,7 +11,7 @@ class Chatbot {
       this.chatbot
         .loadFile(path.join(__dirname, "begin.rive"))
         .then(() => {
-          this.chatbot.sortReplies(); // Call sortReplies() after loading the file
+          this.chatbot.sortReplies();
           console.log("Rivescript Brain Loaded");
           resolve();
         })
