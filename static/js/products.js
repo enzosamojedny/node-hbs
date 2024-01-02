@@ -55,10 +55,12 @@ function renderProducts(products) {
     const productsContainer = document.createElement("div");
     productsContainer.id = "products-container";
     // productsContainer.innerHTML = "";
-    productsContainer.className = "card w-75 mb-3";
-    //!
+    productsContainer.className = "card  mb-3";
+    productsContainer.style.paddingLeft = "0";
     const row = document.createElement("div");
+
     row.className = "card-body d-flex flex-row align-items-center";
+
     const img = document.createElement("img");
     img.src = product.thumbnail;
     img.className = "card img";
@@ -66,7 +68,7 @@ function renderProducts(products) {
     row.appendChild(img);
 
     const col = document.createElement("div");
-    col.className = "ml-1";
+    col.className = "ml-2";
 
     col.innerHTML = `
       <h5 class="card-title">${product.title}</h5>
