@@ -11,19 +11,27 @@ async function fetchProducts(page = 1, category = "") {
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
-
     const data = await response.json();
-
     if (!data.payload) {
       throw new Error('The data received does not contain "payload".');
     }
+    const set = new Set(data.payload.map((e) => e._id));
+
+    const uniqueProducts = Array.from(set).map((id) =>
+      data.payload.find((product) => product._id === id)
+    );
 
     const { payload: products, nextLink, prevLink, page: currentPage } = data;
 
     const nextPageLink = nextLink && new URL(nextLink, window.location.origin);
     const prevPageLink = prevLink && new URL(prevLink, window.location.origin);
 
-    return { products: products, nextPageLink, prevPageLink, currentPage };
+    return {
+      products: uniqueProducts,
+      nextPageLink,
+      prevPageLink,
+      currentPage,
+    };
   } catch (error) {
     console.error("Error fetching products:", error);
     throw error;
@@ -87,12 +95,6 @@ function renderProducts(products) {
   const prevPageButton = document.getElementById("prevPageBtn");
   const prevPageAnchor = document.getElementById("prev-a");
   prevPageAnchor.href = `${products.prevPageLink}`;
-
-  // const current = document.getElementById("currentPage");
-  // const createPageNumber = document.createElement("p");
-  // createPageNumber.className = "p-page-number";
-  // createPageNumber.innerHTML = `${products.currentPage}`;
-  // current.appendChild(createPageNumber);
 
   const nextPageButton = document.getElementById("nextPageBtn");
   const nextPageAnchor = document.getElementById("next-a");

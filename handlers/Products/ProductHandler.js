@@ -40,19 +40,26 @@ const Products = router.get("/api/products", async (req, res) => {
   }
 });
 
-const ProductId = router.get("/api/products/:id", async (req, res) => {
+const ProductByName = router.post("/api/products/search", async (req, res) => {
   try {
-    const { id } = req.params;
-    const products = await productManagerMongoDB.getProductById(id);
-    if (products) {
-      res.status(200).json({ products });
+    const { title } = req.body;
+
+    if (!title) {
+      throw new Error("Product name is required as a body parameter");
+    }
+
+    const product = await productManagerMongoDB.getProductByName(title);
+
+    if (product) {
+      res.status(200).json({ product });
     } else {
-      throw new Error(`Product with ID ${id} not found in the database`);
+      throw new Error(`Product with name ${title} not found in the database`);
     }
   } catch (error) {
     res.status(500).send({ message: error.message });
   }
 });
+
 const AddProduct = router.post("/api/products", async (req, res) => {
   try {
     const productDetails = req.body;
@@ -95,7 +102,7 @@ const DeleteProduct = router.delete("/api/products/:id", async (req, res) => {
 });
 module.exports = {
   Products,
-  ProductId,
+  ProductByName,
   AddProduct,
   UpdateProduct,
   DeleteProduct,

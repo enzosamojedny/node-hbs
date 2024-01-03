@@ -1,16 +1,27 @@
 document.addEventListener("DOMContentLoaded", function () {
   function searchBar() {
-    const input = document.getElementById("searchInput");
+    const form = document.getElementById("searchForm");
+    form.addEventListener("submit", async function (event) {
+      event.preventDefault();
+      const input = document.getElementById("searchInput");
+      const searchTerm = input.value.trim();
 
-    if (input) {
-      input.addEventListener("input", function () {
-        const searchTerm = input.value.trim();
-        const searchEvent = new CustomEvent("searchChanged", {
-          detail: searchTerm,
-        });
-        document.dispatchEvent(searchEvent);
-      });
-    }
+      if (searchTerm !== "") {
+        try {
+          const response = await axios.post("/api/products/search", {
+            title: searchTerm,
+          });
+
+          console.log(response.data);
+          // Display products here
+
+          // Reset the search input field
+          input.value = "";
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      }
+    });
   }
 
   searchBar();

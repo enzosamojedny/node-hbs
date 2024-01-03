@@ -17,10 +17,12 @@ class ProductManagerMongoDB {
     console.log(result);
     return result;
   }
-  async getProductById(productId) {
-    const found = await Products.findById({ productId }).lean();
-    if (!found) {
-      throw new Error(`Product with id ${productId} not found`);
+  async getProductByName(title) {
+    const found = await Products.find({
+      title: { $regex: new RegExp(title, "i") },
+    }).lean();
+    if (found.length === 0) {
+      throw new Error(`Product with name ${title} not found`);
     } else {
       return found;
     }

@@ -78,5 +78,4 @@ sessionRouter.delete("/api/logout", removeJwtFromCookies, (req, res) => {
 
 sessionRouter.post("/session", () => {});
 sessionRouter.post("/user", () => {});
-
 module.exports = sessionRouter;

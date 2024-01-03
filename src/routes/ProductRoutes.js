@@ -3,7 +3,7 @@ const Router = require("express").Router;
 const productRouter = Router();
 const {
   Products,
-  ProductId,
+  ProductByName,
   AddProduct,
   UpdateProduct,
   DeleteProduct,
@@ -11,7 +11,9 @@ const {
 
 //PRODUCTS
 productRouter.get("/api/products", Products);
-productRouter.get("/api/products/:id", ProductId);
+productRouter.post("/api/products/search", ProductByName);
+//! hacer un POST a api/products por body con el name y buscar coincidencias en la DB
+//! usar query para entrar a cada product detail usando su CODE
 productRouter.post("/api/products", AddProduct);
 productRouter.put("/api/products/:id", UpdateProduct);
 productRouter.delete("/api/products/:id", DeleteProduct);
