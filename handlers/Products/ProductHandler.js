@@ -13,7 +13,8 @@ const Products = router.get("/api/products", async (req, res) => {
     const options = {
       page,
       limit,
-      select: "title price stock discountPercentage category rating thumbnail",
+      select:
+        "title price stock discountPercentage category rating thumbnail code",
       sort: { price: sort === "asc" ? 1 : -1 },
       collation: { locale: "en" },
     };
@@ -60,6 +61,27 @@ const ProductByName = router.post("/api/products/search", async (req, res) => {
   }
 });
 
+const ProductByCode = router.get(
+  "/api/product/detail/code/:code",
+  async (req, res) => {
+    try {
+      const { code } = req.params;
+      console.log(code);
+      if (!code) {
+        throw new Error("Product code is required as a query parameter");
+      }
+      const product = await productManagerMongoDB.getProductByCode(code);
+      if (product) {
+        res.status(200).json({ product });
+      } else {
+        throw new Error(`Product with code ${code} not found in the database`);
+      }
+    } catch (error) {
+      res.status(500).send({ message: error.message });
+    }
+  }
+);
+
 const AddProduct = router.post("/api/products", async (req, res) => {
   try {
     const productDetails = req.body;
@@ -103,6 +125,7 @@ const DeleteProduct = router.delete("/api/products/:id", async (req, res) => {
 module.exports = {
   Products,
   ProductByName,
+  ProductByCode,
   AddProduct,
   UpdateProduct,
   DeleteProduct,

@@ -7,12 +7,13 @@ const {
   AddProduct,
   UpdateProduct,
   DeleteProduct,
+  ProductByCode,
 } = require("../../handlers/Products/ProductHandler.js");
 
 //PRODUCTS
 productRouter.get("/api/products", Products);
 productRouter.post("/api/products/search", ProductByName);
-//! hacer un POST a api/products por body con el name y buscar coincidencias en la DB
+productRouter.get("/api/product/detail/code/:code", ProductByCode);
 //! usar query para entrar a cada product detail usando su CODE
 productRouter.post("/api/products", AddProduct);
 productRouter.put("/api/products/:id", UpdateProduct);
@@ -24,6 +25,12 @@ productRouter.get("/", (req, res) => {
 
 productRouter.get("/products", (req, res) => {
   res.render("products.hbs", { title: "Alus | Products", isHomePage: false });
+});
+productRouter.get("/product/detail/code/:code", (req, res) => {
+  res.render("productDetail.hbs", {
+    title: "Alus | Product Detail",
+    isHomePage: false,
+  });
 });
 
 module.exports = productRouter;

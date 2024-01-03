@@ -13,7 +13,7 @@ const productSchema = new mongoose.Schema(
     title: { type: String, required: true },
     description: { type: String, required: false, default: "" },
     brand: { type: String, required: false, default: "" },
-    code: { type: String, required: true, unique: true },
+    code: { type: String, required: true, unique: true, index: true },
     price: { type: Number, required: true },
     thumbnail: { type: String, required: false, default: "" },
     discountPercentage: { type: Number, required: false, default: 0 },

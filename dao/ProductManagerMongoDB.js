@@ -12,17 +12,29 @@ class ProductManagerMongoDB {
   }
   async getProductsOverview() {
     const result = await Products.find()
-      .select("title price stock discountPercentage category rating thumbnail")
+      .select(
+        "title price stock discountPercentage code category rating thumbnail"
+      )
       .lean();
-    console.log(result);
     return result;
   }
+
   async getProductByName(title) {
     const found = await Products.find({
       title: { $regex: new RegExp(title, "i") },
     }).lean();
     if (found.length === 0) {
       throw new Error(`Product with name ${title} not found`);
+    } else {
+      return found;
+    }
+  }
+  async getProductByCode(code) {
+    const found = await Products.find({
+      code: { $regex: new RegExp(code, "i") }, //!
+    }).lean();
+    if (found.length === 0) {
+      throw new Error(`Product with name ${code} not found`);
     } else {
       return found;
     }

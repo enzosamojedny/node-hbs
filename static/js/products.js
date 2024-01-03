@@ -1,5 +1,5 @@
 async function fetchProducts(page = 1, category = "") {
-  const limit = 13;
+  const limit = 10;
   const sort = "asc";
   const categoryQuery = category ? `&category=${category}` : "";
 
@@ -66,7 +66,12 @@ function renderProducts(products) {
     productsContainer.className = "card  mb-3";
     productsContainer.style.paddingLeft = "0";
     const row = document.createElement("div");
-
+    console.log(product.code);
+    const a = document.createElement("a");
+    a.href = `/product/detail/code/${product.code}`;
+    a.style.cursor = "pointer";
+    a.style.textDecoration = "none";
+    a.style.color = "inherit";
     row.className = "card-body d-flex flex-row align-items-center";
 
     const img = document.createElement("img");
@@ -88,7 +93,8 @@ function renderProducts(products) {
     `;
 
     row.appendChild(col);
-    productsContainer.appendChild(row);
+    a.appendChild(row);
+    productsContainer.appendChild(a);
     wrapper.appendChild(productsContainer);
   });
 
