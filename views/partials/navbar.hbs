@@ -1,0 +1,63 @@
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/"><img
+        src="../../static/images/Alus-logos_white-cropped.png"
+        style="width: 70px;"
+      /></a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <button class="btn btn-secondary bg-dark">
+          <li class="nav-item">
+            <a class="nav-link" href="/messages">Customer Support</a>
+          </li></button>
+        <div class="btn-group dropend">
+          <button
+            type="button"
+            class="btn btn-secondary dropdown-toggle bg-dark"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            My Account
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/profile">Profile</a></li>
+            <li><a class="dropdown-item" href="/login">Login</a></li>
+            <li><a class="dropdown-item" href="/register">Register</a></li>
+            <li><a class="dropdown-item" href="/login">Logout</a></li>
+          </ul>
+        </div>
+      </ul>
+
+      <form
+        class="d-flex align-items-center justify-content-center"
+        role="search"
+        id="searchForm"
+      >
+        <input
+          class="form-control"
+          type="search"
+          style="border-top-right-radius: 0%;border-bottom-right-radius: 0%;width:500px "
+          placeholder="Search"
+          aria-label="Search"
+          id="searchInput"
+        />
+        <button
+          class="btn btn-primary text-white bg-dark"
+          style="width:80px;height:40px; border-top-left-radius: 0%;border-bottom-left-radius: 0%; border:1px solid white"
+          type="submit"
+        ><i class="fas fa-search"></i></button>
+      </form>
+    </div>
+  </div>
+</nav>

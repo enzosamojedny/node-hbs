@@ -21,6 +21,8 @@ const Chatbot = require("./bot/chatbot.js");
 const bot = new Chatbot({ utf8: true, forceCase: true });
 bot.unicodePunctuation = new RegExp(/[.,!?;:]/g);
 
+//! COSAS A HACER HOY: solucionar lo del logout, dejar estetico el itemDetail, hacer un custom alert para reemplazar sweet alert o ver opciones
+
 //! DB CONNECTION
 const enviroment = async () => {
   await mongoose.connect(MONGODB_CNX_STR);
@@ -42,6 +44,7 @@ server.engine(
   })
 );
 server.set("views", path.join(__dirname, "/views/partials"));
+// server.set("views", path.join(__dirname, "/views"));
 server.set("view engine", "hbs");
 
 server.use("/static", express.static(path.join(__dirname, "static")));
@@ -79,9 +82,8 @@ ioServer.on("connection", async (socket) => {
     let messages = await messagesManager.getMessages();
     console.log("new connection: ", socket.id);
 
-    await bot.initialize(); // Use await to ensure proper initialization
+    await bot.initialize();
 
-    // Send all the existing messages to the client when a user connects
     socket.emit("messages", messages);
     console.log("Messages sent to client:", messages);
 

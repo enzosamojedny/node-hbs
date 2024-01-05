@@ -2,7 +2,6 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{title}}</title>
     <script
       src="https://code.jquery.com/jquery-3.7.1.min.js"
       integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
@@ -22,8 +21,6 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
     />
-    {{!ADJUST CARDS SIZE and FIX BOOTSTRAP IMPORTS}}
-
     <script
       src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
       integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
@@ -34,13 +31,13 @@
       integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
       crossorigin="anonymous"
     ></script>
-
     <script defer src="/static/js/home.js"></script>
+    <title>{{title}}</title>
   </head>
   <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
     <div class="container-fluid">
       <a class="navbar-brand" href="/"><img
-          src="../../static/images/Alus-logos_white-cropped.png"
+          src="/static/images/Alus-logos_white-cropped.png"
           style="width: 70px;"
         /></a>
       <button
@@ -102,11 +99,6 @@
   </nav>
   <body>
 
-    {{#if isHomePage}}
-      <section>
-        <h3>Welcome to my E-commerce</h3>
-      </section>
-    {{/if}}
     {{{body}}}
 
   </body>

@@ -1,6 +1,6 @@
 async function fetchProducts(page = 1, category = "") {
   const limit = 10;
-  const sort = "asc";
+  const sort = "desc";
   const categoryQuery = category ? `&category=${category}` : "";
 
   try {
