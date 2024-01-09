@@ -8,7 +8,12 @@ const userSchema = new mongoose.Schema(
     first_name: { type: String, required: true },
     last_name: { type: String, required: true },
     gender: { type: String, required: true },
-    admin: { type: Boolean, required: true, default: false },
+    phone: { type: String, required: true, unique: true },
+    address: { type: String, required: true },
+    pfpUrls: [{ type: String, required: true }],
+    pfp: { type: String, default: () => getRandomPfpUrl(), required: true },
+    cart: { type: String, ref: "Carts" },
+    role: { type: String, default: "user" },
   },
   {
     versionKey: false,
@@ -25,5 +30,14 @@ const userSchema = new mongoose.Schema(
     },
   }
 );
+function getRandomPfpUrl() {
+  const pfpUrls = [
+    "https://robohash.org/Sheldon.png?set=set4",
+    "https://robohash.org/Terry.png?set=set4",
+  ];
+  const randomIndex = Math.floor(Math.random() * pfpUrls.length);
+  return pfpUrls[randomIndex];
+}
+
 const Users = mongoose.model("users", userSchema);
 module.exports = Users;

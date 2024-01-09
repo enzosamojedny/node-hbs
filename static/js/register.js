@@ -1,8 +1,10 @@
 const firstName = document.getElementById("first-name");
 const lastName = document.getElementById("last-name");
 const email = document.getElementById("email");
-const password = document.getElementById("password");
 const gender = document.getElementById("gender");
+const password = document.getElementById("password");
+const phone = document.getElementById("phone");
+const address = document.getElementById("address");
 const submit = document.getElementById("submit-btn");
 
 //! FORM VALIDATION
@@ -10,13 +12,7 @@ const submit = document.getElementById("submit-btn");
 function validation() {
   let isValidated = true;
 
-  const firstName = document.getElementById("first-name");
-  const lastName = document.getElementById("last-name");
-  const email = document.getElementById("email");
-  const password = document.getElementById("password");
-  const gender = document.getElementById("gender");
-
-  const fields = [firstName, lastName, email, password, gender];
+  const fields = [firstName, lastName, email, password, phone, address, gender];
 
   fields.forEach((field) => {
     if (!field.value.trim()) {
@@ -60,7 +56,15 @@ function removeError(input) {
   input.style.borderColor = "";
 }
 
-const formInputs = [firstName, lastName, email, password, gender];
+const formInputs = [
+  firstName,
+  lastName,
+  email,
+  password,
+  phone,
+  address,
+  gender,
+];
 formInputs.forEach((input) => {
   input.addEventListener("focus", () => makeGreen(input));
   input.addEventListener("blur", () => {
@@ -71,19 +75,22 @@ formInputs.forEach((input) => {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-  const submit = document.getElementById("submit-btn");
+  // const submit = document.getElementById("submit-btn");
 
   submit.addEventListener("click", function (event) {
     event.preventDefault();
 
     if (validation()) {
       submit.disabled = true;
+
       const formData = {
-        email: document.getElementById("email").value,
-        password: document.getElementById("password").value,
-        first_name: document.getElementById("first-name").value,
-        last_name: document.getElementById("last-name").value,
-        gender: document.getElementById("gender").value,
+        first_name: firstName.value,
+        last_name: lastName.value,
+        email: email.value,
+        password: password.value,
+        address: address.value,
+        phone: phone.value,
+        gender: gender.value,
       };
       axios
         .post("http://localhost:3001/api/users", formData)

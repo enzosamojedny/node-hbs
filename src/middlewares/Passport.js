@@ -154,7 +154,7 @@ passport.use(
       if (user) {
         return done(null, {
           ...user.publicInfo(),
-          // admin: false
+          // role:'user'
         });
       }
       try {
@@ -169,7 +169,7 @@ passport.use(
         });
         done(null, {
           ...registered.publicInfo(),
-          // admin: false
+          // role:'user'
         });
       } catch (error) {
         done(error);

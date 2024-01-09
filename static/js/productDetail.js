@@ -53,3 +53,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   productByCode();
 });
+{
+  /* <button type="button" class="btn btn-primary">
+Add to Cart
+</button> */
+}

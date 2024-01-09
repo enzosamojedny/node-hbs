@@ -49,8 +49,11 @@ async function handleCategoryChange(category) {
 
 async function handlePageChange(page) {
   try {
-    const productsData = await fetchProducts(page);
-    renderProducts(productsData);
+    if (page > 0) {
+      const productsData = await fetchProducts(page);
+      console.log(productsData);
+      renderProducts(productsData);
+    }
   } catch (error) {
     console.error("Error handling page change:", error);
   }
@@ -87,9 +90,7 @@ function renderProducts(products) {
       <h5 class="card-title">${product.title}</h5>
       <p class="card-text">${product.category}</p>
       <p class="card-text">${"$ " + product.price}</p>
-      <button type="button" class="btn btn-primary">
-        Add to Cart
-      </button>
+
     `;
 
     row.appendChild(col);
