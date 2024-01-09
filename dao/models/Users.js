@@ -10,8 +10,9 @@ const userSchema = new mongoose.Schema(
     gender: { type: String, required: true },
     phone: { type: String, required: true, unique: true },
     address: { type: String, required: true },
-    pfpUrls: [{ type: String, required: true }],
-    pfp: { type: String, default: () => getRandomPfpUrl(), required: true },
+    pfp: {
+      type: String,
+    },
     cart: { type: String, ref: "Carts" },
     role: { type: String, default: "user" },
   },
@@ -30,13 +31,19 @@ const userSchema = new mongoose.Schema(
     },
   }
 );
-function getRandomPfpUrl() {
-  const pfpUrls = [
-    "https://robohash.org/Sheldon.png?set=set4",
-    "https://robohash.org/Terry.png?set=set4",
-  ];
-  const randomIndex = Math.floor(Math.random() * pfpUrls.length);
-  return pfpUrls[randomIndex];
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("pfp") && this.isNew) {
+    try {
+      this.pfp = await getRandomPfpUrl(this.first_name);
+    } catch (error) {
+      console.error(error);
+      this.pfp = "https://robohash.org/34R.png?set=set4";
+    }
+  }
+  next();
+});
+async function getRandomPfpUrl(firstName) {
+  return `https://robohash.org/${encodeURIComponent(firstName)}.png?set=set4`;
 }
 
 const Users = mongoose.model("users", userSchema);

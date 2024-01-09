@@ -196,7 +196,7 @@ passport.use(
     }
   )
 );
-//! aca iria JWT, habria que borrar esto
+
 async function authenticateUser(username, password) {
   const userFound = await Users.findOne({ email: username }).lean();
   if (!userFound) {
@@ -210,10 +210,12 @@ async function authenticateUser(username, password) {
     first_name: userFound.first_name,
     last_name: userFound.last_name,
     gender: userFound.gender,
+    phone: userFound.phone,
+    address: userFound.address,
+    pfp: userFound.pfp,
+    cart: userFound.cart,
+    role: userFound.role,
   };
-  if (!userData) {
-    throw new Error("User not found for email: " + username);
-  }
   if (!passwordMatch) {
     throw new Error("Incorrect password for user: " + username);
   }

@@ -7,7 +7,7 @@ const gender = document.getElementById("gender");
 const pfName = document.getElementById("pf-name");
 const pfAddress = document.getElementById("pf-address");
 const pfRole = document.getElementById("pf-role");
-
+const pfp = document.getElementById("pfp");
 document.addEventListener("DOMContentLoaded", function () {
   async function userData() {
     await axios
@@ -32,12 +32,11 @@ document.addEventListener("DOMContentLoaded", function () {
         const addressp = document.createElement("p");
         addressp.textContent = response.data.payload.address;
         address.appendChild(addressp);
-        pfName.textContent =
-          response.data.payload.first_name +
-          " " +
-          response.data.payload.last_name;
+        pfName.textContent = `${response.data.payload.first_name} ${response.data.payload.last_name}`;
         pfAddress.textContent = response.data.payload.address;
         pfRole.textContent = response.data.payload.role; //CHANGE COLORS
+        pfp.src = response.data.payload.pfp;
+        pfp.alt = response.data.payload.role;
       })
       .catch((error) => {
         console.error("Error:", error);
