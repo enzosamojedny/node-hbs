@@ -3,13 +3,13 @@ const productRouter = require("./src/routes/ProductRoutes");
 const cartRouter = require("./src/routes/CartRoutes");
 const sessionRouter = require("./src/routes/SessionRoutes.js");
 const usersRouter = require("./src/routes/UsersRoutes.js");
+require("dotenv").config();
 const { sessionMiddleware, auth } = require("./src/middlewares/Passport.js");
 const { createServer } = require("node:http");
 const morgan = require("morgan");
 const { engine } = require("express-handlebars");
 const { Server: IOServer } = require("socket.io");
 const express = require("express");
-const { MONGODB_CNX_STR, COOKIE_SECRET } = require("./config.js");
 const { default: mongoose } = require("mongoose");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
@@ -25,12 +25,12 @@ bot.unicodePunctuation = new RegExp(/[.,!?;:]/g);
 
 //! DB CONNECTION
 const enviroment = async () => {
-  await mongoose.connect(MONGODB_CNX_STR);
+  await mongoose.connect(process.env.MONGODB_CNX_STR);
   await Products.paginate({}, { limit: 10, page: 1 });
 };
 enviroment();
 
-console.log("db connected to: ", MONGODB_CNX_STR);
+console.log("db connected to: ", process.env.MONGODB_CNX_STR);
 const server = express();
 const port = 3001;
 
@@ -48,7 +48,7 @@ server.set("views", path.join(__dirname, "/views/partials"));
 server.set("view engine", "hbs");
 
 server.use("/static", express.static(path.join(__dirname, "static")));
-server.use(cookieParser(COOKIE_SECRET));
+server.use(cookieParser(process.env.COOKIE_SECRET));
 server.use(sessionMiddleware);
 server.use(auth);
 server.use(bodyParser.json());

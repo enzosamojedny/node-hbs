@@ -1,6 +1,6 @@
 const createSessionMiddleware = require("express-session");
 const MongoStore = require("connect-mongo");
-const { MONGODB_CNX_STR, JWT_PRIVATE_KEY } = require("../../config");
+require("dotenv").config();
 const passport = require("passport");
 const { Strategy } = require("passport-local");
 const Users = require("../../src/dao/models/Users");
@@ -12,16 +12,6 @@ const { Strategy: GoogleStrategy } = require("passport-google-oauth20");
 let JwtStrategy = require("passport-jwt").Strategy;
 const { encrypt } = require("./auth");
 
-const {
-  githubAppId,
-  githubCallback,
-  githubClientId,
-  githubSecret,
-  googleClientId,
-  googleSecret,
-  googleCallback,
-} = require("../../config");
-
 //! keep this as is
 passport.serializeUser((user, next) => {
   next(null, user);
@@ -32,7 +22,7 @@ passport.deserializeUser((user, next) => {
 
 const sessionMiddleware = createSessionMiddleware({
   store: MongoStore.create({
-    mongoUrl: MONGODB_CNX_STR,
+    mongoUrl: process.env.MONGODB_CNX_STR,
     mongoOptions: {
       useUnifiedTopology: true,
     },
@@ -101,9 +91,9 @@ passport.use(
   "google",
   new GoogleStrategy(
     {
-      clientID: googleClientId,
-      clientSecret: googleSecret,
-      callbackURL: googleCallback,
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_SECRET,
+      callbackURL: process.env.GOOGLE_CALLBACK,
       scope: ["profile", "email"],
     },
     async function verify(accessToken, refreshToken, profile, done) {
@@ -142,9 +132,9 @@ passport.use(
   "github",
   new GithubStrategy(
     {
-      clientID: githubClientId,
-      clientSecret: githubSecret,
-      callbackURL: githubCallback,
+      clientID: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_SECRET,
+      callbackURL: process.env.GITHUB_CALLBACK,
     },
     async function verify(accessToken, refreshToken, profile, done) {
       console.log(profile);

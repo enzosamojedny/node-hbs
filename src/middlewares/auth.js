@@ -1,29 +1,35 @@
 const jwt = require("jsonwebtoken");
-const JWT_PRIVATE_KEY = require("../../config");
-const JWTKEY = "pepito";
+require("dotenv").config();
+
 function encrypt(data) {
   return new Promise((resolve, reject) => {
-    jwt.sign(data, JWTKEY, { expiresIn: "1w" }, (error, encoded) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(encoded);
+    jwt.sign(
+      data,
+      process.env.JWT_KEY,
+      { expiresIn: "1w" },
+      (error, encoded) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(encoded);
+        }
       }
-    });
+    );
   });
 }
 
-function decrypt(token) {
-  return new Promise((resolve, reject) => {
-    jwt.verify(token, JWT_PRIVATE_KEY, (error, decoded) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(decoded);
-      }
-    });
-  });
-}
+// function decrypt(token) {
+//   return new Promise((resolve, reject) => {
+//     jwt.verify(token, process.env.JWT_PRIVATE_KEY, (error, decoded) => {
+//       if (error) {
+//         reject(error);
+//       } else {
+//         resolve(decoded);
+//       }
+//     });
+//   });
+// }
+
 function onlyAdmins(req, res, next) {
   // if (req.user && req.user.admin === 'admin') {
   console.log(req.user);
