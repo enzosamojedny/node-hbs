@@ -1,4 +1,4 @@
-const ProductManagerMongoDB = require("../../dao/ProductManagerMongoDB");
+const ProductManagerMongoDB = require("../../dao/managers/ProductManagerMongoDB");
 const productManagerMongoDB = new ProductManagerMongoDB();
 const express = require("express");
 const router = express.Router();

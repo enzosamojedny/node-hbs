@@ -1,5 +1,5 @@
 const express = require("express");
-const messagesManager = require("../../dao/MessagesManager");
+const messagesManager = require("../../dao/managers/MessagesManager");
 const messagesManagerMongoDB = new messagesManager();
 const messagesRouter = express.Router();
 

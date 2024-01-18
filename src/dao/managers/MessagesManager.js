@@ -1,4 +1,4 @@
-const Messages = require("./models/Messages");
+const Messages = require("../models/Messages");
 const { randomUUID } = require("crypto");
 class MessagesManager {
   async addMessage(message) {

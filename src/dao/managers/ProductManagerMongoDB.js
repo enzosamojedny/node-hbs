@@ -1,4 +1,4 @@
-const Products = require("../dao/models/Products");
+const Products = require("../models/Products");
 const { randomUUID } = require("crypto");
 class ProductManagerMongoDB {
   async addProduct(product) {

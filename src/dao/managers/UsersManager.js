@@ -1,4 +1,4 @@
-const Users = require("./models/Users.js");
+const Users = require("../models/Users.js");
 const { randomUUID } = require("crypto");
 const bcrypt = require("bcrypt");
 class UsersManager {

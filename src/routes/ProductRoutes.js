@@ -8,7 +8,7 @@ const {
   UpdateProduct,
   DeleteProduct,
   ProductByCode,
-} = require("../../handlers/Products/ProductHandler.js");
+} = require("../../src/controllers/Products/ProductController.js");
 
 //PRODUCTS
 productRouter.get("/api/products", Products);

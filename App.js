@@ -13,11 +13,11 @@ const { MONGODB_CNX_STR, COOKIE_SECRET } = require("./config.js");
 const { default: mongoose } = require("mongoose");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-const MessagesManager = require("./dao/MessagesManager");
-const Products = require("./dao/models/Products.js");
+const MessagesManager = require("./src/dao/managers/MessagesManager");
+const Products = require("./src/dao/models/Products.js");
 const messagesManager = new MessagesManager();
 const path = require("path");
-const Chatbot = require("./bot/chatbot.js");
+const Chatbot = require("./src/bot/chatbot.js");
 const bot = new Chatbot({ utf8: true, forceCase: true });
 bot.unicodePunctuation = new RegExp(/[.,!?;:]/g);
 

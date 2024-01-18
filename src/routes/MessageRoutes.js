@@ -6,7 +6,7 @@ const {
   GetMessagesId,
   DeleteMessages,
   UpdateMessages,
-} = require("../../handlers/Messages/MessageHandler");
+} = require("../../src/controllers/Messages/MessageController");
 
 //MESSAGES
 messagesRouter.get("/api/messages", GetMessages);

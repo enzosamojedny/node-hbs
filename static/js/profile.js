@@ -1,3 +1,5 @@
+// const modal = require("./modal.js");
+
 const name = document.getElementById("name");
 const surname = document.getElementById("surname");
 const email = document.getElementById("email");
@@ -8,6 +10,7 @@ const pfName = document.getElementById("pf-name");
 const pfAddress = document.getElementById("pf-address");
 const pfRole = document.getElementById("pf-role");
 const pfp = document.getElementById("pfp");
+const edit = document.getElementById("edit");
 document.addEventListener("DOMContentLoaded", function () {
   async function userData() {
     await axios
@@ -37,6 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
         pfRole.textContent = response.data.payload.role; //CHANGE COLORS
         pfp.src = response.data.payload.pfp;
         pfp.alt = response.data.payload.role;
+        // edit.onclick = () => modal(namep, surnamep, emailp, genderp);
       })
       .catch((error) => {
         console.error("Error:", error);

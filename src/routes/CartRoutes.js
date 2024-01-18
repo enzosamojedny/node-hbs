@@ -4,7 +4,7 @@ const {
   PostCartProduct,
   PostCart,
   GetCartId,
-} = require("../../handlers/Carts/CartHandler.js");
+} = require("../../src/controllers/Carts/CartController.js");
 
 //CARTS
 cartRouter.post("/api/:cartid/product/:productid", PostCartProduct);
