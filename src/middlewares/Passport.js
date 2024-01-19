@@ -79,7 +79,7 @@ passport.use(
         }
         return token;
       },
-      secretOrKey: "pepito",
+      secretOrKey: process.env.JWT_KEY,
     },
     (payload, done) => {
       done(null, payload);

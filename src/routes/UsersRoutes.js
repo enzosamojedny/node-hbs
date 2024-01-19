@@ -65,9 +65,31 @@ usersRouter.get(
     res.json({ status: "success", payload: req.user });
   },
   (error, req, res, next) => {
-    res.status(401).json({ status: "error", message: error.message });
+    if (error.name === "UnauthorizedError" && error.message === "jwt expired") {
+      return res
+        .status(401)
+        .json({ status: "error", message: "Unauthorized. Token has expired." });
+    }
+
+    if (
+      error.name === "UnauthorizedError" &&
+      error.message === "No auth token"
+    ) {
+      return res
+        .status(401)
+        .json({ status: "error", message: "Unauthorized. Token is missing." });
+    }
+
+    if (error.name === "UnauthorizedError") {
+      return res
+        .status(401)
+        .json({ status: "error", message: "Unauthorized. Invalid token." });
+    }
+    console.error("Unexpected error:", error);
+    res.status(500).json({ status: "error", message: "Internal Server Error" });
   }
 );
+
 //! adjust logic so only logged users can see this page
 //? bug is in onlyLoggedClient
 usersRouter.get("/profile", onlyLoggedClient, function profileView(req, res) {

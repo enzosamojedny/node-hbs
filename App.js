@@ -23,7 +23,9 @@ bot.unicodePunctuation = new RegExp(/[.,!?;:]/g);
 
 //! COSAS A HACER HOY: solucionar lo del logout, dejar estetico el itemDetail, hacer un custom alert para reemplazar sweet alert o ver opciones
 
-//! DB CONNECTION
+//! leer sobre populate para darla a cada user su cart
+
+//! hacer validaciones de usuario y validaciones de ordenes para el e-commerce
 const enviroment = async () => {
   await mongoose.connect(process.env.MONGODB_CNX_STR);
   await Products.paginate({}, { limit: 10, page: 1 });

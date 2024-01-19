@@ -20,16 +20,6 @@ class CartManagerMongoDB {
     }
   }
 
-  async deleteCart(cartId) {
-    const cartToDelete = await Cart.findByIdAndDelete({
-      cartId,
-    }).lean();
-    if (!cartToDelete) {
-      throw new Error(`Cart with id ${cartId} couldnt be deleted`);
-    } else {
-      return cartToDelete;
-    }
-  }
   async deleteProductFromCart(cartId, productId) {
     const cartToDeleteProduct = await Cart.findOneAndDelete({
       cartId,
