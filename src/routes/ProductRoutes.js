@@ -25,7 +25,12 @@ productRouter.get("/", (req, res) => {
 });
 
 productRouter.get("/products", (req, res) => {
-  res.render("products.hbs", { title: "Alus | Products", isHomePage: false });
+  const userToken = req.user;
+  res.render("products.hbs", {
+    title: "Alus | Products",
+    isHomePage: false,
+    userToken: userToken || null,
+  });
 });
 productRouter.get("/product/detail/code/:code", (req, res) => {
   res.render("productDetail.hbs", {
