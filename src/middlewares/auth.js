@@ -34,7 +34,6 @@ function onlyAdmins(req, res, next) {
   // if (req.user && req.user.admin === 'admin') {
   console.log(req.user);
   if (req.user) {
-    // User is an admin, proceed to the next middleware or route handler
     next();
   } else {
     return res.status(403).json({

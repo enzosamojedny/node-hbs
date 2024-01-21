@@ -68,14 +68,15 @@
                   class="btn btn-secondary dropdown-toggle bg-dark d-flex align-items-center rounded-circle p-0"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
-                  style="width: 40px; height: 40px;"
+                  style="width: 50px; height: 50px;"
                 >
                   <img
-                    src="https://mdbootstrap.com/img/Photos/Avatars/img%20(9).jpg"
+                    src="{{userToken.pfp}}"
                     class="rounded-circle w-100 h-100"
                     alt=""
                     loading="lazy"
                   />
+                  <span>{{userToken.first_name}}</span>
                 </button>
                 <ul class="dropdown-menu">
                   <li><a class="dropdown-item" href="/profile">Profile</a></li>
@@ -83,13 +84,14 @@
                     <a class="dropdown-item" href="#">Logout</a>
                   </li>
                 </ul>
+
               {{else}}
                 <button
                   type="button"
                   class="btn btn-secondary dropdown-toggle bg-dark d-flex align-items-center rounded-circle p-0"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
-                  style="width: 40px; height: 40px;"
+                  style="width: 50px; height: 50px;"
                 >
                   <img
                     src="/static/images/avatar_default.png"
@@ -97,7 +99,7 @@
                     alt=""
                     loading="lazy"
                   />
-                  <span>{{userToken.first_name}}</span>
+
                 </button>
                 <ul class="dropdown-menu">
                   <li><a class="dropdown-item" href="/login">Login</a></li>
@@ -109,7 +111,6 @@
               {{/if}}
             </div>
           </li>
-          {{#if userToken}}{{/if}}
         </ul>
 
         <form

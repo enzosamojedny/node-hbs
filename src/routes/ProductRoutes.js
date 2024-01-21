@@ -33,9 +33,11 @@ productRouter.get("/products", (req, res) => {
   });
 });
 productRouter.get("/product/detail/code/:code", (req, res) => {
+  const userToken = req.user;
   res.render("productDetail.hbs", {
     title: "Alus | Product Detail",
     isHomePage: false,
+    userToken: userToken || null,
   });
 });
 

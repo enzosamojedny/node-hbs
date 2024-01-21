@@ -1,6 +1,5 @@
 const Router = require("express").Router;
 const { onlyLoggedClient } = require("../middlewares/auth");
-const passport = require("passport");
 
 const usersRouter = Router();
 
@@ -14,27 +13,12 @@ const {
 } = require("../../src/controllers/Users/UsersController");
 
 const {
-  appendJwtAsCookie,
-  removeJwtFromCookies,
-} = require("../middlewares/Passport");
+  profileView,
+  registerView,
+  currentSessionView,
+} = require("../middlewares/viewMiddlewares");
 
-usersRouter.post(
-  "/api/users",
-  passport.authenticate("register", {
-    failWithError: true,
-  }),
-  appendJwtAsCookie,
-  (req, res) => {
-    res.status(201).json({
-      message: "Registration successful",
-      payload: req.user,
-    });
-    console.log("REGISTER data", req.user);
-  },
-  (error, req, res, next) => {
-    res.status(400).json({ status: "error", message: error.message });
-  }
-);
+usersRouter.post("/api/users", registerView);
 
 usersRouter.get("/api/users/:id", getUserId);
 usersRouter.get("/api/users", GetUsers);
@@ -58,45 +42,9 @@ usersRouter.get("/resetpassword", (req, res) => {
   });
 });
 
-usersRouter.get(
-  "/api/session/current",
-  passport.authenticate("jwt", { failWithError: true }),
-  async (req, res) => {
-    res.json({ status: "success", payload: req.user });
-  },
-  (error, req, res, next) => {
-    if (error.name === "UnauthorizedError" && error.message === "jwt expired") {
-      return res
-        .status(401)
-        .json({ status: "error", message: "Unauthorized. Token has expired." });
-    }
-
-    if (
-      error.name === "UnauthorizedError" &&
-      error.message === "No auth token"
-    ) {
-      return res
-        .status(401)
-        .json({ status: "error", message: "Unauthorized. Token is missing." });
-    }
-
-    if (error.name === "UnauthorizedError") {
-      return res
-        .status(401)
-        .json({ status: "error", message: "Unauthorized. Invalid token." });
-    }
-    console.error("Unexpected error:", error);
-    res.status(500).json({ status: "error", message: "Internal Server Error" });
-  }
-);
+usersRouter.get("/api/session/current", currentSessionView);
 
 //! adjust logic so only logged users can see this page
 //? bug is in onlyLoggedClient
-usersRouter.get("/profile", onlyLoggedClient, function profileView(req, res) {
-  res.render("profile.hbs", {
-    title: "Alus | My profile",
-    isHomePage: false,
-    user: req.session.user,
-  });
-});
+usersRouter.get("/profile", onlyLoggedClient, profileView);
 module.exports = usersRouter;

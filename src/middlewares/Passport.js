@@ -28,7 +28,7 @@ const sessionMiddleware = createSessionMiddleware({
     },
     ttl: 3600,
   }),
-  secret: "secretword",
+  secret: "pepito",
   //* resave mantiene la coneccion activa aunque se cierre
   resave: true,
   //*saveUnitialized guarda cualquier sesion aunque el objeto este vacio
@@ -36,7 +36,6 @@ const sessionMiddleware = createSessionMiddleware({
 });
 
 function auth(req, res, next) {
-  //! changed
   passport.initialize()(req, res, () => {
     passport.session()(req, res, () => {
       next();

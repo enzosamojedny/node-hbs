@@ -49,7 +49,6 @@ sessionRouter.get(
   (req, res) => {}
 );
 
-//* This route is used for handling the callback after a user has been redirected from GitHub to our server
 sessionRouter.get(
   "/api/github/callback",
   passport.authenticate("github", {
@@ -72,7 +71,7 @@ sessionRouter.get(
   (req, res) => {}
 );
 
-sessionRouter.delete("/api/logout", removeJwtFromCookies, (req, res) => {
+sessionRouter.delete("/logout", removeJwtFromCookies, (req, res) => {
   res.json({ status: "success", message: "Logout was successful" });
 });
 
