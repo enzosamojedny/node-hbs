@@ -1,115 +1,87 @@
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script
-      defer
-      src="https://code.jquery.com/jquery-3.7.1.min.js"
-      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-      crossorigin="anonymous"
-    ></script>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-      crossorigin="anonymous"
-    />
-    <script defer src="/static/js/register.js"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-    />
-    <link rel="stylesheet" href="/static/css/register.css" />
-    <script
-      defer
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-      integrity="sha384-l5Fw8l1s8tf0+gaRb4e+Hg19J2XiNXGRdPQbVRzSLKKfktwumX2YIrJ5NCjI8Z/Q"
-      crossorigin="anonymous"
-    ></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  </head>
-  <body>
-    <div class="register-wrapper">
-      <div class="form-container bg-dark">
-        <h2 class="mb-4 text-white">Register</h2>
-        <form id="registrationForm" class="register-form">
-          <div class="form-group">
-            <label for="first-name">First Name</label>
-            <input
-              type="text"
-              class="form-control"
-              id="first-name"
-              placeholder="Enter your first name"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <label for="last-name">Last Name</label>
-            <input
-              type="text"
-              class="form-control"
-              id="last-name"
-              placeholder="Enter your last name"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input
-              type="email"
-              class="form-control"
-              id="email"
-              aria-describedby="emailHelp"
-              placeholder="Enter your email"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input
-              type="password"
-              class="form-control"
-              id="password"
-              placeholder="Enter your password"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <label for="text">Address</label>
-            <input
-              type="text"
-              class="form-control"
-              id="address"
-              placeholder="Enter your password"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <label for="text">Mobile Phone</label>
-            <input
-              type="text"
-              class="form-control"
-              id="phone"
-              placeholder="Enter your password"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <select class="form-control" id="gender" required>
-              <option value="" selected disabled class="text-black">Select your
-                gender</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-            </select>
-          </div>
-          <button
-            type="submit"
-            id="submit-btn"
-            class="btn btn-primary text-black bg-white"
-          >Register</button>
-        </form>
-      </div>
+<head>
+  <script defer src="/static/js/register.js"></script>
+  <link rel="stylesheet" href="/static/css/register.css" />
+</head>
+<body>
+  <div class="register-wrapper">
+    <div class="form-container bg-dark">
+      <h2 class="mb-4 text-white">Register</h2>
+      <form id="registrationForm" class="register-form">
+        <div class="form-group">
+          <label for="first-name">First Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="first-name"
+            placeholder="Enter your first name"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="last-name">Last Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="last-name"
+            placeholder="Enter your last name"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            aria-describedby="emailHelp"
+            placeholder="Enter your email"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            placeholder="Enter your password"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="text">Address</label>
+          <input
+            type="text"
+            class="form-control"
+            id="address"
+            placeholder="Enter your password"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="text">Mobile Phone</label>
+          <input
+            type="text"
+            class="form-control"
+            id="phone"
+            placeholder="Enter your password"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <select class="form-control" id="gender" required>
+            <option value="" selected disabled class="text-black">Select your
+              gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </div>
+        <button
+          type="submit"
+          id="submit-btn"
+          class="btn btn-primary text-black bg-white"
+        >Register</button>
+      </form>
     </div>
-  </body>
-</html>
+  </div>
+</body>

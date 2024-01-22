@@ -20,7 +20,6 @@ productRouter.put("/api/products/:id", UpdateProduct);
 productRouter.delete("/api/products/:id", DeleteProduct);
 
 productRouter.get("/", (req, res) => {
-  // res.render("home", { title: "My Page Title", navbar: "navbar" });
   res.redirect("/products");
 });
 
