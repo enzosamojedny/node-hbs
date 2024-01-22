@@ -1,8 +1,5 @@
 const passport = require("passport");
-const {
-  appendJwtAsCookie,
-  removeJwtFromCookies,
-} = require("../middlewares/Passport");
+const { appendJwtAsCookie, removeJwtFromCookies } = require("./Passport");
 
 function profileView(req, res) {
   const userToken = req.user;
@@ -13,7 +10,7 @@ function profileView(req, res) {
     userToken: userToken | null,
   });
 }
-function registerView(req, res, next) {
+function registerUser(req, res, next) {
   passport.authenticate("register", {
     failWithError: true,
   })(req, res, (err) => {
@@ -22,22 +19,16 @@ function registerView(req, res, next) {
       res.status(400).json({ status: "error", message: err.message });
       return;
     }
-
-    console.log("Registration authentication successful!");
-
     appendJwtAsCookie(req, res, () => {
-      console.log("JWT appended as cookie successfully.");
-
       res.status(201).json({
         message: "Registration successful",
         payload: req.user,
       });
-
-      console.log("REGISTER data", req.user);
     });
   });
 }
-function currentSessionView(req, res, next) {
+
+function getCurrentSession(req, res, next) {
   passport.authenticate("jwt", { failWithError: true }, async (err, user) => {
     if (err) {
       if (err.name === "UnauthorizedError" && err.message === "jwt expired") {
@@ -72,4 +63,4 @@ function currentSessionView(req, res, next) {
   })(req, res, next);
 }
 
-module.exports = { profileView, registerView, currentSessionView };
+module.exports = { profileView, registerUser, getCurrentSession };
