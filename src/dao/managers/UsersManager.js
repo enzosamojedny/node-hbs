@@ -9,7 +9,9 @@ class UsersManager {
     userData._id = randomUUID();
     const hashedPassword = await bcrypt.hash(userData.password, 10);
     userData.password = hashedPassword;
+
     const userCreated = await Users.create(userData);
+    console.log(userCreated);
     return userCreated.toObject();
   }
 

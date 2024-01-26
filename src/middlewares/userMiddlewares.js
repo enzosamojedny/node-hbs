@@ -10,23 +10,23 @@ function profileView(req, res) {
     userToken: userToken | null,
   });
 }
-function registerUser(req, res, next) {
-  passport.authenticate("register", {
-    failWithError: true,
-  })(req, res, (err) => {
-    if (err) {
-      console.log("Registration authentication failed:", err.message);
-      res.status(400).json({ status: "error", message: err.message });
-      return;
-    }
-    appendJwtAsCookie(req, res, () => {
-      res.status(201).json({
-        message: "Registration successful",
-        payload: req.user,
-      });
-    });
-  });
-}
+// function registerUser(req, res, next) {
+//   passport.authenticate("register", (err, user, info) => {
+//     if (err) {
+//       console.log("Registration authentication failed:", err.message);
+//       return res.status(500).json({ error: "Internal Server Error" });
+//     }
+//     if (!user) {
+//       return res
+//         .status(400)
+//         .json({ error: info.message || "Registration failed" });
+//     }
+//     // Successful authentication, user is set at this point
+//     appendJwtAsCookie(req, res, () => {
+//       res.status(200).json({ message: "Registration successful", user });
+//     });
+//   })(req, res, next);
+// }
 
 function getCurrentSession(req, res, next) {
   passport.authenticate("jwt", { failWithError: true }, async (err, user) => {
@@ -63,4 +63,4 @@ function getCurrentSession(req, res, next) {
   })(req, res, next);
 }
 
-module.exports = { profileView, registerUser, getCurrentSession };
+module.exports = { profileView, getCurrentSession };

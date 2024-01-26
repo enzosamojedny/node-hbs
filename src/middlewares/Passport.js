@@ -53,7 +53,8 @@ const COOKIE_OPTIONS = {
 async function appendJwtAsCookie(req, res, next) {
   try {
     const token = await encrypt(req.user);
-    console.log(token);
+    console.log("token appended in function", token);
+
     res.cookie("authorization", token, COOKIE_OPTIONS);
     next();
   } catch (error) {
@@ -66,6 +67,7 @@ async function removeJwtFromCookies(req, res, next) {
   next();
 }
 
+//* current session
 passport.use(
   "jwt",
   new JwtStrategy(
@@ -177,7 +179,7 @@ passport.use(
     async (req, _u, _p, done) => {
       try {
         const userData = await usersManagerMongoDB.registerUser(req.body);
-        console.log("REGISTER strategy", userData);
+        console.log("REGISTER", req.body);
         done(null, userData);
       } catch (error) {
         return done(null, false, { message: error.message });

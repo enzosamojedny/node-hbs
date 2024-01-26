@@ -1,5 +1,6 @@
 const Router = require("express").Router;
 const { onlyLoggedClient } = require("../middlewares/auth");
+const passport = require("passport");
 const usersRouter = Router();
 
 const {
@@ -13,9 +14,23 @@ const {
 
 const {
   profileView,
-  registerUser,
   getCurrentSession,
 } = require("../middlewares/userMiddlewares");
+
+usersRouter.post("/api/users", (req, res, next) => {
+  passport.authenticate("register", (err, user, info) => {
+    if (err) {
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+    if (!user) {
+      return res
+        .status(400)
+        .json({ error: info.message || "Registration failed" });
+    }
+
+    res.status(200).json({ message: "Registration successful", user });
+  })(req, res, next);
+});
 
 usersRouter.get("/api/users/:id", getUserId);
 usersRouter.get("/api/users", GetUsers);
@@ -23,7 +38,6 @@ usersRouter.put("/api/users/:id", DeleteUser);
 usersRouter.get("/api/users/myprofile", getUsername);
 usersRouter.delete("/api/users/:id", UpdateUser);
 usersRouter.post("/api/resetpassword", ResetPassword);
-usersRouter.post("/api/users", registerUser);
 usersRouter.get("/api/session/current", getCurrentSession);
 usersRouter.get("/profile", onlyLoggedClient, profileView);
 
