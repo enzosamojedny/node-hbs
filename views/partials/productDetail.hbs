@@ -3,57 +3,56 @@
   <script defer src="/static/js/productDetail.js"></script>
 </head>
 <body>
-  <div id="detail-wrapper">
-    <h2 id="productTitle"></h2>
-    <p id="productPrice"></p>
-    <p id="productDescription"></p>
-  </div>
-  <div style="display: flex; flex-direction:row">
+  <main class="main-wrapper">
+    <div id="detail-wrapper">
+      <h2 id="productTitle"></h2>
+      <p id="productPrice"></p>
+      <p id="productDescription"></p>
+    </div>
 
-    <button type="button" class="btn btn-dark"><span>+</span></button>
-    <div class="input-group">
-      <input
-        type="text"
-        class="form-control"
-        aria-label="Dollar amount (with dot and two decimal places)"
-      />
-      <span class="input-group-text">$</span>
-      <span class="input-group-text">0.00</span>
+    <div
+      id="carouselExampleInterval"
+      class="carousel slide"
+      data-bs-ride="carousel"
+      data-bs-theme="dark"
+      {{!here}}
+      ;
+    >
+      <div class="carousel-indicators">
+      </div>
+      <div class="carousel-inner">
+      </div>
+      <button
+        class="carousel-control-prev"
+        type="button"
+        data-bs-target="#carouselExampleInterval"
+        data-bs-slide="prev"
+      >
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button
+        class="carousel-control-next"
+        type="button"
+        data-bs-target="#carouselExampleInterval"
+        data-bs-slide="next"
+      >
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
     </div>
-    <button class="btn btn-dark"><span>-</span></button>
-  </div>
+    <div class="detail-input-wrapper">
 
-  <button type="button" id="cart-btn" class="btn btn-dark">
-  </button>
-  <div
-    id="carouselExampleInterval"
-    class="carousel slide"
-    data-bs-ride="carousel"
-    data-bs-theme="dark"
-    {{!here}}
-    ;
-  >
-    <div class="carousel-indicators">
+      <div class="input-group">
+        <button class="btn btn-dark" id="decrease"><span>-</span></button>
+        <input type="text" class="input-detail" id="quantity-input" />
+        <button type="button" class="btn btn-dark" id="increase"><span
+          >+</span></button>
+
+        <span class="input-group-text" id="amount"></span>
+      </div>
+      <button type="button" id="cart-btn" class="btn btn-dark">
+      </button>
     </div>
-    <div class="carousel-inner">
-    </div>
-    <button
-      class="carousel-control-prev"
-      type="button"
-      data-bs-target="#carouselExampleInterval"
-      data-bs-slide="prev"
-    >
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button
-      class="carousel-control-next"
-      type="button"
-      data-bs-target="#carouselExampleInterval"
-      data-bs-slide="next"
-    >
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
-  </div>
+  </main>
 </body>

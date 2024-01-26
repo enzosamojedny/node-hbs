@@ -1,3 +1,38 @@
+function Counter(product) {
+  const increase = document.getElementById("increase");
+  const input = document.getElementById("quantity-input");
+  const priceDisplay = document.getElementById("amount");
+  input.value = 0;
+  priceDisplay.textContent = "$0.00";
+
+  increase.addEventListener("click", function () {
+    let currentValue = parseInt(input.value, 10);
+    let currentPrice = parseInt(product.price, 10);
+
+    if (!isNaN(currentValue)) {
+      input.value = currentValue + 1;
+      let totalPrice = (currentValue + 1) * currentPrice;
+      priceDisplay.textContent = `$${totalPrice.toFixed(2)}`;
+    } else {
+      input.value = 1;
+      priceDisplay.textContent = `$${product.price.toFixed(2)}`;
+    }
+  });
+  decrease.addEventListener("click", function () {
+    let currentValue = parseInt(input.value, 10);
+    let currentPrice = parseInt(product.price, 10);
+
+    if (!isNaN(currentValue)) {
+      input.value = Math.max(currentValue - 1, 0);
+      let totalPrice = Math.max((currentValue - 1) * currentPrice, 0);
+      priceDisplay.textContent = `$${totalPrice.toFixed(2)}`;
+    } else {
+      input.value = 1;
+      priceDisplay.textContent = `$${product.price.toFixed(2)}`;
+    }
+  });
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   function renderProductDetails(product) {
     const productDetails = product[0];
@@ -53,6 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((response) => {
         const data = response.data;
         console.log(data.product);
+        Counter(data.product[0]);
         renderProductDetails(data.product);
       });
   }

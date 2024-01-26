@@ -1,0 +1,25 @@
+.main-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.detail-input-wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+.input-detail {
+  width: 50px !important;
+}
+.carousel-item img {
+  height: 300px; /* Set your desired fixed height */
+  object-fit: contain; /* Choose the object-fit value that suits your design */
+  width: 150px;
+}
+
+.carousel-indicators button {
+  width: 150px; /* Adjust this value according to your design */
+  object-fit: contain;
+}
