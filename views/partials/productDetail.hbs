@@ -8,6 +8,23 @@
     <p id="productPrice"></p>
     <p id="productDescription"></p>
   </div>
+  <div style="display: flex; flex-direction:row">
+
+    <button type="button" class="btn btn-dark"><span>+</span></button>
+    <div class="input-group">
+      <input
+        type="text"
+        class="form-control"
+        aria-label="Dollar amount (with dot and two decimal places)"
+      />
+      <span class="input-group-text">$</span>
+      <span class="input-group-text">0.00</span>
+    </div>
+    <button class="btn btn-dark"><span>-</span></button>
+  </div>
+
+  <button type="button" id="cart-btn" class="btn btn-dark">
+  </button>
   <div
     id="carouselExampleInterval"
     class="carousel slide"

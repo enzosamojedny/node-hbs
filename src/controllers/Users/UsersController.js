@@ -1,6 +1,6 @@
 const Router = require("express").Router;
 const UsersManager = require("../../dao/managers/UsersManager");
-const { onlyAdmins } = require("../../middlewares/auth");
+const { onlyAdmins } = require("../../middlewares/authentication");
 const usersManagerMongoDB = new UsersManager();
 const usersRouter = Router();
 

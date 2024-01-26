@@ -10,7 +10,7 @@ const usersManagerMongoDB = new UsersManager();
 const { Strategy: GithubStrategy } = require("passport-github2");
 const { Strategy: GoogleStrategy } = require("passport-google-oauth20");
 let JwtStrategy = require("passport-jwt").Strategy;
-const { encrypt } = require("./auth");
+const { encrypt } = require("./authentication");
 
 //! keep this as is
 passport.serializeUser((user, next) => {

@@ -18,7 +18,6 @@ sessionRouter.post(
   userLogin,
   appendJwtAsCookie,
   (req, res) => {
-    console.log("POST api/login router", req.user);
     res.status(201).json({ message: "Login successful", payload: req.user });
   },
   (error, req, res, next) => {

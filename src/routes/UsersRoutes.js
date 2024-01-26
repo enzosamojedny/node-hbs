@@ -1,5 +1,9 @@
 const Router = require("express").Router;
-const { onlyLoggedClient } = require("../middlewares/auth");
+const {
+  onlyLoggedClient,
+  onlyLoggedApi,
+  onlyAdmins,
+} = require("../middlewares/authentication");
 const passport = require("passport");
 const usersRouter = Router();
 

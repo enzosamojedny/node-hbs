@@ -31,15 +31,16 @@ function encrypt(data) {
 // }
 
 function onlyAdmins(req, res, next) {
-  // if (req.user && req.user.admin === 'admin') {
-  console.log(req.user);
-  if (req.user) {
-    next();
-  } else {
-    return res.status(403).json({
-      status: "error",
-      message: "You don't have administration privileges to access this data",
-    });
+  if (req.user && req.user.role === "admin") {
+    console.log(req.user);
+    if (req.user) {
+      next();
+    } else {
+      return res.status(403).json({
+        status: "error",
+        message: "You don't have administration privileges to access this data",
+      });
+    }
   }
 }
 

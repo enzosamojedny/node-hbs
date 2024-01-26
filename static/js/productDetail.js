@@ -10,6 +10,11 @@ document.addEventListener("DOMContentLoaded", function () {
     h2.textContent = productDetails.title;
     price.textContent = `$${productDetails.price}`;
     description.textContent = productDetails.description;
+
+    const button = document.getElementById("cart-btn");
+    button.className = "btn btn-primary";
+    button.textContent = "Add to cart";
+
     const carouselInner = document.querySelector(".carousel-inner");
     const carouselIndicators = document.querySelector(".carousel-indicators");
 
@@ -54,7 +59,4 @@ document.addEventListener("DOMContentLoaded", function () {
   productByCode();
 });
 {
-  /* <button type="button" class="btn btn-primary">
-Add to Cart
-</button> */
 }
