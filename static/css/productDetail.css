@@ -8,18 +8,20 @@
 .detail-input-wrapper {
   display: flex;
   flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 
 .input-detail {
-  width: 50px !important;
+  font-size: 1.5rem;
 }
 .carousel-item img {
-  height: 300px; /* Set your desired fixed height */
-  object-fit: contain; /* Choose the object-fit value that suits your design */
+  height: 300px;
+  object-fit: contain;
   width: 150px;
 }
 
 .carousel-indicators button {
-  width: 150px; /* Adjust this value according to your design */
+  width: 150px;
   object-fit: contain;
 }

@@ -4,8 +4,8 @@ const CartSchema = new mongoose.Schema(
     _id: { type: String, required: true },
     products: [
       { type: mongoose.Schema.Types.ObjectId, required: true, ref: "products" },
-    ], //product ID's in cart
-    quantity: { type: Number, required: true }, //quantity of products
+    ],
+    quantity: { type: Number, required: true },
     date: { type: Date, default: Date.now(), index: true },
   },
   { versionKey: false, strict: "throw" }

@@ -1,38 +1,63 @@
 function Counter(product) {
   const increase = document.getElementById("increase");
-  const input = document.getElementById("quantity-input");
+  const decrease = document.getElementById("decrease");
+  const quantity_span = document.getElementById("quantity-span");
   const priceDisplay = document.getElementById("amount");
-  input.value = 0;
-  priceDisplay.textContent = "$0.00";
+  const button = document.getElementById("cart-btn");
+  let currentValue = 0;
+  let currentPrice = parseInt(product.price, 10);
 
+  function updateDisplay() {
+    let totalPrice = currentValue * currentPrice;
+    quantity_span.textContent = currentValue;
+    priceDisplay.textContent = `$${totalPrice.toFixed(2)}`;
+  }
+  updateDisplay();
   increase.addEventListener("click", function () {
-    let currentValue = parseInt(input.value, 10);
-    let currentPrice = parseInt(product.price, 10);
-
-    if (!isNaN(currentValue)) {
-      input.value = currentValue + 1;
-      let totalPrice = (currentValue + 1) * currentPrice;
-      priceDisplay.textContent = `$${totalPrice.toFixed(2)}`;
-    } else {
-      input.value = 1;
-      priceDisplay.textContent = `$${product.price.toFixed(2)}`;
-    }
+    currentValue += 1;
+    updateDisplay();
   });
-  decrease.addEventListener("click", function () {
-    let currentValue = parseInt(input.value, 10);
-    let currentPrice = parseInt(product.price, 10);
 
-    if (!isNaN(currentValue)) {
-      input.value = Math.max(currentValue - 1, 0);
-      let totalPrice = Math.max((currentValue - 1) * currentPrice, 0);
-      priceDisplay.textContent = `$${totalPrice.toFixed(2)}`;
-    } else {
-      input.value = 1;
-      priceDisplay.textContent = `$${product.price.toFixed(2)}`;
-    }
+  decrease.addEventListener("click", function () {
+    currentValue = Math.max(currentValue - 1, 0);
+    updateDisplay();
+  });
+
+  button.addEventListener("click", function () {
+    addItemsToCart(product._id, currentValue, currentPrice, product.title);
   });
 }
 
+async function addItemsToCart(
+  productId,
+  currentValue,
+  currentPrice,
+  productTitle
+) {
+  const totalPrice = currentValue * currentPrice;
+  const productData = {
+    productId,
+    currentValue,
+    totalPrice,
+    productTitle,
+  };
+  //POST data
+  try {
+    if (currentValue > 1) {
+      const response = await axios.post(
+        `/api/cartId/product/${productId}`,
+        productData
+      );
+      console.log(response.data);
+    }
+  } catch (error) {
+    console.error("Error during POST request:", error.message);
+  }
+
+  console.log(productData);
+}
+
+//!
 document.addEventListener("DOMContentLoaded", function () {
   function renderProductDetails(product) {
     const productDetails = product[0];

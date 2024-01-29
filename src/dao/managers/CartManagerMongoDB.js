@@ -12,7 +12,7 @@ class CartManagerMongoDB {
   }
 
   async getCartById(cartId) {
-    const found = await Cart.findById({ cartId }).lean();
+    const found = await Cart.findById(cartId).lean();
     if (!found) {
       throw new Error(`Cart with id ${cartId} not found`);
     } else {
@@ -33,10 +33,24 @@ class CartManagerMongoDB {
       return cartToDeleteProduct;
     }
   }
+  // async deleteProductFromCart(cartId, productId) {
+  //   const cart = await this.getCartById(cartId);
+  //   const productIndex = cart.products.findIndex(
+  //     (p) => p.product.toString() === productId
+  //   );
+  //   if (productIndex === -1) {
+  //     throw new Error(
+  //       `Product with id ${productId} not found in cart with id ${cartId}`
+  //     );
+  //   }
+  //   cart.products.splice(productIndex, 1);
+  //   const updatedCart = await Cart.findByIdAndUpdate(cartId, cart, {
+  //     new: true,
+  //   }).lean();
+  //   return updatedCart;
+  // }
   async deleteCart(cartId) {
-    const cartToDelete = await Cart.findByIdAndDelete({
-      cartId,
-    }).lean();
+    const cartToDelete = await Cart.findByIdAndDelete(cartId).lean();
     if (!cartToDelete) {
       throw new Error(`Cart with id ${cartId} couldnt be deleted`);
     } else {
@@ -66,6 +80,40 @@ class CartManagerMongoDB {
       throw new Error(`Cart with id ${cartId} couldnt be updated`);
     } else {
       return cartToUpdate;
+    }
+  }
+
+  async addProductToCart(cartId, productId, quantity) {
+    try {
+      let cart = await Cart.findById(cartId);
+      if (!cart) {
+        //cart doesnt exist
+        const newCart = {
+          _id: cartId,
+          products: [{ product: productId, quantity }],
+          quantity,
+        };
+        cart = await Cart.create(newCart);
+      } else {
+        //cart exists
+        const existingProduct = cart?.products?.findIndex(
+          (p) => p.products.toString() === productId
+        );
+        if (existingProductIndex !== -1) {
+          // product exists in the cart, update quantity
+          cart.products[productIndex].quantity += quantity;
+        } else {
+          // product doesn't exist in the cart, add it
+          cart.products.push({ product: productId, quantity });
+          cart.quantity = (cart.quantity || 0) + quantity;
+        }
+      }
+      const updatedCart = await Cart.findByIdAndUpdate(cartId, cart, {
+        new: true,
+      }).lean();
+      return updatedCart;
+    } catch (error) {
+      throw new Error(`Could not add product to Cart: ${error.message}`);
     }
   }
 }
