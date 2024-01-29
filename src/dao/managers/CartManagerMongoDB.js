@@ -1,8 +1,7 @@
 const Cart = require("../models/Cart");
-const { randomUUID } = require("crypto");
+
 class CartManagerMongoDB {
   async addCart(cart) {
-    cart._id = randomUUID();
     const cartCreated = await Cart.create(cart);
     return cartCreated.toObject();
   }

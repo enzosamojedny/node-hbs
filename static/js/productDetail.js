@@ -34,20 +34,16 @@ async function addItemsToCart(
   currentPrice,
   productTitle
 ) {
-  const totalPrice = currentValue * currentPrice;
   const productData = {
-    productId,
-    currentValue,
-    totalPrice,
-    productTitle,
+    products: { productId, currentPrice, productTitle, currentValue },
   };
+
   //POST data
   try {
     if (currentValue > 1) {
-      const response = await axios.post(
-        `/api/cartId/product/${productId}`,
-        productData
-      );
+      const profileData = await axios.get("/api/session/current");
+      console.log(productData.data);
+      const response = await axios.post(`/api/carts`, productData);
       console.log(response.data);
     }
   } catch (error) {
