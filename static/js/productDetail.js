@@ -41,7 +41,12 @@ async function addItemsToCart(
   //POST data
   try {
     if (currentValue > 1) {
-      const profileData = await axios.get("/api/session/current");
+      const profileData = await axios
+        .get("/api/session/current")
+        .then((response) => {
+          return response.data.payload;
+        });
+      console.log("profiledata", profileData);
       console.log(productData.data);
       const response = await axios.post(`/api/carts`, productData);
       console.log(response.data);

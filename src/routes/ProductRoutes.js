@@ -1,5 +1,5 @@
 const Router = require("express").Router;
-
+const { decryptUserFromToken } = require("../middlewares/Passport.js");
 const productRouter = Router();
 const {
   Products,
@@ -13,8 +13,7 @@ const {
 //PRODUCTS
 productRouter.get("/api/products", Products);
 productRouter.post("/api/products/search", ProductByName);
-productRouter.get("/api/product/detail/code/:code", ProductByCode);
-//! usar query para entrar a cada product detail usando su CODE
+
 productRouter.post("/api/products", AddProduct);
 productRouter.put("/api/products/:id", UpdateProduct);
 productRouter.delete("/api/products/:id", DeleteProduct);
@@ -31,6 +30,12 @@ productRouter.get("/products", (req, res) => {
     userToken: userToken || null,
   });
 });
+// decryptUserFromToken, IT IS BROKEN FOR NOW
+productRouter.get(
+  "/api/product/detail/code/:code",
+
+  ProductByCode
+);
 productRouter.get("/product/detail/code/:code", (req, res) => {
   const userToken = req.user;
   res.render("productDetail.hbs", {

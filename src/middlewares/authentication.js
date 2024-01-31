@@ -18,17 +18,18 @@ function encrypt(data) {
   });
 }
 
-// function decrypt(token) {
-//   return new Promise((resolve, reject) => {
-//     jwt.verify(token, process.env.JWT_PRIVATE_KEY, (error, decoded) => {
-//       if (error) {
-//         reject(error);
-//       } else {
-//         resolve(decoded);
-//       }
-//     });
-//   });
-// }
+function decrypt(token) {
+  return new Promise((resolve, reject) => {
+    jwt.verify(token, process.env.JWT_KEY, (error, decoded) => {
+      if (error) {
+        reject(error);
+      } else {
+        const userId = decoded._id;
+        resolve(userId);
+      }
+    });
+  });
+}
 
 function onlyAdmins(req, res, next) {
   if (req.user && req.user.role === "admin") {
@@ -64,4 +65,10 @@ function onlyLoggedClient(req, res, next) {
   next();
 }
 
-module.exports = { onlyLoggedClient, onlyLoggedApi, encrypt, onlyAdmins };
+module.exports = {
+  onlyLoggedClient,
+  onlyLoggedApi,
+  encrypt,
+  onlyAdmins,
+  decrypt,
+};

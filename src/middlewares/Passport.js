@@ -10,7 +10,7 @@ const usersManagerMongoDB = new UsersManager();
 const { Strategy: GithubStrategy } = require("passport-github2");
 const { Strategy: GoogleStrategy } = require("passport-google-oauth20");
 let JwtStrategy = require("passport-jwt").Strategy;
-const { encrypt } = require("./authentication");
+const { encrypt, decrypt } = require("./authentication");
 
 //! keep this as is
 passport.serializeUser((user, next) => {
@@ -28,7 +28,7 @@ const sessionMiddleware = createSessionMiddleware({
     },
     ttl: 3600,
   }),
-  secret: "pepito",
+  secret: process.env.JWT_KEY, //! OR REPLACE TO "pepito"
   //* resave mantiene la coneccion activa aunque se cierre
   resave: true,
   //*saveUnitialized guarda cualquier sesion aunque el objeto este vacio
@@ -61,7 +61,21 @@ async function appendJwtAsCookie(req, res, next) {
     next(error);
   }
 }
+async function decryptUserFromToken(req, res, next) {
+  try {
+    const userId = await decrypt(token);
+    const token = req.user;
 
+    if (!token) {
+      return res.status(400).json({ message: "Unauthorized" });
+    }
+
+    req.userId = userId;
+    next();
+  } catch (error) {
+    return res.status(400).json({ message: "Invalid token" });
+  }
+}
 async function removeJwtFromCookies(req, res, next) {
   res.clearCookie("authorization", COOKIE_OPTIONS);
   next();
@@ -241,4 +255,5 @@ module.exports = {
   auth,
   appendJwtAsCookie,
   removeJwtFromCookies,
+  decryptUserFromToken,
 };

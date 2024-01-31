@@ -16,7 +16,6 @@ document.addEventListener("DOMContentLoaded", function () {
     await axios
       .get("/api/session/current")
       .then((response) => {
-        console.log(response.data.payload);
         const namep = document.createElement("p");
         namep.textContent = response.data.payload.first_name;
         name.appendChild(namep);

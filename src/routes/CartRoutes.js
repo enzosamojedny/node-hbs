@@ -13,6 +13,11 @@ cartRouter.post("/api/carts", PostCart);
 cartRouter.get("/api/carts/:id", GetCartId);
 
 cartRouter.get("/cart", (req, res) => {
-  res.render("cart.hbs", { title: "Alus | Cart", isHomePage: false });
+  const userToken = req.user;
+  res.render("cart.hbs", {
+    title: "Alus | Cart",
+    isHomePage: false,
+    userToken: userToken || null,
+  });
 });
 module.exports = cartRouter;

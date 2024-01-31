@@ -1,12 +1,10 @@
 const passport = require("passport");
-const { appendJwtAsCookie, removeJwtFromCookies } = require("./Passport");
 
 function profileView(req, res) {
   const userToken = req.user;
   res.render("profile.hbs", {
     title: "Alus | My profile",
     isHomePage: false,
-    user: req.session.user,
     userToken: userToken | null,
   });
 }
@@ -58,7 +56,7 @@ function getCurrentSession(req, res, next) {
         message: "Internal Server Error",
       });
     }
-
+    //!
     res.json({ status: "success", payload: user });
   })(req, res, next);
 }
