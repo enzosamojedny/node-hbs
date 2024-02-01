@@ -1,27 +1,3 @@
-function isValidEmail(email) {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-}
-
-async function getUserData() {
-  try {
-    const response = await axios.get("/api/session/current");
-    const userData = response.data.payload.email;
-    console.log("profiledata", userData);
-    if (isValidEmail(userData)) {
-      const getUserByEmail = await axios.post("/api/getuserbyemail", {
-        email: userData,
-      });
-      return getUserByEmail.data.message;
-    } else {
-      console.error("Invalid email format");
-    }
-  } catch (error) {
-    return null;
-    console.error("error getting user email");
-  }
-}
-
 function Counter(product) {
   const increase = document.getElementById("increase");
   const decrease = document.getElementById("decrease");
@@ -84,7 +60,6 @@ async function addItemsToCart(
   }
 }
 
-//!
 document.addEventListener("DOMContentLoaded", function () {
   function renderProductDetails(product) {
     const productDetails = product[0];
@@ -115,9 +90,7 @@ document.addEventListener("DOMContentLoaded", function () {
       img.className = "d-block w-100";
 
       carouselItem.appendChild(img);
-
       carouselInner.appendChild(carouselItem);
-
       const indicator = document.createElement("button");
       indicator.setAttribute("type", "button");
       indicator.setAttribute("data-bs-target", "#carouselExampleInterval");
@@ -125,14 +98,13 @@ document.addEventListener("DOMContentLoaded", function () {
       indicator.className = index === 0 ? "active" : "";
       indicator.setAttribute("aria-current", index === 0 ? "true" : "false");
       indicator.setAttribute("aria-label", `Slide ${index + 1}`);
-
       carouselIndicators.appendChild(indicator);
     });
-
     wrapper.appendChild(h2);
     wrapper.appendChild(price);
     wrapper.appendChild(description);
   }
+
   async function productByCode() {
     const productCode = window.location.pathname.split("/").pop();
     await axios

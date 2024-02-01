@@ -5,6 +5,7 @@ const router = express.Router();
 
 //CART
 //POST CART TO DB
+
 const PostCart = router.post("/api/carts", async (req, res) => {
   try {
     const productDetails = req.body;
@@ -18,7 +19,13 @@ const PostCart = router.post("/api/carts", async (req, res) => {
     res.status(500).send({ message: error.message });
   }
 });
-
+const getCart = router.get("/api/carts", async (req,res)=>{
+  try {
+    
+  } catch (error) {
+    
+  }
+})
 const GetCartId = router.get("/api/carts/:id", async (req, res) => {
   try {
     const { id } = req.params;

@@ -2,7 +2,6 @@ const Cart = require("../models/Cart");
 
 class CartManagerMongoDB {
   async addCart(cart) {
-    console.log("controller", cart);
     const cartCreated = await Cart.create(cart);
     return cartCreated.toObject();
   }
