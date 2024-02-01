@@ -4,6 +4,7 @@ const {
   onlyLoggedApi,
   onlyAdmins,
 } = require("../middlewares/authentication");
+
 const passport = require("passport");
 const usersRouter = Router();
 const { decryptUserFromToken } = require("../middlewares/Passport");
@@ -39,15 +40,11 @@ usersRouter.post("/api/users", (req, res, next) => {
 usersRouter.get("/api/users/:id", getUserId);
 usersRouter.get("/api/users", GetUsers);
 usersRouter.put("/api/users/:id", DeleteUser);
-usersRouter.get("/api/users/myprofile", getUsername);
+usersRouter.post("/api/getuserbyemail", getUsername); //! get user by email
 usersRouter.delete("/api/users/:id", UpdateUser);
 usersRouter.post("/api/resetpassword", ResetPassword);
 usersRouter.get("/api/session/current", getCurrentSession);
-usersRouter.get(
-  "/profile",
-  onlyLoggedClient,
-  profileView
-);
+usersRouter.get("/profile", onlyLoggedClient, profileView);
 
 usersRouter.get("/register", (req, res) => {
   res.render("register.hbs", { title: "Alus | Register", isHomePage: false });

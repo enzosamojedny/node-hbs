@@ -8,7 +8,7 @@ const router = express.Router();
 const PostCart = router.post("/api/carts", async (req, res) => {
   try {
     const productDetails = req.body;
-
+    console.log("product details", productDetails);
     if (!productDetails) {
       throw new Error("Product details not provided in the request body");
     }

@@ -63,8 +63,9 @@ async function appendJwtAsCookie(req, res, next) {
 }
 async function decryptUserFromToken(req, res, next) {
   try {
-    const userId = await decrypt(token);
+
     const token = req.user;
+    const userId = await decrypt(token);
 
     if (!token) {
       return res.status(400).json({ message: "Unauthorized" });
@@ -76,6 +77,7 @@ async function decryptUserFromToken(req, res, next) {
     return res.status(400).json({ message: "Invalid token" });
   }
 }
+
 async function removeJwtFromCookies(req, res, next) {
   res.clearCookie("authorization", COOKIE_OPTIONS);
   next();

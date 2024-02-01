@@ -15,24 +15,22 @@ const GetUsers = usersRouter.get("/api/users", onlyAdmins, async (req, res) => {
   }
 });
 
-const getUsername = usersRouter.get(
-  "/api/users/myprofile",
+const getUsername = usersRouter.post(
+  "/api/getuserbyemail",
   async (req, res) => {
     try {
-      if (!req.session["user"]) {
+      const email = req.body;
+      console.log(email);
+      if (!email) {
         return res
           .status(400)
-          .json({ status: "error", message: "You have to log in first" });
+          .json({ status: "error", message: "No email received" });
       }
 
-      const data = {
-        email: req.session["user"].email,
-      };
+      const user = await usersManagerMongoDB.getUserByEmail(email);
 
-      const getUserByEmail = await usersManagerMongoDB.getUserByEmail(data);
-
-      if (getUserByEmail) {
-        res.status(200).json({ status: "success", message: getUserByEmail });
+      if (user) {
+        res.status(200).json({ status: "success", message: user._id });
       } else {
         throw new Error(`User not found in the database`);
       }

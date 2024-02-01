@@ -18,7 +18,7 @@ class UsersManager {
   async getUserByEmail(data) {
     const found = await Users.findOne(data).lean();
     if (!found) {
-      throw new Error(`User not found`);
+      throw new Error(`No match found`);
     } else {
       return found;
     }

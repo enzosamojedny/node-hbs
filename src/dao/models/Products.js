@@ -7,7 +7,7 @@ const productSchema = new mongoose.Schema(
     _id: {
       type: String,
       required: true,
-      default: () => randomUUID(),
+      default: () => new mongoose.Types.ObjectId(),
       unique: true,
     },
     title: { type: String, required: true },

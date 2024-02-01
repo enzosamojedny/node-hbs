@@ -1,5 +1,5 @@
 const Router = require("express").Router;
-const { decryptUserFromToken } = require("../middlewares/Passport.js");
+
 const productRouter = Router();
 const {
   Products,
@@ -31,11 +31,7 @@ productRouter.get("/products", (req, res) => {
   });
 });
 // decryptUserFromToken, IT IS BROKEN FOR NOW
-productRouter.get(
-  "/api/product/detail/code/:code",
-
-  ProductByCode
-);
+productRouter.get("/api/product/detail/code/:code", ProductByCode);
 productRouter.get("/product/detail/code/:code", (req, res) => {
   const userToken = req.user;
   res.render("productDetail.hbs", {

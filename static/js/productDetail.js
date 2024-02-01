@@ -1,3 +1,27 @@
+function isValidEmail(email) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
+async function getUserData() {
+  try {
+    const response = await axios.get("/api/session/current");
+    const userData = response.data.payload.email;
+    console.log("profiledata", userData);
+    if (isValidEmail(userData)) {
+      const getUserByEmail = await axios.post("/api/getuserbyemail", {
+        email: userData,
+      });
+      return getUserByEmail.data.message;
+    } else {
+      console.error("Invalid email format");
+    }
+  } catch (error) {
+    return null;
+    console.error("error getting user email");
+  }
+}
+
 function Counter(product) {
   const increase = document.getElementById("increase");
   const decrease = document.getElementById("decrease");
@@ -34,28 +58,30 @@ async function addItemsToCart(
   currentPrice,
   productTitle
 ) {
-  const productData = {
-    products: { productId, currentPrice, productTitle, currentValue },
-  };
-
   //POST data
   try {
     if (currentValue > 1) {
-      const profileData = await axios
-        .get("/api/session/current")
-        .then((response) => {
-          return response.data.payload;
-        });
-      console.log("profiledata", profileData);
-      console.log(productData.data);
-      const response = await axios.post(`/api/carts`, productData);
-      console.log(response.data);
+      const userId = await getUserData();
+      console.log("function returns userId", userId);
+      if (userId) {
+        const productData = {
+          userId: userId,
+          products: [
+            {
+              productId: productId,
+              price: currentPrice,
+              name: productTitle,
+              quantity: currentValue,
+            },
+          ],
+        };
+        const response = await axios.post(`/api/carts`, productData);
+        console.log(response.data);
+      }
     }
   } catch (error) {
     console.error("Error during POST request:", error.message);
   }
-
-  console.log(productData);
 }
 
 //!
