@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const mongoosePaginate = require("mongoose-paginate-v2");
-const { randomUUID } = require("crypto");
 
 const productSchema = new mongoose.Schema(
   {

@@ -1,0 +1,14 @@
+.card {
+  position: relative !important;
+  --bs-card-spacer-y: 0.7rem !important;
+}
+
+.row {
+  flex-wrap: nowrap !important;
+}
+
+/* @media (min-width: 1025px) {
+  .h-custom {
+    height: 100vh !important;
+  }
+} */

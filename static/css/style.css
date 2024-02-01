@@ -2,45 +2,8 @@ body {
   min-height: 100vh;
 }
 
-.card {
-  margin-right: 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-}
-.card-body {
-  margin-bottom: 0 !important;
-  padding: 0% !important;
-  margin-left: 0% !important;
-}
-.card img {
-  width: 200px;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 5px;
-
-
-}
-.card h2 {
-  font-size: 1.5rem;
-  margin: 10px 0;
-}
-.card p {
-  font-size: 1.2rem;
-  margin: 10px 0;
-}
-.card button {
-  width: 100%;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  background-color: #151515;
-  cursor: pointer;
-}
-.card button:hover {
-  background-color: #212020;
-}
-.card button:active {
-  background-color: #515050;
-}
-.card button:focus {
-  outline: none;
+.footer {
+  position: absolute;
+  width: -webkit-fill-available;
+  margin-top: 30px;
 }
