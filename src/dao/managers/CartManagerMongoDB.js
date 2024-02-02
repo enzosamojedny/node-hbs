@@ -15,8 +15,7 @@ class CartManagerMongoDB {
     if (!found) {
       throw new Error(`Cart with id ${userId} not found`);
     } else {
-      //filtro para que solo reciba la info del producto
-      return found.filter((e) => e.products);
+      return found.products;
     }
   }
 
