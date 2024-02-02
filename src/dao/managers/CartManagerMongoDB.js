@@ -10,12 +10,13 @@ class CartManagerMongoDB {
     return await Cart.find().lean();
   }
 
-  async getCartById(cartId) {
-    const found = await Cart.findById(cartId).lean();
+  async getCartById(userId) {
+    const found = await Cart.findOne({ userId: userId }).lean();
     if (!found) {
-      throw new Error(`Cart with id ${cartId} not found`);
+      throw new Error(`Cart with id ${userId} not found`);
     } else {
-      return found;
+      //filtro para que solo reciba la info del producto
+      return found.filter((e) => e.products);
     }
   }
 

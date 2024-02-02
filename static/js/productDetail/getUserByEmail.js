@@ -7,7 +7,8 @@ async function getUserData() {
   try {
     const response = await axios.get("/api/session/current");
     const userData = response.data.payload.email;
-    console.log("profiledata", userData);
+    //it returns me the email
+    //and i send it back to API to get userID
     if (isValidEmail(userData)) {
       const getUserByEmail = await axios.post("/api/getuserbyemail", {
         email: userData,

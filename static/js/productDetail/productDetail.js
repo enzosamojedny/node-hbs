@@ -24,7 +24,15 @@ function Counter(product) {
   });
 
   button.addEventListener("click", function () {
-    addItemsToCart(product._id, currentValue, currentPrice, product.title);
+    addItemsToCart(
+      product._id,
+      currentValue,
+      currentPrice,
+      product.title,
+      product.thumbnail,
+      product.category,
+      product.discountPercentage
+    );
   });
 }
 
@@ -32,7 +40,10 @@ async function addItemsToCart(
   productId,
   currentValue,
   currentPrice,
-  productTitle
+  productTitle,
+  productThumbnail,
+  productCategory,
+  productDiscountPercentage
 ) {
   //POST data
   try {
@@ -48,6 +59,9 @@ async function addItemsToCart(
               price: currentPrice,
               name: productTitle,
               quantity: currentValue,
+              thumbnail: productThumbnail,
+              category: productCategory,
+              discountPercentage: productDiscountPercentage,
             },
           ],
         };

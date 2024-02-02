@@ -19,47 +19,34 @@ const PostCart = router.post("/api/carts", async (req, res) => {
     res.status(500).send({ message: error.message });
   }
 });
-const getCart = router.get("/api/carts", async (req,res)=>{
-  try {
-    
-  } catch (error) {
-    
-  }
-})
+
 const GetCartId = router.get("/api/carts/:id", async (req, res) => {
   try {
-    const { id } = req.params;
-    if (!id) {
-      throw new Error("Product ID not provided in the request");
+    const { userId } = req.body;
+    if (!userId) {
+      throw new Error("UserID not provided in the request");
     }
-    const idCart = await cartManagerMongoDB.getCartById(id);
-    res.status(200).json({ product: idCart });
+    const userCart = await cartManagerMongoDB.getCartById(userId);
+    res.status(200).json({ cart: userCart });
   } catch (error) {
     res.status(500).send({ message: error.message });
   }
 });
 
-//POST PRODUCT TO CART
-const PostCartProduct = router.post(
-  "/api/carts/:cartid/products/:productid",
-  (req, res) => {
-    try {
-      const { cartid, productid } = req.params;
-      if (!cartid || !productid) {
-        throw new Error("Missing data in request");
-      }
-      const quantity = 1;
-      const postCartProduct = cartManagerMongoDB.addProductToCart(
-        cartid,
-        productid,
-        quantity
-      );
-      res.status(200).json({ cart: postCartProduct });
-    } catch (error) {
-      res.status(500).send({ message: error.message });
+//FIND CART BY USER ID
+const PostUserCart = router.post("/api/carts/usercart", async (req, res) => {
+  try {
+    const { userId } = req.body;
+    if (!userId) {
+      throw new Error("Missing data in request");
     }
+    const findUserById = await cartManagerMongoDB.getCartById(userId);
+    console.log(findUserById);
+    res.status(200).json({ cart: findUserById });
+  } catch (error) {
+    res.status(500).send({ message: error.message });
   }
-);
+});
 
 //DELETE 1 PRODUCT FROM CART
 const DeleteProductFromCart = router.delete(
@@ -130,7 +117,7 @@ const DeleteCart = router.delete("/api/carts/:id", async (req, res) => {
 module.exports = {
   PostCart,
   GetCartId,
-  PostCartProduct,
+  PostUserCart,
   DeleteProductFromCart,
   UpdateCartProductQuantity,
   DeleteCart,
