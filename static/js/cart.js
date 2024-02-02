@@ -8,7 +8,10 @@ document.addEventListener("DOMContentLoaded", async function getCart() {
         userId: userId,
       });
       const userCart = response.data.cart;
-      console.log(userCart);
+      userCart.forEach((item) => {
+        createCard({ item });
+        // createTotalCard(item);
+      });
     } catch (error) {
       throw new Error("Error while retrieving user cart");
     }
@@ -16,7 +19,8 @@ document.addEventListener("DOMContentLoaded", async function getCart() {
     throw new Error("Error while retrieving user cart");
   }
 
-  function createCard() {
+  function createCard({ item }) {
+    console.log(item);
     const cardBody = document.querySelector(".card-body");
 
     const cartWrapper = document.createElement("div");
@@ -32,21 +36,20 @@ document.addEventListener("DOMContentLoaded", async function getCart() {
 
     const imgContainer = document.createElement("div");
     const img = document.createElement("img");
-    img.src =
-      "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img1.webp";
+    img.src = item.thumbnail;
     img.classList.add("img-fluid", "rounded-3");
     img.alt = "Shopping item";
-    img.style.width = "65px";
+    img.style.width = "70px";
 
     const textContainer = document.createElement("div");
     textContainer.classList.add("ms-3");
 
     const title = document.createElement("h5");
-    title.textContent = "Iphone 11 pro";
+    title.textContent = item.name;
 
     const description = document.createElement("p");
     description.classList.add("small", "mb-0");
-    description.textContent = "256GB, Navy Blue";
+    description.textContent = item.category;
 
     imgContainer.appendChild(img);
     textContainer.appendChild(title);
@@ -62,14 +65,14 @@ document.addEventListener("DOMContentLoaded", async function getCart() {
 
     const quantity = document.createElement("h5");
     quantity.classList.add("fw-normal", "mb-0");
-    quantity.textContent = "2";
+    quantity.textContent = item.quantity;
 
     const priceContainer = document.createElement("div");
     priceContainer.style.width = "80px";
 
     const price = document.createElement("h5");
     price.classList.add("mb-0");
-    price.textContent = "$900";
+    price.textContent = item.price;
 
     const deleteLink = document.createElement("a");
     deleteLink.href = "#!";
@@ -94,7 +97,7 @@ document.addEventListener("DOMContentLoaded", async function getCart() {
 
   /////////////////////////////////////////////////////////
 
-  function createTotalCard() {
+  function createTotalCard(item) {
     const cardBody = document.querySelector(".card-body");
 
     const cartWrapper = document.createElement("div");
@@ -128,7 +131,7 @@ document.addEventListener("DOMContentLoaded", async function getCart() {
 
     const price = document.createElement("h5");
     price.classList.add("mb-0");
-    price.textContent = "$1799";
+    price.textContent = item.price;
 
     priceContainer.appendChild(price);
     rightContainer.appendChild(priceContainer);
