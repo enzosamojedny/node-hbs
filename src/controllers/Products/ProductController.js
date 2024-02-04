@@ -97,27 +97,34 @@ const AddProduct = router.post("/api/products", async (req, res) => {
     res.status(500).send({ message: error.message });
   }
 });
-const UpdateProduct = router.put("/api/products/:id", async (req, res) => {
+
+const UpdateProductQuantity = router.put("/api/products", async (req, res) => {
   try {
-    const { id } = req.params;
-    const productToUpdate = req.body;
-    if (!productToUpdate) {
-      throw new Error("Product details not provided in the request body");
+    const { _id, quantity } = req.body;
+    if (!_id || !quantity) {
+      throw new Error("Both _id and quantity are required to update products");
     }
     const updateProduct = await productManagerMongoDB.updateProduct(
-      id,
-      productToUpdate
+      _id,
+      quantity
     );
-    res.status(200).json({ message: "Product updated successfully" });
+    res.status(200).json({
+      message: "Product updated successfully",
+      product: updateProduct,
+    });
   } catch (error) {
     res.status(500).send({ message: error.message });
   }
 });
+
 const DeleteProduct = router.delete("/api/products/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const deleteProduct = await productManagerMongoDB.deleteProduct(id);
-    res.status(200).json({ message: "Product deleted successfully" });
+    res.status(200).json({
+      message: "Product deleted successfully",
+      product: deleteProduct,
+    });
   } catch (error) {
     res.status(500).send({ message: error.message });
   }
@@ -127,7 +134,7 @@ module.exports = {
   ProductByName,
   ProductByCode,
   AddProduct,
-  UpdateProduct,
+  UpdateProductQuantity,
   DeleteProduct,
   productManagerMongoDB,
 };

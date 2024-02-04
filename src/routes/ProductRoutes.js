@@ -5,7 +5,7 @@ const {
   Products,
   ProductByName,
   AddProduct,
-  UpdateProduct,
+  UpdateProductQuantity,
   DeleteProduct,
   ProductByCode,
 } = require("../../src/controllers/Products/ProductController.js");
@@ -15,7 +15,7 @@ productRouter.get("/api/products", Products);
 productRouter.post("/api/products/search", ProductByName);
 
 productRouter.post("/api/products", AddProduct);
-productRouter.put("/api/products/:id", UpdateProduct);
+productRouter.put("/api/products", UpdateProductQuantity);
 productRouter.delete("/api/products/:id", DeleteProduct);
 
 productRouter.get("/", (req, res) => {

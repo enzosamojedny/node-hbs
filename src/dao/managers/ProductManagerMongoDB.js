@@ -50,18 +50,43 @@ class ProductManagerMongoDB {
     }
   }
 
-  async updateProduct(productId, updatedProduct) {
-    const productToUpdate = await Products.findByIdAndUpdate(
-      productId,
-      updatedProduct,
-      {
-        new: true,
+  async updateProducts(updateData) {
+    try {
+      const updatedProducts = await Promise.all(
+        updateData?.map(async ({ _id, quantity }) => {
+          try {
+            const updatedProduct = await Products.findByIdAndUpdate(
+              _id,
+              { quantity },
+              { new: true }
+            ).lean();
+
+            if (!updatedProduct) {
+              return { error: `Product with id ${_id} couldn't be updated` };
+            }
+
+            return updatedProduct;
+          } catch (error) {
+            return {
+              error: `Error updating product with id ${_id}: ${error.message}`,
+            };
+          }
+        })
+      );
+
+      const errors = updatedProducts?.filter((product) => product.error);
+
+      if (errors.length > 0) {
+        throw new Error(
+          `Error updating products: ${errors
+            .map((err) => err.error)
+            .join(", ")}`
+        );
       }
-    ).lean();
-    if (!productToUpdate) {
-      throw new Error(`Product with id ${productId} couldnt be updated`);
-    } else {
-      return productToUpdate;
+
+      return updatedProducts?.filter((product) => !product.error);
+    } catch (error) {
+      throw new Error(`Error updating products: ${error.message}`);
     }
   }
 }

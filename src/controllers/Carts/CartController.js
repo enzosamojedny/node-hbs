@@ -119,7 +119,7 @@ const DeleteCart = router.delete("/api/carts/:id", async (req, res) => {
 // CREATES TICKET BY CART
 const TicketByCart = router.post("/api/:cartId/purchase", async (req, res) => {
   try {
-    const { cartId } = req.params; //! not functional rn
+    const { cartId } = req.params;
     const { userData } = req.body;
     console.log(userData);
     if (!userData || !userData.purchaser || !userData.amount) {
