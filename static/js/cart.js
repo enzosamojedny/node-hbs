@@ -114,7 +114,7 @@ document.addEventListener("DOMContentLoaded", async function getCart() {
 
     const flexContainer = document.createElement("div");
     flexContainer.classList.add("d-flex", "justify-content-between");
-
+    //! TOTAL
     const leftContainer = document.createElement("div");
     leftContainer.classList.add("d-flex", "flex-row", "align-items-center");
 
@@ -142,8 +142,8 @@ document.addEventListener("DOMContentLoaded", async function getCart() {
 
     flexContainer.appendChild(leftContainer);
     flexContainer.appendChild(rightContainer);
+    //! TOTAL
     totalCardDiv.appendChild(flexContainer);
-
     cardContainer.appendChild(totalCardDiv);
     cartWrapper.appendChild(cardContainer);
     cardBody.appendChild(cartWrapper);

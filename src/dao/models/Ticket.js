@@ -1,11 +1,16 @@
 const mongoose = require("mongoose");
-
+const { randomUUID } = require("crypto");
 const TicketSchema = new mongoose.Schema({
   _id: { type: String, default: () => new mongoose.Types.ObjectId() },
-  code: { type: String, required: true, unique: true, index: true },
+  code: {
+    type: String,
+    required: true,
+    unique: true,
+    default: () => randomUUID(),
+  },
   purchase_datetime: { type: Date, default: Date.now, index: true },
   amount: { type: Number, required: true },
-  email: { type: String, required: true, unique: true },
+  purchaser: { type: String, required: true, unique: true },
 });
 
 TicketSchema.index([{ purchase_datetime: 1, amount: 1 }]);

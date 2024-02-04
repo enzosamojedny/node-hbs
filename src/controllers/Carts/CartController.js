@@ -1,5 +1,7 @@
 const CartManagerMongoDB = require("../../dao/managers/CartManagerMongoDB");
 const cartManagerMongoDB = new CartManagerMongoDB();
+const TicketManagerMongoDB = require("../../dao/managers/TicketManagerMongoDB");
+const ticketManagerMongoDB = new TicketManagerMongoDB();
 const express = require("express");
 const router = express.Router();
 
@@ -114,6 +116,26 @@ const DeleteCart = router.delete("/api/carts/:id", async (req, res) => {
     res.status(500).send({ message: error.message });
   }
 });
+// CREATES TICKET BY CART
+const TicketByCart = router.post("/api/:cartId/purchase", async (req, res) => {
+  try {
+    const { cartId } = req.params; //! not functional rn
+    const { userData } = req.body;
+    console.log(userData);
+    if (!userData || !userData.purchaser || !userData.amount) {
+      return res
+        .status(400)
+        .json({ message: "Invalid userData in the request body" });
+    }
+    const createTicketByCart = await ticketManagerMongoDB.createTicket(
+      cartId,
+      userData
+    );
+    res.status(200).json({ createTicketByCart });
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+});
 module.exports = {
   PostCart,
   GetCartId,
@@ -123,4 +145,5 @@ module.exports = {
   DeleteCart,
   UpdateCart,
   cartManagerMongoDB,
+  TicketByCart,
 };
