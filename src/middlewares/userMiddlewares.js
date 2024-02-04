@@ -19,7 +19,7 @@ function profileView(req, res) {
 //         .status(400)
 //         .json({ error: info.message || "Registration failed" });
 //     }
-//     // Successful authentication, user is set at this point
+
 //     appendJwtAsCookie(req, res, () => {
 //       res.status(200).json({ message: "Registration successful", user });
 //     });

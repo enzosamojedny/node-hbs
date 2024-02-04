@@ -2,8 +2,20 @@ const Cart = require("../models/Cart");
 
 class CartManagerMongoDB {
   async addCart(cart) {
-    const cartCreated = await Cart.create(cart);
-    return cartCreated.toObject();
+    try {
+      console.log(cart);
+      const existingCart = await Cart.findOne({ userId: cart.userId });
+      if (existingCart) {
+        existingCart.products.push(...cart.products);
+        await existingCart.save();
+        return { cart: existingCart.toObject(), status: "updated" };
+      } else {
+        const cartCreated = await Cart.create(cart);
+        return { cart: cartCreated.toObject(), status: "created" };
+      }
+    } catch (error) {
+      throw new Error("Error processing cart operation");
+    }
   }
 
   async getCart() {

@@ -1,6 +1,5 @@
 const passport = require("passport");
 
-
 function userLogin(req, res, next) {
   passport.authenticate(
     "login",

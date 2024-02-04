@@ -8,8 +8,10 @@ document.addEventListener("DOMContentLoaded", async function getCart() {
         userId: userId,
       });
       const userCart = response.data.cart;
+      let totalQuantity = 0;
       userCart.forEach((item) => {
-        createCard({ item });
+        totalQuantity += item.quantity;
+        createCard({ item, totalQuantity });
         // createTotalCard(item);
       });
     } catch (error) {
@@ -19,10 +21,12 @@ document.addEventListener("DOMContentLoaded", async function getCart() {
     throw new Error("Error while retrieving user cart");
   }
 
-  function createCard({ item }) {
+  function createCard({ item, totalQuantity }) {
     console.log(item);
     const cardBody = document.querySelector(".card-body");
-
+    const totalProductCount = document.getElementById("total-product-count");
+    totalProductCount.textContent =
+      "You have " + totalQuantity + " " + "items in your cart";
     const cartWrapper = document.createElement("div");
     cartWrapper.classList.add("row", "cart-wrapper");
     const cardContainer = document.createElement("div");

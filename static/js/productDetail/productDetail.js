@@ -47,7 +47,7 @@ async function addItemsToCart(
 ) {
   //POST data
   try {
-    if (currentValue > 1) {
+    if (currentValue > 0) {
       const userId = await getUserData();
       console.log("function returns userId", userId);
       if (userId) {
