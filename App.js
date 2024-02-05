@@ -1,4 +1,4 @@
-const messagesRouter = require("./src/routes/apiRoutes/MessageRoutes.js");
+const messagesRouter = require("./src/routes/apiRoutes/MessagesRoutes.js");
 const productRouter = require("./src/routes/apiRoutes/ProductRoutes");
 const cartRouter = require("./src/routes/apiRoutes/CartRoutes");
 const sessionRouter = require("./src/routes/apiRoutes/SessionRoutes.js");
@@ -18,10 +18,7 @@ const Products = require("./src/daos/models/Products.js");
 const messagesManager = new MessagesManager();
 const path = require("path");
 const Chatbot = require("./src/bot/chatbot.js");
-const cartViewsRouter = require("./src/routes/viewRoutes/cartViews.js");
-const messagesViewsRouter = require("./src/routes/viewRoutes/messageViews.js");
-const productViewsRouter = require("./src/routes/viewRoutes/productViews.js");
-const userViewsRouter = require("./src/routes/viewRoutes/userViews.js");
+const apiRouter = require("./src/routes/api.Router.js");
 const bot = new Chatbot({ utf8: true, forceCase: true });
 bot.unicodePunctuation = new RegExp(/[.,!?;:]/g);
 
@@ -55,17 +52,7 @@ server.use(auth);
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
 
-server.use(
-  messagesRouter,
-  productRouter,
-  cartRouter,
-  usersRouter,
-  sessionRouter,
-  cartViewsRouter,
-  messagesViewsRouter,
-  productViewsRouter,
-  userViewsRouter
-);
+server.use(apiRouter);
 
 // EXPRESS SERVER
 const httpServer = createServer(server);
