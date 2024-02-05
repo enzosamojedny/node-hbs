@@ -7,7 +7,6 @@ const {
 
 const passport = require("passport");
 const usersRouter = Router();
-const { decryptUserFromToken } = require("../middlewares/Passport");
 const {
   GetUsers,
   getUserId,
@@ -15,7 +14,7 @@ const {
   UpdateUser,
   getUsername,
   ResetPassword,
-} = require("../../src/controllers/Users/UsersController");
+} = require("../controllers/Users/UsersController");
 
 const {
   profileView,
@@ -45,20 +44,5 @@ usersRouter.delete("/api/users/:id", UpdateUser);
 usersRouter.post("/api/resetpassword", ResetPassword);
 usersRouter.get("/api/session/current", onlyLoggedApi, getCurrentSession);
 usersRouter.get("/profile", onlyLoggedClient, profileView);
-
-usersRouter.get("/register", (req, res) => {
-  res.render("register.hbs", { title: "Alus | Register", isHomePage: false });
-});
-
-usersRouter.get("/login", (req, res) => {
-  res.render("login.hbs", { title: "Alus | Login", isHomePage: false });
-});
-
-usersRouter.get("/resetpassword", (req, res) => {
-  res.render("resetpassword.hbs", {
-    title: "Reset password",
-    isHomePage: false,
-  });
-});
 
 module.exports = usersRouter;

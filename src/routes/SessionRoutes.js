@@ -33,9 +33,6 @@ sessionRouter.get("/api/google", googleLogin);
 
 sessionRouter.get("/oauth2/redirect/google", googleCallback);
 
-//! arreglar logica de /profile para que solo reciba payload si hay cookie, no directamente desde el back
 sessionRouter.delete("/api/logout", removeJwtFromCookies, logout);
 
-sessionRouter.post("/session", () => {});
-sessionRouter.post("/user", () => {});
 module.exports = sessionRouter;

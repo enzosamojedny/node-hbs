@@ -18,14 +18,13 @@ const Products = require("./src/dao/models/Products.js");
 const messagesManager = new MessagesManager();
 const path = require("path");
 const Chatbot = require("./src/bot/chatbot.js");
+const cartViewsRouter = require("./src/routes/viewRoutes/cartViews.js");
+const messagesViewsRouter = require("./src/routes/viewRoutes/messageViews.js");
+const productViewsRouter = require("./src/routes/viewRoutes/productViews.js");
+const userViewsRouter = require("./src/routes/viewRoutes/userViews.js");
 const bot = new Chatbot({ utf8: true, forceCase: true });
 bot.unicodePunctuation = new RegExp(/[.,!?;:]/g);
 
-//! COSAS A HACER HOY: solucionar lo del logout, dejar estetico el itemDetail, hacer un custom alert para reemplazar sweet alert o ver opciones
-
-//! leer sobre populate para darla a cada user su cart
-
-//! hacer validaciones de usuario y validaciones de ordenes para el e-commerce
 const enviroment = async () => {
   await mongoose.connect(process.env.MONGODB_CNX_STR);
   await Products.paginate({}, { limit: 10, page: 1 });
@@ -61,7 +60,11 @@ server.use(
   productRouter,
   cartRouter,
   usersRouter,
-  sessionRouter
+  sessionRouter,
+  cartViewsRouter,
+  messagesViewsRouter,
+  productViewsRouter,
+  userViewsRouter
 );
 
 // EXPRESS SERVER

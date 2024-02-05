@@ -20,13 +20,6 @@ messagesRouter.post("/api/messages", PostMessages);
 messagesRouter.put("/api/messages/:id", UpdateMessages);
 messagesRouter.delete("/api/messages/:id", DeleteMessages);
 
-messagesRouter.get("/messages", (req, res) => {
-  const userToken = req.user;
-  res.render("chat.hbs", {
-    title: "Alus | Support",
-    isHomePage: false,
-    userToken: userToken || null,
-  });
-});
+
 
 module.exports = messagesRouter;
