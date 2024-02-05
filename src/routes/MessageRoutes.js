@@ -22,7 +22,7 @@ messagesRouter.delete("/api/messages/:id", DeleteMessages);
 
 messagesRouter.get("/messages", (req, res) => {
   const userToken = req.user;
-  res.render("chat.hbs", onlyLoggedClient, {
+  res.render("chat.hbs", {
     title: "Alus | Support",
     isHomePage: false,
     userToken: userToken || null,

@@ -1,4 +1,5 @@
 const socket = io();
+
 let user = "defaultUser";
 const form = document.getElementById("chat-form");
 const button = document.getElementById("chat-button");

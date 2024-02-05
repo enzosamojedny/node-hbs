@@ -35,7 +35,6 @@ function onlyAdmins(req, res, next) {
   if (req.user && req.user.role === "admin") {
     console.log(req.user);
     if (req.user) {
-
       next();
     } else {
       return res.status(403).json({
@@ -56,12 +55,12 @@ function onlyLoggedApi(req, res, next) {
   next();
 }
 function onlyLoggedClient(req, res, next) {
-  if (!req.isAuthenticated()) {
+  if (req.isAuthenticated()) {
+    console.log("Client logged in:", req.headers.cookie);
+  } else {
     console.log("Not logged in:", req.headers.cookie);
     return res.redirect("/login");
-  } else {
     //! SI AUTENTICA SI LOGUEO CON GOOGLE Y GITHUB
-    console.log("Client logged in:", req.headers.cookie);
   }
   next();
 }
