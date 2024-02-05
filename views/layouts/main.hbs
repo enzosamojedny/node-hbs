@@ -63,15 +63,14 @@
       </button>
       <div class="collapse navbar-collapse nav-nav" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <button class="btn btn-secondary bg-dark">
-              <a class="nav-link" href="/messages">Customer Support</a>
-            </button>
-          </li>
+
           <li class="nav-item">
             <div class="btn-group dropend">
 
               {{#if userToken}}
+                <button class="btn btn-secondary bg-dark">
+                  <a class="nav-link" href="/messages">Customer Support</a>
+                </button>
                 <button
                   type="button"
                   class="btn btn-secondary dropdown-toggle bg-dark d-flex align-items-center rounded-circle p-0"
