@@ -63,7 +63,6 @@ async function appendJwtAsCookie(req, res, next) {
 }
 async function decryptUserFromToken(req, res, next) {
   try {
-
     const token = req.user;
     const userId = await decrypt(token);
 
@@ -80,7 +79,7 @@ async function decryptUserFromToken(req, res, next) {
 
 async function removeJwtFromCookies(req, res, next) {
   res.clearCookie("authorization", COOKIE_OPTIONS);
-  next();
+  res.redirect("/login"); //not redirecting
 }
 
 //* current session
@@ -92,7 +91,7 @@ passport.use(
         let token = null;
         if (req?.signedCookies) {
           token = req.signedCookies["authorization"];
-          console.log("signed cookies", token);
+          //console.log("signed cookies", token);
         }
         return token;
       },

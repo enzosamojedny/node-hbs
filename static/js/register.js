@@ -6,7 +6,7 @@ const password = document.getElementById("password");
 const phone = document.getElementById("phone");
 const address = document.getElementById("address");
 const submit = document.getElementById("submit-btn");
-// const axios = require("axios");
+
 //! FORM VALIDATION
 
 function validation() {

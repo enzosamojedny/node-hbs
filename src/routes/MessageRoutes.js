@@ -1,6 +1,11 @@
 const Router = require("express").Router;
 const messagesRouter = Router();
 const {
+  onlyLoggedClient,
+  onlyLoggedApi,
+  onlyAdmins,
+} = require("../middlewares/authentication");
+const {
   PostMessages,
   GetMessages,
   GetMessagesId,
@@ -17,7 +22,7 @@ messagesRouter.delete("/api/messages/:id", DeleteMessages);
 
 messagesRouter.get("/messages", (req, res) => {
   const userToken = req.user;
-  res.render("chat.hbs", {
+  res.render("chat.hbs", onlyLoggedClient, {
     title: "Alus | Support",
     isHomePage: false,
     userToken: userToken || null,

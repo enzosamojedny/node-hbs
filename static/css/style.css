@@ -1,9 +1,19 @@
-body {
-  min-height: 100vh;
-}
-
 .footer {
   position: absolute;
   width: -webkit-fill-available;
   margin-top: 30px;
+}
+.btn-template {
+  margin-left: 50px;
+}
+.search-input {
+  border-top-right-radius: 0%;
+  border-bottom-right-radius: 0%;
+  width: 200px;
+}
+.navbar-nav {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }

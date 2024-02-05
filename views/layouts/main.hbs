@@ -38,6 +38,7 @@
       crossorigin="anonymous"
     ></script>
     <script defer src="/static/js/home.js"></script>
+    <script defer src="/static/js/logout.js"></script>
     <link rel="stylesheet" href="/static/css/style.css" />
     <title>{{title}}</title>
   </head>
@@ -59,7 +60,7 @@
       >
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <div class="collapse navbar-collapse nav-nav" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
             <button class="btn btn-secondary bg-dark">
@@ -88,30 +89,27 @@
                 <ul class="dropdown-menu">
                   <li><a class="dropdown-item" href="/profile">Profile</a></li>
                   <li>
-                    <a class="dropdown-item" href="#">Logout</a>
+                    <button
+                      class="dropdown-item"
+                      id="logout-btn"
+                    >Logout</button>
                   </li>
-                </ul>
-                <a href="/cart">
-                  <button
-                    type="button"
-                    class="btn btn-light"
-                    style="margin-left: 50px;"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      fill="currentColor"
-                      class="bi bi-cart3"
-                      viewBox="0 0 16 16"
-                    >
-                      <path
-                        d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l.84 4.479 9.144-.459L13.89 4zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"
-                      />
-                    </svg>
+                  <a href="/cart" class="dropdown-item">
+                    <button type="button" class="btn btn-secondary btn-light">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                      >
+                        <path
+                          d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l.84 4.479 9.144-.459L13.89 4zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"
+                        />
+                      </svg>
 
-                  </button>
-                </a>
+                    </button>
+                  </a>
+                </ul>
               {{else}}
                 <button
                   type="button"
@@ -140,15 +138,15 @@
           </li>
         </ul>
 
+        {{! FORM }}
         <form
           class="d-flex align-items-center justify-content-center"
           role="search"
           id="searchForm"
         >
           <input
-            class="form-control"
+            class="form-control search-input"
             type="search"
-            style="border-top-right-radius: 0%;border-bottom-right-radius: 0%;width:500px "
             placeholder="Search"
             aria-label="Search"
             id="searchInput"
@@ -159,15 +157,14 @@
             type="submit"
           ><i class="fas fa-search"></i></button>
         </form>
+        {{! FORM }}
+
       </div>
     </div>
   </nav>
 
-  <body>
+  {{{body}}}
 
-    {{{body}}}
-
-  </body>
   <footer class="text-center bg-dark text-light footer">
     <div class="container pt-4">
 

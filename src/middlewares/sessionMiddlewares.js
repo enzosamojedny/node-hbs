@@ -46,9 +46,12 @@ function googleCallback(req, res, next) {
   })(req, res, next);
 }
 
-function logout(req, res) {
-  res.json({ status: "success", message: "Logout was successful" });
+function logout(req, res, next) {
+  req.logout();
+  req.session.destroy();
+  res.redirect("/login"); //not redirecting
 }
+
 module.exports = {
   userLogin,
   githubLogin,

@@ -43,7 +43,7 @@ usersRouter.put("/api/users/:id", DeleteUser);
 usersRouter.post("/api/getuserbyemail", getUsername); //! get user by email
 usersRouter.delete("/api/users/:id", UpdateUser);
 usersRouter.post("/api/resetpassword", ResetPassword);
-usersRouter.get("/api/session/current", getCurrentSession);
+usersRouter.get("/api/session/current", onlyLoggedApi, getCurrentSession);
 usersRouter.get("/profile", onlyLoggedClient, profileView);
 
 usersRouter.get("/register", (req, res) => {
