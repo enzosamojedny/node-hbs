@@ -4,6 +4,7 @@ const {
   appendJwtAsCookie,
   removeJwtFromCookies,
 } = require("../../middlewares/Passport");
+
 const {
   userLogin,
   githubLogin,
@@ -33,6 +34,6 @@ sessionRouter.get("/api/google", googleLogin);
 
 sessionRouter.get("/oauth2/redirect/google", googleCallback);
 
-sessionRouter.delete("/api/logout", removeJwtFromCookies, logout);
+sessionRouter.delete("/api/logout", logout, removeJwtFromCookies);
 
 module.exports = sessionRouter;

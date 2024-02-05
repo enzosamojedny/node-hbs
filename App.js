@@ -1,8 +1,3 @@
-const messagesRouter = require("./src/routes/apiRoutes/MessagesRoutes.js");
-const productRouter = require("./src/routes/apiRoutes/ProductRoutes");
-const cartRouter = require("./src/routes/apiRoutes/CartRoutes");
-const sessionRouter = require("./src/routes/apiRoutes/SessionRoutes.js");
-const usersRouter = require("./src/routes/apiRoutes/UsersRoutes.js");
 require("dotenv").config();
 const { sessionMiddleware, auth } = require("./src/middlewares/Passport.js");
 const { createServer } = require("node:http");
@@ -18,7 +13,7 @@ const Products = require("./src/daos/models/Products.js");
 const messagesManager = new MessagesManager();
 const path = require("path");
 const Chatbot = require("./src/bot/chatbot.js");
-const apiRouter = require("./src/routes/api.Router.js");
+const mainRouter = require("./src/routes/mainRouter.js");
 const bot = new Chatbot({ utf8: true, forceCase: true });
 bot.unicodePunctuation = new RegExp(/[.,!?;:]/g);
 
@@ -42,7 +37,6 @@ server.engine(
   })
 );
 server.set("views", path.join(__dirname, "/views/partials"));
-// server.set("views", path.join(__dirname, "/views"));
 server.set("view engine", "hbs");
 
 server.use("/static", express.static(path.join(__dirname, "static")));
@@ -52,13 +46,12 @@ server.use(auth);
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
 
-server.use(apiRouter);
+server.use(mainRouter);
 
 // EXPRESS SERVER
 const httpServer = createServer(server);
 server.set("engine", engine());
 server.use(morgan("dev"));
-// server.use(express.json());
 
 const serverListener = httpServer.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

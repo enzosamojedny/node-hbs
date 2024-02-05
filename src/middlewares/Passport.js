@@ -77,8 +77,11 @@ async function decryptUserFromToken(req, res, next) {
 }
 
 async function removeJwtFromCookies(req, res, next) {
-  res.clearCookie("authorization", COOKIE_OPTIONS);
-  res.redirect("/login"); //not redirecting
+  try {
+    res.clearCookie("authorization", COOKIE_OPTIONS);
+  } catch (error) {
+    console.error("Error clearing cookie:", error);
+  }
 }
 
 //* current session

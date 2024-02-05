@@ -10,6 +10,6 @@ async function checkJwtToken() {
       console.log("not authenticated");
     }
   } catch (error) {
-    console.error("no authentication", error);
+    console.error("error in authentication", error.message);
   }
 }

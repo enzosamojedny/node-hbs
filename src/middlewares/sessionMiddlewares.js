@@ -47,8 +47,18 @@ function googleCallback(req, res, next) {
 }
 
 function logout(req, res, next) {
-  req.logout();
-  req.session.destroy();
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+
+    req.session.destroy((destroyErr) => {
+      if (destroyErr) {
+        return next(destroyErr);
+      }
+    });
+  });
+  res.redirect("/login");
 }
 
 module.exports = {
