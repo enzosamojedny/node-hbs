@@ -5,7 +5,7 @@ const {
   PostCart,
   GetCartId,
   TicketByCart,
-} = require("../../src/controllers/Carts/CartController.js");
+} = require("../../controllers/Carts/CartController.js");
 
 //CARTS
 cartRouter.post("/api/carts/usercart", PostUserCart);

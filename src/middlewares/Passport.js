@@ -3,8 +3,8 @@ const MongoStore = require("connect-mongo");
 require("dotenv").config();
 const passport = require("passport");
 const { Strategy } = require("passport-local");
-const Users = require("../../src/dao/models/Users");
-const UsersManager = require("../../src/dao/managers/UsersManager");
+const Users = require("../../src/daos/models/Users");
+const UsersManager = require("../../src/daos/managers/UsersManager");
 const bcrypt = require("bcrypt");
 const usersManagerMongoDB = new UsersManager();
 const { Strategy: GithubStrategy } = require("passport-github2");
@@ -12,7 +12,6 @@ const { Strategy: GoogleStrategy } = require("passport-google-oauth20");
 let JwtStrategy = require("passport-jwt").Strategy;
 const { encrypt, decrypt } = require("./authentication");
 
-//! keep this as is
 passport.serializeUser((user, next) => {
   next(null, user);
 });
@@ -28,7 +27,7 @@ const sessionMiddleware = createSessionMiddleware({
     },
     ttl: 3600,
   }),
-  secret: process.env.JWT_KEY, //! OR REPLACE TO "pepito"
+  secret: process.env.JWT_KEY,
   //* resave mantiene la coneccion activa aunque se cierre
   resave: true,
   //*saveUnitialized guarda cualquier sesion aunque el objeto este vacio

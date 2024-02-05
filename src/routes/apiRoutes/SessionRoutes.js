@@ -3,7 +3,7 @@ const sessionRouter = Router();
 const {
   appendJwtAsCookie,
   removeJwtFromCookies,
-} = require("../middlewares/Passport");
+} = require("../../middlewares/Passport");
 const {
   userLogin,
   githubLogin,
@@ -11,7 +11,7 @@ const {
   googleLogin,
   googleCallback,
   logout,
-} = require("../middlewares/sessionMiddlewares");
+} = require("../../middlewares/sessionMiddlewares");
 
 sessionRouter.post(
   "/api/login",

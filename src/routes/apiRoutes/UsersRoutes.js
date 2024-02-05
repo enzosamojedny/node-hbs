@@ -3,7 +3,7 @@ const {
   onlyLoggedClient,
   onlyLoggedApi,
   onlyAdmins,
-} = require("../middlewares/authentication");
+} = require("../../middlewares/authentication");
 
 const passport = require("passport");
 const usersRouter = Router();
@@ -14,12 +14,12 @@ const {
   UpdateUser,
   getUsername,
   ResetPassword,
-} = require("../controllers/Users/UsersController");
+} = require("../../controllers/Users/UsersController");
 
 const {
   profileView,
   getCurrentSession,
-} = require("../middlewares/userMiddlewares");
+} = require("../../middlewares/userMiddlewares");
 
 usersRouter.post("/api/users", (req, res, next) => {
   passport.authenticate("register", (err, user, info) => {

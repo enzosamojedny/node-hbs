@@ -4,14 +4,14 @@ const {
   onlyLoggedClient,
   onlyLoggedApi,
   onlyAdmins,
-} = require("../middlewares/authentication");
+} = require("../../middlewares/authentication");
 const {
   PostMessages,
   GetMessages,
   GetMessagesId,
   DeleteMessages,
   UpdateMessages,
-} = require("../../src/controllers/Messages/MessageController");
+} = require("../../controllers/Messages/MessageController");
 
 //MESSAGES
 messagesRouter.get("/api/messages", GetMessages);

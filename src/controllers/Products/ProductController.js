@@ -1,8 +1,8 @@
-const ProductManagerMongoDB = require("../../dao/managers/ProductManagerMongoDB");
+const ProductManagerMongoDB = require("../../daos/managers/ProductManagerMongoDB");
 const productManagerMongoDB = new ProductManagerMongoDB();
 const express = require("express");
 const router = express.Router();
-const ProductPaginationModel = require("../../dao/models/Products");
+const ProductPaginationModel = require("../../daos/models/Products");
 //PRODUCTS
 const Products = router.get("/api/products", async (req, res) => {
   try {
