@@ -29,7 +29,7 @@ const getUsername = usersRouter.post(
       const user = await usersManagerMongoDB.getUserByEmail(email);
 
       if (user) {
-        res.status(200).json({ status: "success", message: user._id });
+        res.status(200).json({ status: "success", message: user.email });
       } else {
         throw new Error(`User not found in the database`);
       }

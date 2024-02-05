@@ -23,8 +23,8 @@ const cartItemSchema = new mongoose.Schema(
 const CartSchema = new mongoose.Schema(
   {
     _id: { type: String, required: true, default: () => randomUUID() }, //! check if i have to remove it completely
-    userId: {
-      type: mongoose.Schema.Types.ObjectId,
+    email: {
+      type: String,
       ref: "User",
       required: true,
     },

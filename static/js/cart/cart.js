@@ -1,19 +1,31 @@
+async function buyCart(data) {
+  //esta funcion deberia hacer el PUT con la data
+  try {
+    console.log("BUY CART RESPONSE", data);
+  } catch (error) {
+    throw new Error();
+  }
+}
+
 document.addEventListener("DOMContentLoaded", async function getCart() {
   try {
-    const userId = await getUserData();
-    console.log(userId);
+    const userEmail = await getUserData();
+    console.log(userEmail);
 
     try {
       const response = await axios.post("/api/carts/usercart", {
-        userId: userId,
+        email: userEmail,
       });
       const userCart = response.data.cart;
       let totalQuantity = 0;
       userCart.forEach((item) => {
         totalQuantity += item.quantity;
         createCard({ item, totalQuantity });
-        // createTotalCard(item);
       });
+      const sendParams = () => createTotalCard(userCart);
+      sendParams();
+      const sendData = () => buyCart(response.data);
+      sendData();
     } catch (error) {
       throw new Error("Error while retrieving user cart");
     }
@@ -22,7 +34,6 @@ document.addEventListener("DOMContentLoaded", async function getCart() {
   }
 
   function createCard({ item, totalQuantity }) {
-    console.log(item);
     const cardBody = document.querySelector(".card-body");
     const totalProductCount = document.getElementById("total-product-count");
     totalProductCount.textContent =
@@ -79,7 +90,7 @@ document.addEventListener("DOMContentLoaded", async function getCart() {
     price.textContent = item.price;
 
     const deleteLink = document.createElement("a");
-    deleteLink.href = "#!";
+    deleteLink.href = "/api/carts/:cartid/products/:productid"; //! fix deleteCart
     deleteLink.style.color = "#cecece";
     const deleteIcon = document.createElement("i");
     deleteIcon.classList.add("fas", "fa-trash-alt");
@@ -97,24 +108,30 @@ document.addEventListener("DOMContentLoaded", async function getCart() {
     cartWrapper.appendChild(cardContainer);
     cardBody.appendChild(cartWrapper);
   }
-  createCard();
 
   /////////////////////////////////////////////////////////
 
-  function createTotalCard(item) {
+  function createTotalCard() {
+    const buyButton = document.createElement("button");
+    buyButton.className = "btn btn-primary";
+    buyButton.textContent = "Buy now!";
+    buyButton.addEventListener("click", function () {
+      buyCart();
+    });
     const cardBody = document.querySelector(".card-body");
 
     const cartWrapper = document.createElement("div");
     cartWrapper.classList.add("row", "cart-wrapper");
+
     const cardContainer = document.createElement("div");
     cardContainer.classList.add("col");
-    //!
+
     const totalCardDiv = document.createElement("div");
     totalCardDiv.classList.add("card", "mt-3");
 
     const flexContainer = document.createElement("div");
     flexContainer.classList.add("d-flex", "justify-content-between");
-    //! TOTAL
+
     const leftContainer = document.createElement("div");
     leftContainer.classList.add("d-flex", "flex-row", "align-items-center");
 
@@ -135,19 +152,21 @@ document.addEventListener("DOMContentLoaded", async function getCart() {
 
     const price = document.createElement("h5");
     price.classList.add("mb-0");
-    price.textContent = item.price;
+    price.textContent = "1500";
 
     priceContainer.appendChild(price);
     rightContainer.appendChild(priceContainer);
 
     flexContainer.appendChild(leftContainer);
     flexContainer.appendChild(rightContainer);
-    //! TOTAL
-    totalCardDiv.appendChild(flexContainer);
-    cardContainer.appendChild(totalCardDiv);
-    cartWrapper.appendChild(cardContainer);
-    cardBody.appendChild(cartWrapper);
-  }
 
-  createTotalCard();
+    totalCardDiv.appendChild(flexContainer);
+
+    cardContainer.appendChild(totalCardDiv);
+
+    cartWrapper.appendChild(cardContainer);
+
+    cardBody.appendChild(cartWrapper);
+    cardBody.appendChild(buyButton);
+  }
 });

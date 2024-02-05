@@ -28,7 +28,7 @@ const GetCartId = router.get("/api/carts/:id", async (req, res) => {
     if (!userId) {
       throw new Error("UserID not provided in the request");
     }
-    const userCart = await cartManagerMongoDB.getCartById(userId);
+    const userCart = await cartManagerMongoDB.getCartByEmail(userId);
     res.status(200).json({ cart: userCart });
   } catch (error) {
     res.status(500).send({ message: error.message });
@@ -38,13 +38,13 @@ const GetCartId = router.get("/api/carts/:id", async (req, res) => {
 //FIND CART BY USER ID
 const PostUserCart = router.post("/api/carts/usercart", async (req, res) => {
   try {
-    const { userId } = req.body;
-    if (!userId) {
+    const { email } = req.body;
+    if (!email) {
       throw new Error("Missing data in request");
     }
-    const findUserById = await cartManagerMongoDB.getCartById(userId);
-    console.log(findUserById);
-    res.status(200).json({ cart: findUserById });
+    const findUserByEmail = await cartManagerMongoDB.getCartByEmail(email);
+    console.log(findUserByEmail);
+    res.status(200).json({ cart: findUserByEmail });
   } catch (error) {
     res.status(500).send({ message: error.message });
   }

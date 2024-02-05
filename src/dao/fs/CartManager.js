@@ -27,7 +27,7 @@ class CartManager {
       throw new Error(`404: Error writing file ${error}`);
     }
   }
-  getCartById(cartId) {
+  getCartByEmail(cartId) {
     const cart = this.cart;
     const foundCart = cart.find((p) => p.id === cartId);
     if (foundCart) {

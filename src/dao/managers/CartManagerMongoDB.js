@@ -4,7 +4,7 @@ class CartManagerMongoDB {
   async addCart(cart) {
     try {
       console.log(cart);
-      const existingCart = await Cart.findOne({ userId: cart.userId });
+      const existingCart = await Cart.findOne({ email: cart.email });
       if (existingCart) {
         existingCart.products.push(...cart.products);
         await existingCart.save();
@@ -22,10 +22,10 @@ class CartManagerMongoDB {
     return await Cart.find().lean();
   }
 
-  async getCartById(userId) {
-    const found = await Cart.findOne({ userId: userId }).lean();
+  async getCartByEmail(userEmail) {
+    const found = await Cart.findOne({ email: userEmail }).lean();
     if (!found) {
-      throw new Error(`Cart with id ${userId} not found`);
+      throw new Error(`Cart with id ${userEmail} not found`);
     } else {
       return found.products;
     }
@@ -45,7 +45,7 @@ class CartManagerMongoDB {
     }
   }
   // async deleteProductFromCart(cartId, productId) {
-  //   const cart = await this.getCartById(cartId);
+  //   const cart = await this.getCartByEmail(cartId);
   //   const productIndex = cart.products.findIndex(
   //     (p) => p.product.toString() === productId
   //   );

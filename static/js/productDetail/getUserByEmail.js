@@ -2,7 +2,7 @@ function isValidEmail(email) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
 }
-
+//! envio un email y me retorna el userID
 async function getUserData() {
   try {
     const response = await axios.get("/api/session/current");

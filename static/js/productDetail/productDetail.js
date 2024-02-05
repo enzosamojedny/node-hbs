@@ -48,11 +48,11 @@ async function addItemsToCart(
   //POST data
   try {
     if (currentValue > 0) {
-      const userId = await getUserData();
-      console.log("function returns userId", userId);
-      if (userId) {
+      const userEmail = await getUserData();
+      console.log("function returns userId", userEmail);
+      if (userEmail) {
         const productData = {
-          userId: userId,
+          email: userEmail,
           products: [
             {
               productId: productId,
