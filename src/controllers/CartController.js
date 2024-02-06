@@ -92,7 +92,9 @@ const UpdateCartProductQuantity = router.put(
 const UpdateCart = router.put("/api/carts/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const cartToUpdate = req.body;
+    const { cartToUpdate } = req.body;
+    console.log(" CONT DATA", cartToUpdate);
+    console.log(" CONT ID", id);
     if (!cartToUpdate) {
       throw new Error("Cart details not provided in the request body");
     }
@@ -118,18 +120,26 @@ const TicketByCart = router.post("/api/:cartId/purchase", async (req, res) => {
   try {
     const { cartId } = req.params;
     const userData = req.body;
-    if (!userData || !userData.purchaser || !userData.amount) {
+    // console.log("ID IN BACKEND", cartId);
+    // console.log("USERDATA IN BACKEND", userData);
+    // console.log("PREPARING FOR LOOP", userData.products);
+    if (!userData) {
       return res
         .status(400)
         .json({ message: "Invalid userData in the request body" });
     }
+
     for (const product of userData.products) {
+      console.log("PRODUCT IN LOOP", product);
       if (product.stock >= product.quantity) {
         console.log(`Buying product: ${product.name}`);
       } else {
-        console.log(`Insufficient stock for product: ${product.name}`);
+        return res
+          .status(500)
+          .json(`Insufficient stock for product: ${product.name}`);
       }
     }
+
     const createTicketByCart = await ticketManagerMongoDB.createTicket(
       cartId,
       userData

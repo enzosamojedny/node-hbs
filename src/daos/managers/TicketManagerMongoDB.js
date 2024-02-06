@@ -9,15 +9,22 @@ class TicketManagerMongoDB {
       console.log("cartId in manager", cartId);
       console.log("userData in manager", userData);
       if (cartId) {
+        const purchaser = userData.email;
+        const amount = userData.products.reduce((total, product) => {
+          return total + product.quantity * product.price;
+        }, 0);
         try {
-          const ticketCreated = await Ticket.create(userData);
+          const ticketCreated = await Ticket.create({
+            purchaser: purchaser,
+            amount: amount,
+          });
           return { payload: ticketCreated.toObject(), status: "created" };
         } catch (error) {
-          throw new Error("Unable to find cartID");
+          throw new Error("Unable to create ticket");
         }
       }
     } catch (error) {
-      throw new Error("Error creating ticket");
+      throw new Error("Invalid cartId or userData");
     }
   }
   async getTicketByEmail(userEmail) {
@@ -25,7 +32,7 @@ class TicketManagerMongoDB {
     if (!found) {
       throw new Error(`Ticket with id ${userEmail} not found`);
     } else {
-      return found; 
+      return found;
       //? or found.ticket en payload
     }
   }
