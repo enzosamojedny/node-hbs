@@ -19,7 +19,7 @@ const PostTicket = router.post("/api/ticket", async (req, res) => {
 
 const GetTicketId = router.get("/api/ticket/:id", async (req, res) => {
   try {
-    const { ticketId } = req.body;
+    const { ticketId } = req.params;
     if (!ticketId) {
       throw new Error("ticket ID not provided in the request");
     }

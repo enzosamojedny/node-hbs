@@ -1,5 +1,5 @@
 async function buyCart(data) {
-  //esta funcion deberia hacer el PUT con la data
+  //esta funcion deberia hacer el POST con la data
   try {
     console.log("BUY CART RESPONSE", data);
   } catch (error) {
@@ -117,6 +117,7 @@ document.addEventListener("DOMContentLoaded", async function getCart() {
     buyButton.textContent = "Buy now!";
     buyButton.addEventListener("click", function () {
       buyCart();
+      window.location.href = "/ticket";
     });
     const cardBody = document.querySelector(".card-body");
 

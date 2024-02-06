@@ -13,6 +13,7 @@ const userViewsRouter = require("./viewRoutes/userViews");
 const productViewsRouter = require("./viewRoutes/productViews");
 const messageViewsRouter = require("./viewRoutes/messageViews");
 const cartViewsRouter = require("./viewRoutes/cartViews");
+const ticketViewsRouter = require("./viewRoutes/ticketViews");
 
 mainRouter.use(
   sessionRoutes,
@@ -24,7 +25,8 @@ mainRouter.use(
   userViewsRouter,
   productViewsRouter,
   messageViewsRouter,
-  cartViewsRouter
+  cartViewsRouter,
+  ticketViewsRouter
 );
 
 module.exports = mainRouter;
