@@ -6,13 +6,13 @@ class TicketManagerMongoDB {
     try {
       //! con el cartId tengo que buscar en DB, comprobar si hay suficientes productos
       //! restarlos, ( si hay, sino, devolver los productos, tmb si son invalidos)
-      console.log("cartId in manager", cartId);
-      console.log("userData in manager", userData);
+
       if (cartId) {
         const purchaser = userData.email;
         const amount = userData.products.reduce((total, product) => {
           return total + product.quantity * product.price;
         }, 0);
+        
         try {
           const ticketCreated = await Ticket.create({
             purchaser: purchaser,

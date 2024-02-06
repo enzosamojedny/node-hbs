@@ -120,9 +120,6 @@ const TicketByCart = router.post("/api/:cartId/purchase", async (req, res) => {
   try {
     const { cartId } = req.params;
     const userData = req.body;
-    // console.log("ID IN BACKEND", cartId);
-    // console.log("USERDATA IN BACKEND", userData);
-    // console.log("PREPARING FOR LOOP", userData.products);
     if (!userData) {
       return res
         .status(400)
@@ -130,20 +127,19 @@ const TicketByCart = router.post("/api/:cartId/purchase", async (req, res) => {
     }
 
     for (const product of userData.products) {
-      console.log("PRODUCT IN LOOP", product);
-      if (product.stock >= product.quantity) {
-        console.log(`Buying product: ${product.name}`);
-      } else {
+      if (product.stock < product.quantity) {
         return res
           .status(500)
           .json(`Insufficient stock for product: ${product.name}`);
       }
     }
 
+    console.log(cartId);
     const createTicketByCart = await ticketManagerMongoDB.createTicket(
       cartId,
       userData
     );
+    await cartManagerMongoDB.deleteCart(cartId);
     res.status(200).json({ createTicketByCart });
   } catch (error) {
     res.status(500).send({ message: error.message });
