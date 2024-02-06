@@ -9,26 +9,18 @@ async function buyCart(data) {
 
 document.addEventListener("DOMContentLoaded", async function getCart() {
   try {
-    const userEmail = await getUserData();
-    console.log(userEmail);
-
-    try {
-      const response = await axios.post("/api/carts/usercart", {
-        email: userEmail,
-      });
-      const userCart = response.data.cart;
-      let totalQuantity = 0;
-      userCart.forEach((item) => {
-        totalQuantity += item.quantity;
-        createCard({ item, totalQuantity });
-      });
-      const sendParams = () => createTotalCard(userCart);
-      sendParams();
-      const sendData = () => buyCart(response.data);
-      sendData();
-    } catch (error) {
-      throw new Error("Error while retrieving user cart");
-    }
+    const response = await getCartByEmail();
+    const userCart = response.cart;
+    console.log(userCart);
+    let totalQuantity = 0;
+    userCart.forEach((item) => {
+      totalQuantity += item.quantity;
+      createCard({ item, totalQuantity });
+    });
+    const sendParams = () => createTotalCard(userCart);
+    sendParams();
+    const sendData = () => buyCart(response);
+    sendData();
   } catch (error) {
     throw new Error("Error while retrieving user cart");
   }
@@ -116,7 +108,7 @@ document.addEventListener("DOMContentLoaded", async function getCart() {
     buyButton.className = "btn btn-primary";
     buyButton.textContent = "Buy now!";
     buyButton.addEventListener("click", function () {
-      buyCart();
+      // buyCart();
       window.location.href = "/ticket";
     });
     const cardBody = document.querySelector(".card-body");

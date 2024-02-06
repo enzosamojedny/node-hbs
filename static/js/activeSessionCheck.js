@@ -6,6 +6,7 @@ async function checkJwtToken() {
     if (response.data.payload !== false) {
       const data = response.data;
       console.log("authenticated", data);
+      return data;
     } else {
       console.log("not authenticated");
     }
