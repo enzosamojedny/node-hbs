@@ -14,7 +14,7 @@ const {
   UpdateUser,
   getUsername,
   ResetPassword,
-} = require("../../controllers/Users/UsersController");
+} = require("../../controllers/UsersController");
 
 const {
   profileView,

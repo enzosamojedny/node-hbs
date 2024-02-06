@@ -11,7 +11,7 @@ const {
   GetMessagesId,
   DeleteMessages,
   UpdateMessages,
-} = require("../../controllers/Messages/MessageController");
+} = require("../../controllers/MessageController");
 
 //MESSAGES
 messagesRouter.get("/api/messages", GetMessages);
@@ -19,7 +19,5 @@ messagesRouter.get("/api/messages/:id", GetMessagesId);
 messagesRouter.post("/api/messages", PostMessages);
 messagesRouter.put("/api/messages/:id", UpdateMessages);
 messagesRouter.delete("/api/messages/:id", DeleteMessages);
-
-
 
 module.exports = messagesRouter;

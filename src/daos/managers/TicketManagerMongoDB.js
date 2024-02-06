@@ -20,5 +20,14 @@ class TicketManagerMongoDB {
       throw new Error("Error creating ticket");
     }
   }
+  async getTicketByEmail(userEmail) {
+    const found = await Ticket.findOne({ email: userEmail }).lean();
+    if (!found) {
+      throw new Error(`Ticket with id ${userEmail} not found`);
+    } else {
+      return found; 
+      //? or found.ticket en payload
+    }
+  }
 }
 module.exports = TicketManagerMongoDB;

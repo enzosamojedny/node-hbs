@@ -1,6 +1,6 @@
-const CartManagerMongoDB = require("../../daos/managers/CartManagerMongoDB");
+const CartManagerMongoDB = require("../daos/managers/CartManagerMongoDB");
 const cartManagerMongoDB = new CartManagerMongoDB();
-const TicketManagerMongoDB = require("../../daos/managers/TicketManagerMongoDB");
+const TicketManagerMongoDB = require("../daos/managers/TicketManagerMongoDB");
 const ticketManagerMongoDB = new TicketManagerMongoDB();
 const express = require("express");
 const router = express.Router();
