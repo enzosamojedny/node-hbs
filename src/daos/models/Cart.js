@@ -15,6 +15,7 @@ const cartItemSchema = new mongoose.Schema(
     thumbnail: { type: String, required: true, default: "" },
     discountPercentage: { type: Number, required: false, default: 0 },
     category: { type: String, required: true, index: true },
+    stock: { type: Number, required: true },
   },
   { _id: false }
 ); // _id is false because this is a sub-document

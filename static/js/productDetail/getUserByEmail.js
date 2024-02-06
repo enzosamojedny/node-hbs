@@ -4,8 +4,9 @@ function isValidEmail(email) {
 }
 //! envio un email y me retorna el userID
 async function getUserData() {
+  let response;
   try {
-    const response = await axios.get("/api/session/current");
+    response = await axios.get("/api/session/current");
     const userData = response.data.payload.email;
     //it returns me the email
     //and i send it back to API to get userID

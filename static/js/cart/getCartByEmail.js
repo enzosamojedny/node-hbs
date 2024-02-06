@@ -1,9 +1,11 @@
 async function getCartByEmail() {
+  let userEmail;
+  let response;
   try {
-    const userEmail = await getUserData();
+    userEmail = await getUserData();
     console.log(userEmail);
 
-    const response = await axios.post("/api/carts/usercart", {
+    response = await axios.post("/api/carts/usercart", {
       email: userEmail,
     });
 

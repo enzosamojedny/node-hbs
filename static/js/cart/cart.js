@@ -10,7 +10,7 @@ async function buyCart(data) {
 document.addEventListener("DOMContentLoaded", async function getCart() {
   try {
     const response = await getCartByEmail();
-    const userCart = response.cart;
+    const userCart = response.cart.products;
     console.log(userCart);
     let totalQuantity = 0;
     userCart.forEach((item) => {

@@ -1,7 +1,12 @@
 async function getCartId() {
   try {
     const response = await getCartByEmail();
-    console.log(response);
+    const cartId = response.cart.cart._id;
+    console.log(cartId);
+    const cartData = response.cart.cart;
+    const getCartById = await axios.post(`/api/${cartId}/purchase`, cartData);
+
+    return getCartById.data;
   } catch (error) {
     throw new Error(`Could not get cart by email: ${error.message}`);
   }

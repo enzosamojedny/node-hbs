@@ -31,7 +31,8 @@ function Counter(product) {
       product.title,
       product.thumbnail,
       product.category,
-      product.discountPercentage
+      product.discountPercentage,
+      product.stock
     );
   });
 }
@@ -43,7 +44,8 @@ async function addItemsToCart(
   productTitle,
   productThumbnail,
   productCategory,
-  productDiscountPercentage
+  productDiscountPercentage,
+  productStock
 ) {
   //POST data
   try {
@@ -62,6 +64,7 @@ async function addItemsToCart(
               thumbnail: productThumbnail,
               category: productCategory,
               discountPercentage: productDiscountPercentage,
+              stock: productStock,
             },
           ],
         };

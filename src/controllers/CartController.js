@@ -5,9 +5,6 @@ const ticketManagerMongoDB = new TicketManagerMongoDB();
 const express = require("express");
 const router = express.Router();
 
-//CART
-//POST CART TO DB
-
 const PostCart = router.post("/api/carts", async (req, res) => {
   try {
     const productDetails = req.body;
@@ -120,12 +117,18 @@ const DeleteCart = router.delete("/api/carts/:id", async (req, res) => {
 const TicketByCart = router.post("/api/:cartId/purchase", async (req, res) => {
   try {
     const { cartId } = req.params;
-    const { userData } = req.body;
-    console.log(userData);
+    const userData = req.body;
     if (!userData || !userData.purchaser || !userData.amount) {
       return res
         .status(400)
         .json({ message: "Invalid userData in the request body" });
+    }
+    for (const product of userData.products) {
+      if (product.stock >= product.quantity) {
+        console.log(`Buying product: ${product.name}`);
+      } else {
+        console.log(`Insufficient stock for product: ${product.name}`);
+      }
     }
     const createTicketByCart = await ticketManagerMongoDB.createTicket(
       cartId,

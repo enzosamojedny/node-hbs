@@ -27,7 +27,10 @@ class CartManagerMongoDB {
     if (!found) {
       throw new Error(`Cart with id ${userEmail} not found`);
     } else {
-      return found.products;
+      return {
+        products: found.products,
+        cart: found,
+      };
     }
   }
 
