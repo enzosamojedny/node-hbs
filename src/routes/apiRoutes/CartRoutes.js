@@ -1,5 +1,5 @@
 const Router = require("express").Router;
-const cartRouter = Router();
+const cartRoutes = Router();
 const {
   PostUserCart,
   PostCart,
@@ -8,9 +8,9 @@ const {
 } = require("../../controllers/CartController.js");
 
 //CARTS
-cartRouter.post("/api/carts/usercart", PostUserCart);
-cartRouter.post("/api/carts", PostCart);
-cartRouter.get("/api/carts/:id", GetCartId);
-cartRouter.post("/api/:cid/purchase", TicketByCart); //! cart purchase, ticket generated
+cartRoutes.post("/api/carts/usercart", PostUserCart);
+cartRoutes.post("/api/carts", PostCart);
+cartRoutes.get("/api/carts/:id", GetCartId);
+cartRoutes.post("/api/:cid/purchase", TicketByCart); //! cart purchase, ticket generated
 
-module.exports = cartRouter;
+module.exports = cartRoutes;

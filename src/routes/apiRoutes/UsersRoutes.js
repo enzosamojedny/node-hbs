@@ -6,7 +6,7 @@ const {
 } = require("../../middlewares/authentication");
 
 const passport = require("passport");
-const usersRouter = Router();
+const usersRoutes = Router();
 const {
   GetUsers,
   getUserId,
@@ -21,7 +21,7 @@ const {
   getCurrentSession,
 } = require("../../middlewares/userMiddlewares");
 
-usersRouter.post("/api/users", (req, res, next) => {
+usersRoutes.post("/api/users", (req, res, next) => {
   passport.authenticate("register", (err, user, info) => {
     if (err) {
       return res.status(500).json({ error: "Internal Server Error" });
@@ -36,13 +36,13 @@ usersRouter.post("/api/users", (req, res, next) => {
   })(req, res, next);
 });
 
-usersRouter.get("/api/users/:id", getUserId);
-usersRouter.get("/api/users", GetUsers);
-usersRouter.put("/api/users/:id", DeleteUser);
-usersRouter.post("/api/getuserbyemail", getUsername); //! get user by email
-usersRouter.delete("/api/users/:id", UpdateUser);
-usersRouter.post("/api/resetpassword", ResetPassword);
-usersRouter.get("/api/session/current", onlyLoggedApi, getCurrentSession);
-usersRouter.get("/profile", onlyLoggedClient, profileView);
+usersRoutes.get("/api/users/:id", getUserId);
+usersRoutes.get("/api/users", GetUsers);
+usersRoutes.put("/api/users/:id", DeleteUser);
+usersRoutes.post("/api/getuserbyemail", getUsername); //! get user by email
+usersRoutes.delete("/api/users/:id", UpdateUser);
+usersRoutes.post("/api/resetpassword", ResetPassword);
+usersRoutes.get("/api/session/current", onlyLoggedApi, getCurrentSession);
+usersRoutes.get("/profile", onlyLoggedClient, profileView);
 
-module.exports = usersRouter;
+module.exports = usersRoutes;

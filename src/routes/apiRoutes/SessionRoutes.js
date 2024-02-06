@@ -1,5 +1,5 @@
 const Router = require("express").Router;
-const sessionRouter = Router();
+const sessionRoutes = Router();
 const {
   appendJwtAsCookie,
   removeJwtFromCookies,
@@ -14,7 +14,7 @@ const {
   logout,
 } = require("../../middlewares/sessionMiddlewares");
 
-sessionRouter.post(
+sessionRoutes.post(
   "/api/login",
   userLogin,
   appendJwtAsCookie,
@@ -27,13 +27,13 @@ sessionRouter.post(
   }
 );
 
-sessionRouter.get("/api/github", githubLogin);
+sessionRoutes.get("/api/github", githubLogin);
 
-sessionRouter.get("/api/github/callback", githubCallback);
-sessionRouter.get("/api/google", googleLogin);
+sessionRoutes.get("/api/github/callback", githubCallback);
+sessionRoutes.get("/api/google", googleLogin);
 
-sessionRouter.get("/oauth2/redirect/google", googleCallback);
+sessionRoutes.get("/oauth2/redirect/google", googleCallback);
 
-sessionRouter.delete("/api/logout", logout, removeJwtFromCookies);
+sessionRoutes.delete("/api/logout", logout, removeJwtFromCookies);
 
-module.exports = sessionRouter;
+module.exports = sessionRoutes;

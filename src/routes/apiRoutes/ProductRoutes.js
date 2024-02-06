@@ -1,6 +1,6 @@
 const Router = require("express").Router;
 
-const productRouter = Router();
+const productRoutes = Router();
 const {
   Products,
   ProductByName,
@@ -11,11 +11,11 @@ const {
 } = require("../../controllers/ProductController.js");
 
 //PRODUCTS
-productRouter.get("/api/products", Products);
-productRouter.post("/api/products/search", ProductByName);
-productRouter.get("/api/product/detail/code/:code", ProductByCode);
-productRouter.post("/api/products", AddProduct);
-productRouter.put("/api/products", UpdateProductQuantity);
-productRouter.delete("/api/products/:id", DeleteProduct);
+productRoutes.get("/api/products", Products);
+productRoutes.post("/api/products/search", ProductByName);
+productRoutes.get("/api/product/detail/code/:code", ProductByCode);
+productRoutes.post("/api/products", AddProduct);
+productRoutes.put("/api/products", UpdateProductQuantity);
+productRoutes.delete("/api/products/:id", DeleteProduct);
 
-module.exports = productRouter;
+module.exports = productRoutes;

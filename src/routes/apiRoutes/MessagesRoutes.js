@@ -1,5 +1,5 @@
 const Router = require("express").Router;
-const messagesRouter = Router();
+const messagesRoutes = Router();
 const {
   onlyLoggedClient,
   onlyLoggedApi,
@@ -14,10 +14,10 @@ const {
 } = require("../../controllers/MessageController");
 
 //MESSAGES
-messagesRouter.get("/api/messages", GetMessages);
-messagesRouter.get("/api/messages/:id", GetMessagesId);
-messagesRouter.post("/api/messages", PostMessages);
-messagesRouter.put("/api/messages/:id", UpdateMessages);
-messagesRouter.delete("/api/messages/:id", DeleteMessages);
+messagesRoutes.get("/api/messages", GetMessages);
+messagesRoutes.get("/api/messages/:id", GetMessagesId);
+messagesRoutes.post("/api/messages", PostMessages);
+messagesRoutes.put("/api/messages/:id", UpdateMessages);
+messagesRoutes.delete("/api/messages/:id", DeleteMessages);
 
-module.exports = messagesRouter;
+module.exports = messagesRoutes;
