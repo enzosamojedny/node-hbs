@@ -15,9 +15,9 @@ const {
 
 //MESSAGES
 messagesRoutes.get("/api/messages", onlyLoggedApi, GetMessages);
-messagesRoutes.get("/api/messages/:id", GetMessagesId);
-messagesRoutes.post("/api/messages", PostMessages);
-messagesRoutes.put("/api/messages/:id", UpdateMessages);
-messagesRoutes.delete("/api/messages/:id", DeleteMessages);
+messagesRoutes.get("/api/messages/:id", onlyLoggedApi, GetMessagesId);
+messagesRoutes.post("/api/messages", onlyLoggedApi, PostMessages);
+messagesRoutes.put("/api/messages/:id", onlyLoggedApi, UpdateMessages);
+messagesRoutes.delete("/api/messages/:id", onlyLoggedApi, DeleteMessages);
 
 module.exports = messagesRoutes;

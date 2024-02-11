@@ -92,10 +92,11 @@ document.addEventListener("DOMContentLoaded", function () {
         phone: phone.value,
         gender: gender.value,
       };
+      console.log(formData);
       axios
-        .post("http://localhost:3001/api/users", formData)
+        .post("/api/users", formData)
         .then((response) => {
-          console.log("Server response:", response.data);
+          console.log("Server response:", response);
           Swal.fire({
             icon: "success",
             title: "Success!",

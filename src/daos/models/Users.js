@@ -20,6 +20,7 @@ const userSchema = new mongoose.Schema(
     },
     cart: { type: String, ref: "Carts" },
     role: { type: String, default: "user" },
+    tickets: { type: String, ref: "Tickets" },
   },
   {
     versionKey: false,

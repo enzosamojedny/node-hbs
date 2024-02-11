@@ -1,10 +1,10 @@
 const Router = require("express").Router;
 const UsersManager = require("../daos/managers/UsersManager");
-const { onlyAdmins } = require("../middlewares/authentication");
+
 const usersManagerMongoDB = new UsersManager();
 const usersRouter = Router();
 
-const GetUsers = usersRouter.get("/api/users", onlyAdmins, async (req, res) => {
+const GetUsers = usersRouter.get("/api/users", async (req, res) => {
   try {
     const users = await usersManagerMongoDB.getUsers();
     if (users) {
