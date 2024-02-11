@@ -12,18 +12,39 @@ class TicketManagerMongoDB {
         return total + product.quantity * product.price;
       }, 0);
 
-      const ticket = new Ticket({
-        purchaser: purchaser,
-        amount: amount,
-      });
+      let existingTicket = await Ticket.findOne({ purchaser: purchaser });
+      console.log("existing ticket", existingTicket);
+      if (existingTicket) {
+        existingTicket.tickets.push({
+          amount: amount,
+        });
+        await existingTicket.save();
+        return {
+          payload: existingTicket.toObject(),
+          status: "ticket added to existing user",
+        };
+      } else {
+        const ticket = new Ticket({
+          purchaser: purchaser,
+          tickets: [
+            {
+              amount: amount,
+            },
+          ],
+        });
+        console.log("creating new ticket", ticket);
 
-      await ticket.validate();
+        await ticket.validate();
 
-      const ticketCreated = await ticket.save();
+        const ticketCreated = await ticket.save();
 
-      return { payload: ticketCreated.toObject(), status: "created" };
+        return {
+          payload: ticketCreated.toObject(),
+          status: "created new ticket for user",
+        };
+      }
     } catch (error) {
-      throw new Error("Error creating ticket: " + error.message);
+      throw new Error("Error creating or updating ticket: " + error.message);
     }
   }
 
