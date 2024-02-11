@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const passport = require("passport");
 require("dotenv").config();
 
 function encrypt(data) {
@@ -46,23 +47,27 @@ function onlyAdmins(req, res, next) {
 }
 
 function onlyLoggedApi(req, res, next) {
-  if (!req.isAuthenticated()) {
-    return res.status(400).json({
-      status: "error",
-      message: "You need to log in to view the API!",
-    });
-  }
-  next();
+  passport.authenticate("jwt", { session: false }, (err, user, info) => {
+    if (err || !user) {
+      return res.status(400).json({
+        status: "error",
+        message: "You need to log in to view the API!",
+      });
+    }
+    next();
+  })(req, res, next);
 }
+
 function onlyLoggedClient(req, res, next) {
-  if (req.isAuthenticated()) {
-    console.log("Client logged in:", req.headers.cookie);
-  } else {
-    console.log("Not logged in:", req.headers.cookie);
-    return res.redirect("/login");
-    //! SI AUTENTICA SI LOGUEO CON GOOGLE Y GITHUB
-  }
-  next();
+  passport.authenticate("jwt", { session: false }, (err, user, info) => {
+    if (err || !user) {
+      console.log("Not logged in:", req.headers.cookie);
+      return res.redirect("/login");
+    } else {
+      console.log("Client logged in:", req.headers.cookie);
+    }
+    next();
+  })(req, res, next);
 }
 
 module.exports = {

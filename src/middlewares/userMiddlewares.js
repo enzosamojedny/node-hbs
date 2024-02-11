@@ -1,13 +1,18 @@
 const passport = require("passport");
 
 function profileView(req, res) {
-  const userToken = req.user;
-  res.render("profile.hbs", {
-    title: "Alus | My profile",
-    isHomePage: false,
-    userToken: userToken | null,
-  });
+  if (req.user) {
+    const userToken = req.user;
+    res.render("profile.hbs", {
+      title: "Alus | My profile",
+      isHomePage: false,
+      userToken: userToken,
+    });
+  } else {
+    res.redirect("/login");
+  }
 }
+
 // function registerUser(req, res, next) {
 //   passport.authenticate("register", (err, user, info) => {
 //     if (err) {

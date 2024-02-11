@@ -14,7 +14,7 @@ const {
 } = require("../../controllers/MessageController");
 
 //MESSAGES
-messagesRoutes.get("/api/messages", GetMessages);
+messagesRoutes.get("/api/messages", onlyLoggedApi, GetMessages);
 messagesRoutes.get("/api/messages/:id", GetMessagesId);
 messagesRoutes.post("/api/messages", PostMessages);
 messagesRoutes.put("/api/messages/:id", UpdateMessages);
