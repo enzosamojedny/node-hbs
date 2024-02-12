@@ -25,6 +25,7 @@
     "crypto": "^1.0.1",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "express-compression": "^1.0.2",
     "express-handlebars": "^7.1.2",
     "express-session": "^1.17.3",
     "handlebars": "^4.7.8",
@@ -41,7 +42,6 @@
     "rivescript": "^2.2.1",
     "socket.io": "^4.7.4",
     "socket.io-client": "^4.7.4",
-    "sweetalert2": "^11.10.3",
-    "uuid": "^9.0.1"
+    "sweetalert2": "^11.10.3"
   }
 }

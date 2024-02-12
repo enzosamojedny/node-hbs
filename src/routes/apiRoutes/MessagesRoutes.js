@@ -1,5 +1,8 @@
 const Router = require("express").Router;
 const messagesRoutes = Router();
+const compression = require("express-compression");
+
+module.exports = compression;
 const {
   onlyLoggedClient,
   onlyLoggedApi,
@@ -14,6 +17,7 @@ const {
 } = require("../../controllers/MessageController");
 
 //MESSAGES
+messagesRoutes.use(compression());
 messagesRoutes.get("/api/messages", onlyLoggedApi, GetMessages);
 messagesRoutes.get("/api/messages/:id", onlyLoggedApi, GetMessagesId);
 messagesRoutes.post("/api/messages", onlyLoggedApi, PostMessages);

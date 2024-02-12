@@ -23,7 +23,6 @@ const {
 
 usersRoutes.post("/api/users", (req, res, next) => {
   passport.authenticate("register", (err, user, info) => {
-    console.log(req.user);
     if (err) {
       return res.status(500).json({ error: "Internal Server Error" });
     }
@@ -40,7 +39,7 @@ usersRoutes.post("/api/users", (req, res, next) => {
 usersRoutes.get("/api/users/:id", onlyLoggedApi, onlyAdmins, getUserId);
 usersRoutes.get("/api/users", onlyLoggedApi, onlyAdmins, GetUsers);
 usersRoutes.put("/api/users/:id", onlyLoggedApi, onlyAdmins, DeleteUser);
-usersRoutes.post("/api/getuserbyemail", onlyLoggedApi, onlyAdmins, getUsername);
+usersRoutes.post("/api/getuserbyemail", onlyLoggedApi, getUsername);
 usersRoutes.delete("/api/users/:id", onlyLoggedApi, UpdateUser);
 usersRoutes.post("/api/resetpassword", ResetPassword);
 usersRoutes.get("/api/session/current", onlyLoggedApi, getCurrentSession);
