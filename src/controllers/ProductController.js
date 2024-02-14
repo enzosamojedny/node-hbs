@@ -1,10 +1,9 @@
 const ProductManagerMongoDB = require("../daos/managers/ProductManagerMongoDB");
 const productManagerMongoDB = new ProductManagerMongoDB();
-const express = require("express");
-const router = express.Router();
 const ProductPaginationModel = require("../daos/models/Products");
 //PRODUCTS
-const Products = router.get("/api/products", async (req, res) => {
+
+const Products = async (req, res) => {
   try {
     const products = await productManagerMongoDB.getProductsOverview();
     const limit = parseInt(req.query.limit) || 10;
@@ -39,9 +38,9 @@ const Products = router.get("/api/products", async (req, res) => {
   } catch (error) {
     next(error);
   }
-});
+};
 
-const ProductByName = router.post("/api/products/search", async (req, res) => {
+const ProductByName = async (req, res) => {
   try {
     const { title } = req.body;
 
@@ -59,30 +58,27 @@ const ProductByName = router.post("/api/products/search", async (req, res) => {
   } catch (error) {
     next(error);
   }
-});
+};
 
-const ProductByCode = router.get(
-  "/api/product/detail/code/:code",
-  async (req, res) => {
-    try {
-      const { code } = req.params;
-      console.log(code);
-      if (!code) {
-        throw new Error("Product code is required as a query parameter");
-      }
-      const product = await productManagerMongoDB.getProductByCode(code);
-      if (product) {
-        res.status(200).json({ product });
-      } else {
-        throw new Error(`Product with code ${code} not found in the database`);
-      }
-    } catch (error) {
-      next(error);
+const ProductByCode = async (req, res) => {
+  try {
+    const { code } = req.params;
+    console.log(code);
+    if (!code) {
+      throw new Error("Product code is required as a query parameter");
     }
+    const product = await productManagerMongoDB.getProductByCode(code);
+    if (product) {
+      res.status(200).json({ product });
+    } else {
+      throw new Error(`Product with code ${code} not found in the database`);
+    }
+  } catch (error) {
+    next(error);
   }
-);
+};
 
-const AddProduct = router.post("/api/products", async (req, res) => {
+const AddProduct = async (req, res) => {
   try {
     const productDetails = req.body;
     if (!productDetails) {
@@ -96,9 +92,9 @@ const AddProduct = router.post("/api/products", async (req, res) => {
   } catch (error) {
     next(error);
   }
-});
+};
 
-const UpdateProductQuantity = router.put("/api/products", async (req, res) => {
+const UpdateProductQuantity = async (req, res) => {
   try {
     const { _id, quantity } = req.body;
     if (!_id || !quantity) {
@@ -115,9 +111,8 @@ const UpdateProductQuantity = router.put("/api/products", async (req, res) => {
   } catch (error) {
     next(error);
   }
-});
-
-const DeleteProduct = router.delete("/api/products/:id", async (req, res) => {
+};
+const DeleteProduct = async (req, res) => {
   try {
     const { id } = req.params;
     const deleteProduct = await productManagerMongoDB.deleteProduct(id);
@@ -128,7 +123,7 @@ const DeleteProduct = router.delete("/api/products/:id", async (req, res) => {
   } catch (error) {
     next(error);
   }
-});
+};
 module.exports = {
   Products,
   ProductByName,
@@ -136,5 +131,4 @@ module.exports = {
   AddProduct,
   UpdateProductQuantity,
   DeleteProduct,
-  productManagerMongoDB,
 };

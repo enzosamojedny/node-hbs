@@ -1,10 +1,7 @@
-const Router = require("express").Router;
 const UsersManager = require("../daos/managers/UsersManager");
-
 const usersManagerMongoDB = new UsersManager();
-const usersRouter = Router();
 
-const GetUsers = usersRouter.get("/api/users", async (req, res) => {
+const GetUsers = async (req, res) => {
   try {
     const users = await usersManagerMongoDB.getUsers();
     if (users) {
@@ -13,33 +10,30 @@ const GetUsers = usersRouter.get("/api/users", async (req, res) => {
   } catch (error) {
     next(error);
   }
-});
+};
 
-const getUsername = usersRouter.post(
-  "/api/getuserbyemail",
-  async (req, res) => {
-    try {
-      const email = req.body;
-      if (!email) {
-        return res
-          .status(400)
-          .json({ status: "error", message: "No email received" });
-      }
-
-      const user = await usersManagerMongoDB.getUserByEmail(email);
-
-      if (user) {
-        res.status(200).json({ status: "success", message: user.email });
-      } else {
-        throw new Error(`User not found in the database`);
-      }
-    } catch (error) {
-      next(error);
+const getUsername = async (req, res) => {
+  try {
+    const email = req.body;
+    if (!email) {
+      return res
+        .status(400)
+        .json({ status: "error", message: "No email received" });
     }
-  }
-);
 
-const getUserId = usersRouter.get("/api/users/:id", async (req, res) => {
+    const user = await usersManagerMongoDB.getUserByEmail(email);
+
+    if (user) {
+      res.status(200).json({ status: "success", message: user.email });
+    } else {
+      throw new Error(`User not found in the database`);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getUserId = async (req, res) => {
   try {
     let { id } = req.params;
     const getUserId = await usersManagerMongoDB.getUserById(id);
@@ -52,9 +46,9 @@ const getUserId = usersRouter.get("/api/users/:id", async (req, res) => {
   } catch (error) {
     next(error);
   }
-});
+};
 
-const DeleteUser = usersRouter.delete("/api/users/:id", async (req, res) => {
+const DeleteUser = async (req, res) => {
   try {
     const { id } = req.params;
     const deleteUser = await usersManagerMongoDB.deleteUser(id);
@@ -62,9 +56,9 @@ const DeleteUser = usersRouter.delete("/api/users/:id", async (req, res) => {
   } catch (error) {
     next(error);
   }
-});
+};
 
-const UpdateUser = usersRouter.put("/api/users/:id", async (req, res) => {
+const UpdateUser = async (req, res) => {
   try {
     const { id } = req.params;
     const userToUpdate = req.body;
@@ -76,29 +70,27 @@ const UpdateUser = usersRouter.put("/api/users/:id", async (req, res) => {
   } catch (error) {
     next(error);
   }
-});
+};
 
-const ResetPassword = usersRouter.post(
-  "/api/resetpassword",
-  async function registerUser(req, res) {
-    try {
-      const email = req.body.email;
-      const password = req.body.password;
-      if (!password || !email) {
-        throw new Error(
-          "User password or email not provided in the request body"
-        );
-      }
-      const updatePassword = await usersManagerMongoDB.resetUserPassword(
-        email,
-        password
+const ResetPassword = async function registerUser(req, res) {
+  try {
+    const email = req.body.email;
+    const password = req.body.password;
+    if (!password || !email) {
+      throw new Error(
+        "User password or email not provided in the request body"
       );
-      res.status(200).json({ updatePassword });
-    } catch (error) {
-      next(error);
     }
+    const updatePassword = await usersManagerMongoDB.resetUserPassword(
+      email,
+      password
+    );
+    res.status(200).json({ updatePassword });
+  } catch (error) {
+    next(error);
   }
-);
+};
+
 module.exports = {
   GetUsers,
   getUserId,

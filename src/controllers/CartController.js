@@ -2,10 +2,8 @@ const CartManagerMongoDB = require("../daos/managers/CartManagerMongoDB");
 const cartManagerMongoDB = new CartManagerMongoDB();
 const TicketManagerMongoDB = require("../daos/managers/TicketManagerMongoDB");
 const ticketManagerMongoDB = new TicketManagerMongoDB();
-const express = require("express");
-const router = express.Router();
 
-const PostCart = router.post("/api/carts", async (req, res) => {
+const PostCart = async (req, res) => {
   try {
     const productDetails = req.body;
     console.log("product details", productDetails);
@@ -17,9 +15,9 @@ const PostCart = router.post("/api/carts", async (req, res) => {
   } catch (error) {
     next(error);
   }
-});
+};
 
-const GetCartId = router.get("/api/carts/:id", async (req, res) => {
+const GetCartId = async (req, res) => {
   try {
     const { userId } = req.body;
     if (!userId) {
@@ -30,10 +28,10 @@ const GetCartId = router.get("/api/carts/:id", async (req, res) => {
   } catch (error) {
     next(error);
   }
-});
+};
 
 //FIND CART BY USER ID
-const PostUserCart = router.post("/api/carts/usercart", async (req, res) => {
+const PostUserCart = async (req, res) => {
   try {
     const { email } = req.body;
     if (!email) {
@@ -45,51 +43,45 @@ const PostUserCart = router.post("/api/carts/usercart", async (req, res) => {
   } catch (error) {
     next(error);
   }
-});
+};
 
 //DELETE 1 PRODUCT FROM CART
-const DeleteProductFromCart = router.delete(
-  "/api/carts/:cartid/products/:productid",
-  (req, res) => {
-    try {
-      const { cartid, productid } = req.params;
-      if (!cartid || !productid) {
-        throw new Error("Missing data in request");
-      }
-      const deleteProductFromCart = cartManagerMongoDB.deleteProductFromCart(
-        cartid,
-        productid
-      );
-      res.status(200).json({ cart: deleteProductFromCart });
-    } catch (error) {
-      next(error);
+const DeleteProductFromCart = async (req, res) => {
+  try {
+    const { cartid, productid } = req.params;
+    if (!cartid || !productid) {
+      throw new Error("Missing data in request");
     }
+    const deleteProductFromCart = cartManagerMongoDB.deleteProductFromCart(
+      cartid,
+      productid
+    );
+    res.status(200).json({ cart: deleteProductFromCart });
+  } catch (error) {
+    next(error);
   }
-);
+};
 
 //UPDATE CART PRODUCT QUANTITY
-const UpdateCartProductQuantity = router.put(
-  "/api/carts/:cartid/products/:productid",
-  (req, res) => {
-    try {
-      const { cartid, productid } = req.params;
-      if (!cartid || !productid) {
-        throw new Error("Missing data in request");
-      }
-      const quantity = req.body.quantity;
-      const updateCartProductQuantity =
-        cartManagerMongoDB.updateCartProductQuantity(
-          //* I DELETED DATA FROM HERE SO THAT ONLY THE QUANTITY IS UPDATED
-          quantity
-        );
-      res.status(200).json({ cart: updateCartProductQuantity });
-    } catch (error) {
-      next(error);
+const UpdateCartProductQuantity = async (req, res) => {
+  try {
+    const { cartid, productid } = req.params;
+    if (!cartid || !productid) {
+      throw new Error("Missing data in request");
     }
+    const quantity = req.body.quantity;
+    const updateCartProductQuantity =
+      cartManagerMongoDB.updateCartProductQuantity(
+        //* I DELETED DATA FROM HERE SO THAT ONLY THE QUANTITY IS UPDATED
+        quantity
+      );
+    res.status(200).json({ cart: updateCartProductQuantity });
+  } catch (error) {
+    next(error);
   }
-);
+};
 
-const UpdateCart = router.put("/api/carts/:id", async (req, res) => {
+const UpdateCart = async (req, res) => {
   try {
     const { id } = req.params;
     const { cartToUpdate } = req.body;
@@ -103,10 +95,10 @@ const UpdateCart = router.put("/api/carts/:id", async (req, res) => {
   } catch (error) {
     next(error);
   }
-});
+};
 
 // DELETES THE WHOLE CART
-const DeleteCart = router.delete("/api/carts/:id", async (req, res) => {
+const DeleteCart = async (req, res) => {
   try {
     const { id } = req.params;
     const deleteCart = await cartManagerMongoDB.deleteCart(id);
@@ -114,9 +106,9 @@ const DeleteCart = router.delete("/api/carts/:id", async (req, res) => {
   } catch (error) {
     next(error);
   }
-});
+};
 // CREATES TICKET BY CART
-const TicketByCart = router.post("/api/:cartId/purchase", async (req, res) => {
+const TicketByCart = async (req, res) => {
   try {
     const { cartId } = req.params;
     const userData = req.body;
@@ -144,7 +136,7 @@ const TicketByCart = router.post("/api/:cartId/purchase", async (req, res) => {
   } catch (error) {
     next(error);
   }
-});
+};
 module.exports = {
   PostCart,
   GetCartId,

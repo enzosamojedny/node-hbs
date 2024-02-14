@@ -14,6 +14,7 @@ const messagesManager = new MessagesManager();
 const path = require("path");
 const Chatbot = require("./src/bot/chatbot.js");
 const mainRouter = require("./src/routes/mainRouter.js");
+const errorHandlingMiddleware = require("./src/middlewares/errorHandling.js");
 const bot = new Chatbot({ utf8: true, forceCase: true });
 bot.unicodePunctuation = new RegExp(/[.,!?;:]/g);
 
@@ -36,6 +37,8 @@ server.engine(
     partialsDir: path.join(__dirname, "/views/partials"),
   })
 );
+
+server.use(errorHandlingMiddleware);
 server.set("views", path.join(__dirname, "/views/partials"));
 server.set("view engine", "hbs");
 
