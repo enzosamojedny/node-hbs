@@ -37,7 +37,7 @@ const Products = router.get("/api/products", async (req, res) => {
         : null,
     });
   } catch (error) {
-    res.status(500).send({ message: error.message });
+    next(error);
   }
 });
 
@@ -57,7 +57,7 @@ const ProductByName = router.post("/api/products/search", async (req, res) => {
       throw new Error(`Product with name ${title} not found in the database`);
     }
   } catch (error) {
-    res.status(500).send({ message: error.message });
+    next(error);
   }
 });
 
@@ -77,7 +77,7 @@ const ProductByCode = router.get(
         throw new Error(`Product with code ${code} not found in the database`);
       }
     } catch (error) {
-      res.status(500).send({ message: error.message });
+      next(error);
     }
   }
 );
@@ -94,7 +94,7 @@ const AddProduct = router.post("/api/products", async (req, res) => {
     //! error in res when i post several products
     res.status(200).json({ product: addedProduct });
   } catch (error) {
-    res.status(500).send({ message: error.message });
+    next(error);
   }
 });
 
@@ -113,7 +113,7 @@ const UpdateProductQuantity = router.put("/api/products", async (req, res) => {
       product: updateProduct,
     });
   } catch (error) {
-    res.status(500).send({ message: error.message });
+    next(error);
   }
 });
 
@@ -126,7 +126,7 @@ const DeleteProduct = router.delete("/api/products/:id", async (req, res) => {
       product: deleteProduct,
     });
   } catch (error) {
-    res.status(500).send({ message: error.message });
+    next(error);
   }
 });
 module.exports = {

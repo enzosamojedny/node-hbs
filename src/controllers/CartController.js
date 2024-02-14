@@ -15,7 +15,7 @@ const PostCart = router.post("/api/carts", async (req, res) => {
     const addedProduct = await cartManagerMongoDB.addCart(productDetails);
     res.status(200).json({ product: addedProduct });
   } catch (error) {
-    res.status(500).send({ message: error.message });
+    next(error);
   }
 });
 
@@ -28,7 +28,7 @@ const GetCartId = router.get("/api/carts/:id", async (req, res) => {
     const userCart = await cartManagerMongoDB.getCartByEmail(userId);
     res.status(200).json({ cart: userCart });
   } catch (error) {
-    res.status(500).send({ message: error.message });
+    next(error);
   }
 });
 
@@ -43,7 +43,7 @@ const PostUserCart = router.post("/api/carts/usercart", async (req, res) => {
     console.log(findUserByEmail);
     res.status(200).json({ cart: findUserByEmail });
   } catch (error) {
-    res.status(500).send({ message: error.message });
+    next(error);
   }
 });
 
@@ -62,7 +62,7 @@ const DeleteProductFromCart = router.delete(
       );
       res.status(200).json({ cart: deleteProductFromCart });
     } catch (error) {
-      res.status(500).send({ message: error.message });
+      next(error);
     }
   }
 );
@@ -84,7 +84,7 @@ const UpdateCartProductQuantity = router.put(
         );
       res.status(200).json({ cart: updateCartProductQuantity });
     } catch (error) {
-      res.status(500).send({ message: error.message });
+      next(error);
     }
   }
 );
@@ -101,7 +101,7 @@ const UpdateCart = router.put("/api/carts/:id", async (req, res) => {
     const updateCart = await cartManagerMongoDB.updateCart(id, cartToUpdate);
     res.status(200).json({ cart: updateCart });
   } catch (error) {
-    res.status(500).send({ message: error.message });
+    next(error);
   }
 });
 
@@ -112,7 +112,7 @@ const DeleteCart = router.delete("/api/carts/:id", async (req, res) => {
     const deleteCart = await cartManagerMongoDB.deleteCart(id);
     res.status(200).json({ deleteCart });
   } catch (error) {
-    res.status(500).send({ message: error.message });
+    next(error);
   }
 });
 // CREATES TICKET BY CART
@@ -142,7 +142,7 @@ const TicketByCart = router.post("/api/:cartId/purchase", async (req, res) => {
     await cartManagerMongoDB.deleteCart(cartId);
     res.status(200).json({ createTicketByCart });
   } catch (error) {
-    res.status(500).send({ message: error.message });
+    next(error);
   }
 });
 module.exports = {

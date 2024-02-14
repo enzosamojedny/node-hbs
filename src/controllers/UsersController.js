@@ -11,7 +11,7 @@ const GetUsers = usersRouter.get("/api/users", async (req, res) => {
       res.status(200).json({ users });
     }
   } catch (error) {
-    res.status(400).send({ message: error.message });
+    next(error);
   }
 });
 
@@ -34,7 +34,7 @@ const getUsername = usersRouter.post(
         throw new Error(`User not found in the database`);
       }
     } catch (error) {
-      res.status(400).json({ status: "error", message: error.message });
+      next(error);
     }
   }
 );
@@ -50,7 +50,7 @@ const getUserId = usersRouter.get("/api/users/:id", async (req, res) => {
       throw new Error(`User with ID ${id} not found in the database`);
     }
   } catch (error) {
-    res.status(400).send({ message: error.message });
+    next(error);
   }
 });
 
@@ -60,7 +60,7 @@ const DeleteUser = usersRouter.delete("/api/users/:id", async (req, res) => {
     const deleteUser = await usersManagerMongoDB.deleteUser(id);
     res.status(200).json({ deleteUser });
   } catch (error) {
-    res.status(400).send({ message: error.message });
+    next(error);
   }
 });
 
@@ -74,7 +74,7 @@ const UpdateUser = usersRouter.put("/api/users/:id", async (req, res) => {
     const updateUser = await usersManagerMongoDB.updateUser(id, userToUpdate);
     res.status(200).json({ updateUser });
   } catch (error) {
-    res.status(400).send({ message: error.message });
+    next(error);
   }
 });
 
@@ -95,7 +95,7 @@ const ResetPassword = usersRouter.post(
       );
       res.status(200).json({ updatePassword });
     } catch (error) {
-      res.status(400).send({ message: error.message });
+      next(error);
     }
   }
 );
