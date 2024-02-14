@@ -3,7 +3,7 @@ const productManagerMongoDB = new ProductManagerMongoDB();
 const ProductPaginationModel = require("../daos/models/Products");
 //PRODUCTS
 
-const Products = async (req, res) => {
+const Products = async (req, res, next) => {
   try {
     const products = await productManagerMongoDB.getProductsOverview();
     const limit = parseInt(req.query.limit) || 10;
@@ -40,7 +40,7 @@ const Products = async (req, res) => {
   }
 };
 
-const ProductByName = async (req, res) => {
+const ProductByName = async (req, res, next) => {
   try {
     const { title } = req.body;
 
@@ -60,7 +60,7 @@ const ProductByName = async (req, res) => {
   }
 };
 
-const ProductByCode = async (req, res) => {
+const ProductByCode = async (req, res, next) => {
   try {
     const { code } = req.params;
     console.log(code);
@@ -78,7 +78,7 @@ const ProductByCode = async (req, res) => {
   }
 };
 
-const AddProduct = async (req, res) => {
+const AddProduct = async (req, res, next) => {
   try {
     const productDetails = req.body;
     if (!productDetails) {
@@ -94,7 +94,7 @@ const AddProduct = async (req, res) => {
   }
 };
 
-const UpdateProductQuantity = async (req, res) => {
+const UpdateProductQuantity = async (req, res, next) => {
   try {
     const { _id, quantity } = req.body;
     if (!_id || !quantity) {
@@ -112,7 +112,7 @@ const UpdateProductQuantity = async (req, res) => {
     next(error);
   }
 };
-const DeleteProduct = async (req, res) => {
+const DeleteProduct = async (req, res, next) => {
   try {
     const { id } = req.params;
     const deleteProduct = await productManagerMongoDB.deleteProduct(id);

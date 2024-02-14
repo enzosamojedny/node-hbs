@@ -2,7 +2,7 @@ const messagesManager = require("../daos/managers/MessagesManager");
 const messagesManagerMongoDB = new messagesManager();
 
 //MESSAGES
-const PostMessages = async (req, res) => {
+const PostMessages = async (req, res, next) => {
   try {
     const messageDetails = req.body;
     if (!messageDetails) {
@@ -16,7 +16,7 @@ const PostMessages = async (req, res) => {
     next(error);
   }
 };
-const GetMessages = async (req, res) => {
+const GetMessages = async (req, res, next) => {
   try {
     const messages = await messagesManagerMongoDB.getMessages();
     if (req.query.limit) {
@@ -30,7 +30,7 @@ const GetMessages = async (req, res) => {
     next(error);
   }
 };
-const GetMessagesId = async (req, res) => {
+const GetMessagesId = async (req, res, next) => {
   try {
     const { id } = req.params;
     const messages = await messagesManagerMongoDB.getMessageById(id);
@@ -44,7 +44,7 @@ const GetMessagesId = async (req, res) => {
   }
 };
 
-const DeleteMessages = async (req, res) => {
+const DeleteMessages = async (req, res, next) => {
   try {
     const { id } = req.params;
     const deleteMessage = await messagesManagerMongoDB.deleteMessage(id);
@@ -54,7 +54,7 @@ const DeleteMessages = async (req, res) => {
   }
 };
 
-const UpdateMessages = async (req, res) => {
+const UpdateMessages = async (req, res, next) => {
   try {
     const { id } = req.params;
     const messageToUpdate = req.body;

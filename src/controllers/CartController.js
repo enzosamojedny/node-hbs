@@ -2,8 +2,10 @@ const CartManagerMongoDB = require("../daos/managers/CartManagerMongoDB");
 const cartManagerMongoDB = new CartManagerMongoDB();
 const TicketManagerMongoDB = require("../daos/managers/TicketManagerMongoDB");
 const ticketManagerMongoDB = new TicketManagerMongoDB();
+const express = require("express");
+const router = express.Router();
 
-const PostCart = async (req, res) => {
+const PostCart = async (req, res, next) => {
   try {
     const productDetails = req.body;
     console.log("product details", productDetails);
@@ -17,7 +19,7 @@ const PostCart = async (req, res) => {
   }
 };
 
-const GetCartId = async (req, res) => {
+const GetCartId = async (req, res, next) => {
   try {
     const { userId } = req.body;
     if (!userId) {
@@ -31,7 +33,7 @@ const GetCartId = async (req, res) => {
 };
 
 //FIND CART BY USER ID
-const PostUserCart = async (req, res) => {
+const PostUserCart = async (req, res, next) => {
   try {
     const { email } = req.body;
     if (!email) {
@@ -46,7 +48,7 @@ const PostUserCart = async (req, res) => {
 };
 
 //DELETE 1 PRODUCT FROM CART
-const DeleteProductFromCart = async (req, res) => {
+const DeleteProductFromCart = async (req, res, next) => {
   try {
     const { cartid, productid } = req.params;
     if (!cartid || !productid) {
@@ -63,7 +65,7 @@ const DeleteProductFromCart = async (req, res) => {
 };
 
 //UPDATE CART PRODUCT QUANTITY
-const UpdateCartProductQuantity = async (req, res) => {
+const UpdateCartProductQuantity = async (req, res, next) => {
   try {
     const { cartid, productid } = req.params;
     if (!cartid || !productid) {
@@ -81,7 +83,7 @@ const UpdateCartProductQuantity = async (req, res) => {
   }
 };
 
-const UpdateCart = async (req, res) => {
+const UpdateCart = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { cartToUpdate } = req.body;
@@ -98,7 +100,7 @@ const UpdateCart = async (req, res) => {
 };
 
 // DELETES THE WHOLE CART
-const DeleteCart = async (req, res) => {
+const DeleteCart = async (req, res, next) => {
   try {
     const { id } = req.params;
     const deleteCart = await cartManagerMongoDB.deleteCart(id);
@@ -108,35 +110,38 @@ const DeleteCart = async (req, res) => {
   }
 };
 // CREATES TICKET BY CART
-const TicketByCart = async (req, res) => {
-  try {
-    const { cartId } = req.params;
-    const userData = req.body;
-    if (!userData) {
-      return res
-        .status(400)
-        .json({ message: "Invalid userData in the request body" });
-    }
-
-    for (const product of userData.products) {
-      if (product.stock < product.quantity) {
+const TicketByCart = router.post(
+  "/api/:cartId/purchase",
+  async (req, res, next) => {
+    try {
+      const { cartId } = req.params;
+      const userData = req.body;
+      if (!userData) {
         return res
-          .status(500)
-          .json(`Insufficient stock for product: ${product.name}`);
+          .status(400)
+          .json({ message: "Invalid userData in the request body" });
       }
-    }
 
-    console.log(cartId);
-    const createTicketByCart = await ticketManagerMongoDB.createTicket(
-      cartId,
-      userData
-    );
-    await cartManagerMongoDB.deleteCart(cartId);
-    res.status(200).json({ createTicketByCart });
-  } catch (error) {
-    next(error);
+      for (const product of userData.products) {
+        if (product.stock < product.quantity) {
+          return res
+            .status(500)
+            .json(`Insufficient stock for product: ${product.name}`);
+        }
+      }
+
+      console.log(cartId);
+      const createTicketByCart = await ticketManagerMongoDB.createTicket(
+        cartId,
+        userData
+      );
+      await cartManagerMongoDB.deleteCart(cartId);
+      res.status(200).json({ createTicketByCart });
+    } catch (error) {
+      next(error);
+    }
   }
-};
+);
 module.exports = {
   PostCart,
   GetCartId,

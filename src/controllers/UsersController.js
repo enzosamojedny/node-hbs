@@ -1,7 +1,7 @@
 const UsersManager = require("../daos/managers/UsersManager");
 const usersManagerMongoDB = new UsersManager();
 
-const GetUsers = async (req, res) => {
+const GetUsers = async (req, res, next) => {
   try {
     const users = await usersManagerMongoDB.getUsers();
     if (users) {
@@ -12,7 +12,7 @@ const GetUsers = async (req, res) => {
   }
 };
 
-const getUsername = async (req, res) => {
+const getUsername = async (req, res, next) => {
   try {
     const email = req.body;
     if (!email) {
@@ -33,7 +33,7 @@ const getUsername = async (req, res) => {
   }
 };
 
-const getUserId = async (req, res) => {
+const getUserId = async (req, res, next) => {
   try {
     let { id } = req.params;
     const getUserId = await usersManagerMongoDB.getUserById(id);
@@ -48,7 +48,7 @@ const getUserId = async (req, res) => {
   }
 };
 
-const DeleteUser = async (req, res) => {
+const DeleteUser = async (req, res, next) => {
   try {
     const { id } = req.params;
     const deleteUser = await usersManagerMongoDB.deleteUser(id);
@@ -58,7 +58,7 @@ const DeleteUser = async (req, res) => {
   }
 };
 
-const UpdateUser = async (req, res) => {
+const UpdateUser = async (req, res, next) => {
   try {
     const { id } = req.params;
     const userToUpdate = req.body;
@@ -72,7 +72,7 @@ const UpdateUser = async (req, res) => {
   }
 };
 
-const ResetPassword = async function registerUser(req, res) {
+const ResetPassword = async function registerUser(req, res, next) {
   try {
     const email = req.body.email;
     const password = req.body.password;
