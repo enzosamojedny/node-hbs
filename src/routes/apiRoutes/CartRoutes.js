@@ -1,6 +1,6 @@
 const Router = require("express").Router;
 const cartRoutes = Router();
-const compression = require("express-compression");
+const customCompression = require("../../middlewares/compression.js");
 const {
   PostUserCart,
   PostCart,
@@ -10,7 +10,7 @@ const {
 const { onlyLoggedApi } = require("../../middlewares/authentication.js");
 
 //CARTS
-cartRoutes.use(compression());
+cartRoutes.use(customCompression);
 cartRoutes.post("/api/carts/usercart", onlyLoggedApi, PostUserCart);
 cartRoutes.post("/api/carts", onlyLoggedApi, PostCart);
 cartRoutes.get("/api/carts/:id", onlyLoggedApi, GetCartId);

@@ -1,6 +1,6 @@
 const Router = require("express").Router;
-
 const productRoutes = Router();
+const customCompression = require("../../middlewares/compression.js");
 const {
   Products,
   ProductByName,
@@ -9,8 +9,8 @@ const {
   DeleteProduct,
   ProductByCode,
 } = require("../../controllers/ProductController.js");
-
 //PRODUCTS
+productRoutes.use(customCompression);
 productRoutes.get("/api/products", Products);
 productRoutes.post("/api/products/search", ProductByName);
 productRoutes.get("/api/product/detail/code/:code", ProductByCode);
