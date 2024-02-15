@@ -13,8 +13,10 @@ const productViewsRouter = require("./viewRoutes/productViews");
 const messageViewsRouter = require("./viewRoutes/messageViews");
 const cartViewsRouter = require("./viewRoutes/cartViews");
 const ticketViewsRouter = require("./viewRoutes/ticketViews");
+const mockApp = require("../services/mockProducts.service.test");
 
 mainRouter.use(
+  mockApp,
   sessionRoutes,
   cartRoutes,
   productRoutes,
