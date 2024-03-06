@@ -21,6 +21,7 @@ const {
   getCurrentSession,
 } = require("../../middlewares/userMiddlewares");
 
+//! move this logic
 usersRoutes.post("/api/users", (req, res, next) => {
   passport.authenticate("register", (err, user, info) => {
     if (err) {
@@ -31,16 +32,15 @@ usersRoutes.post("/api/users", (req, res, next) => {
         .status(400)
         .json({ error: info.message || "Registration failed" });
     }
-
     res.status(200).json({ message: "Registration successful", user });
   })(req, res, next);
 });
 
 usersRoutes.get("/api/users/:id", onlyLoggedApi, onlyAdmins, getUserId);
 usersRoutes.get("/api/users", onlyLoggedApi, onlyAdmins, GetUsers);
-usersRoutes.put("/api/users/:id", onlyLoggedApi, onlyAdmins, DeleteUser);
-usersRoutes.post("/api/getuserbyemail", onlyLoggedApi, getUsername);
-usersRoutes.delete("/api/users/:id", onlyLoggedApi, UpdateUser);
+usersRoutes.put("/api/users/:id", onlyLoggedApi, onlyAdmins, UpdateUser);
+usersRoutes.post("/api/getuserbyemail", onlyLoggedApi, getUsername); //!
+usersRoutes.delete("/api/users/:id", onlyLoggedApi, DeleteUser);
 usersRoutes.post("/api/resetpassword", ResetPassword);
 usersRoutes.get("/api/session/current", onlyLoggedApi, getCurrentSession);
 usersRoutes.get("/profile", onlyLoggedClient, profileView);

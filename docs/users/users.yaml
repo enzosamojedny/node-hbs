@@ -1,0 +1,86 @@
+paths:
+  /api/users/:
+    get:
+      tags:
+        - Users
+      summary: Gets all users
+      responses:
+        "200":
+          description: Users were correctly fetched from DB
+        "500":
+          description: Internal error while retrieving users from DB
+    post:
+      tags:
+        - Users
+      summary: Registers a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  description: The username of the user.
+                email:
+                  type: string
+                  format: email
+                  description: The email address of the user.
+                password:
+                  type: string
+                  description: The password of the user.
+      responses:
+        "200":
+          description: User was correctly posted to DB
+        "500":
+          description: Internal error while posting users to DB
+  /api/users/{id}:
+    get:
+      tags:
+        - Users
+      summary: Get a user by ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the user to retrieve
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Selected user was correctly fetched from DB
+        "500":
+          description: Internal error while retrieving selected user from DB
+    delete:
+      tags:
+        - Users
+      summary: Deletes a user
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the user to delete
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Selected user was correctly deleted from DB
+        "500":
+          description: Internal error while deleting selected user from DB
+    put:
+      tags:
+        - Users
+      summary: Updates a user
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID of the user to update
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Selected user was correctly updated in DB
+        "500":
+          description: Internal error while updating selected user in DB

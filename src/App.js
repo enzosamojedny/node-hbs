@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { sessionMiddleware, auth } = require("./src/middlewares/Passport.js");
+const { sessionMiddleware, auth } = require("./middlewares/Passport.js");
 const { createServer } = require("node:http");
 const morgan = require("morgan");
 const { engine } = require("express-handlebars");
@@ -8,14 +8,16 @@ const express = require("express");
 const { default: mongoose } = require("mongoose");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-const MessagesManager = require("./src/daos/managers/MessagesManager");
-const Products = require("./src/daos/models/Products.js");
+const MessagesManager = require("./daos/managers/MessagesManager.js");
+const Products = require("./daos/models/Products.js");
 const messagesManager = new MessagesManager();
 const path = require("path");
-const Chatbot = require("./src/bot/chatbot.js");
-const mainRouter = require("./src/routes/mainRouter.js");
-const errorHandlingMiddleware = require("./src/middlewares/errorHandling.js");
+const Chatbot = require("./bot/chatbot.js");
+const mainRouter = require("./routes/mainRouter.js");
+const errorHandlingMiddleware = require("./middlewares/errorHandling.js");
+//@ts-ignore
 const bot = new Chatbot({ utf8: true, forceCase: true });
+//@ts-ignore
 bot.unicodePunctuation = new RegExp(/[.,!?;:]/g);
 
 const enviroment = async () => {
