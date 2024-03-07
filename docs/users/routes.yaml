@@ -3,10 +3,16 @@ paths:
     get:
       tags:
         - Users
-      summary: Gets all users
+      summary: Get all users
       responses:
         "200":
           description: Users were correctly fetched from DB
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
         "500":
           description: Internal error while retrieving users from DB
     post:
@@ -18,23 +24,14 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                username:
-                  type: string
-                  description: The username of the user.
-                email:
-                  type: string
-                  format: email
-                  description: The email address of the user.
-                password:
-                  type: string
-                  description: The password of the user.
+              $ref: "#/components/schemas/User"
       responses:
-        "200":
-          description: User was correctly posted to DB
+        "201":
+          description: User was correctly created and posted to DB
+        "400":
+          description: Bad request, please check the user data provided
         "500":
-          description: Internal error while posting users to DB
+          description: Internal error while posting user to DB
   /api/users/{id}:
     get:
       tags:
@@ -45,13 +42,20 @@ paths:
           name: id
           required: true
           description: ID of the user to retrieve
-          schema:
-            type: integer
+          content:
+            application/json:
+              schema:
+                type:
+                  $ref: "#/components/schemas/User"
       responses:
         "200":
           description: Selected user was correctly fetched from DB
+        "403":
+          description: Forbidden. User must be logged to access API data
+        "404":
+          description: Selected user was not found
         "500":
-          description: Internal error while retrieving selected user from DB
+          description: Internal error while retrieving user from DB
     delete:
       tags:
         - Users
@@ -62,10 +66,14 @@ paths:
           required: true
           description: ID of the user to delete
           schema:
-            type: integer
+            type: string
       responses:
         "200":
           description: Selected user was correctly deleted from DB
+        "403":
+          description: Forbidden. User must be logged to access API data
+        "404":
+          description: Selected user was not found
         "500":
           description: Internal error while deleting selected user from DB
     put:
@@ -78,9 +86,13 @@ paths:
           required: true
           description: ID of the user to update
           schema:
-            type: integer
+            $type: integer
       responses:
         "200":
           description: Selected user was correctly updated in DB
+        "403":
+          description: Forbidden. User must be logged to access API data
+        "404":
+          description: Selected user was not found
         "500":
           description: Internal error while updating selected user in DB
