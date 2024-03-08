@@ -19,3 +19,23 @@ components:
         gender:
           type: string
           description: The gender of the user.
+  requestBody:
+    updateUser:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          description: The email address of the user.
+        password:
+          type: string
+          description: The password of the user.
+        first_name:
+          type: string
+          description: The first name of the user.
+        last_name:
+          type: string
+          description: The surname of the user.
+        gender:
+          type: string
+          description: The gender of the user.
