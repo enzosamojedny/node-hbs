@@ -1,0 +1,47 @@
+components:
+  schemas:
+    product:
+      type: object
+      properties:
+        title:
+          type: string
+          format: email
+          description: Title of the product.
+        description:
+          type: string
+          description: Description of the product.
+        code:
+          type: string
+          description: Code of the product.
+        price:
+          type: number
+          description: Price of the product.
+        stock:
+          type: number
+          description: Number of products.
+        category:
+          type: string
+          description: Category of the product.
+  requestBody:
+    updateProduct:
+      type: object
+      properties:
+        title:
+          type: string
+          format: email
+          description: Title of the product.
+        description:
+          type: string
+          description: Description of the product.
+        code:
+          type: string
+          description: Code of the product.
+        price:
+          type: number
+          description: Price of the product.
+        stock:
+          type: number
+          description: Number of products.
+        category:
+          type: string
+          description: Category of the product.

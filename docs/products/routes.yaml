@@ -1,0 +1,119 @@
+paths:
+  /api/products:
+    get:
+      tags:
+      - Products
+      summary: Get all products
+      responses:
+        "200":
+          description: Products were correctly fetched from DB
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/product"
+        "500":
+          description: Internal error while retrieving Products from DB
+    post:
+      tags:
+      - Products
+      summary: Adds a new product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/product"
+      responses:
+        "201":
+          description: Product was correctly created and posted to DB
+        "400":
+          description: Bad request, please check product data.
+        "500":
+          description: Internal error while posting product to DB
+  /api/product/detail/code/{:code}:
+    get:
+      tags:
+      - Products
+      summary: Get a product by code number
+      parameters:
+      - in: path
+        name: code
+        required: true
+        description: Code of the product to retrieve
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        "200":
+          description: Selected product was correctly fetched from DB
+        "403":
+          description: Forbidden. Must be logged to access API data
+        "404":
+          description: Selected product was not found
+        "500":
+          description: Internal error while retrieving product from DB
+  /api/products/{:id}:
+    delete:
+      tags:
+      - Products
+      summary: Deletes a product
+      parameters:
+      - in: path
+        name: id
+        required: true
+        description: ID of the product to delete
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Selected product was correctly deleted from DB
+        "403":
+          description: Forbidden. Must be logged to access API data
+        "404":
+          description: Selected product was not found
+        "500":
+          description: Internal error while deleting selected product from DB
+    put:
+      tags:
+      - Products
+      summary: Updates a product (not functional)
+      parameters:
+      - in: path
+        name: id
+        required: true
+        description: ID of the product to update
+        schema:
+          $type: integer
+      responses:
+        "200":
+          description: Selected product was correctly updated in DB
+        "403":
+          description: Forbidden. Must be logged to access API data
+        "404":
+          description: Selected product was not found
+        "500":
+          description: Internal error while updating selected product in DB
+  /api/products/search:
+    get:
+      tags:
+      - Products
+      summary: Gets a product by name
+      parameters:
+      - in: path
+        name: name
+        required: true
+        description: Name of the product to retrieve
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Selected product was correctly fetched from DB
+        "403":
+          description: Forbidden. Must be logged to access API data
+        "404":
+          description: Selected product was not found
+        "500":
+          description: Internal error while deleting selected product from DB

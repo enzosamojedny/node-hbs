@@ -16,7 +16,7 @@ productRoutes.get("/api/products", Products);
 productRoutes.post("/api/products/search", ProductByName);
 productRoutes.get("/api/product/detail/code/:code", onlyLoggedApi, ProductByCode);
 productRoutes.post("/api/products", AddProduct);
-productRoutes.put("/api/products", UpdateProductQuantity);
+productRoutes.put("/api/products", UpdateProductQuantity);//! WHY? i could have used a PATCH
 productRoutes.delete("/api/products/:id", DeleteProduct);
 
 module.exports = productRoutes;
