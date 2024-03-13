@@ -72,7 +72,7 @@ async function decryptUserFromToken(req, res, next) {
     req.userId = userId;
     next();
   } catch (error) {
-    next(error)
+    next(error);
   }
 }
 
@@ -168,12 +168,10 @@ passport.use(
       try {
         const registered = await Users.create({
           email: profile.username,
-          password: "(undefined)",
-          first_name: profile.displayName || "(undefined)",
-          last_name: profile.name
-            ? profile.name.familyName || "(undefined)"
-            : "(undefined)",
-          gender: profile.gender || "(undefined)",
+          password: "",
+          first_name: profile.displayName || "",
+          last_name: profile.name ? profile.name.familyName : "",
+          gender: profile.gender || "",
         });
         done(null, {
           ...registered.publicInfo(),
@@ -195,6 +193,17 @@ passport.use(
     },
     async (req, _u, _p, done) => {
       try {
+        if (!req.body.email || !req.body.password) {
+          return done(null, false, {
+            message: "Email and password are required.",
+          });
+        }
+        const existingUser = await usersManagerMongoDB.getUserByEmail(
+          req.body.email
+        );
+        if (existingUser) {
+          return done(null, false, { message: "Email is already in use." });
+        }
         const userData = await usersManagerMongoDB.registerUser(req.body);
         console.log("REGISTER", req.body);
         done(null, userData);
