@@ -72,7 +72,7 @@ const UpdateUser = async (req, res, next) => {
   }
 };
 
-const ResetPassword = async function registerUser(req, res, next) {
+const ResetPassword = async (req, res, next) => {
   try {
     const email = req.body.email;
     const password = req.body.password;

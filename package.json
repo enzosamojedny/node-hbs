@@ -4,7 +4,7 @@
   "description": "",
   "main": "App.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha --recursive -w",
     "debug": "node --inspect src/App.js",
     "start": "nodemon src/App.js",
     "dev": "nodemon -e js,yaml src/App.js"
@@ -16,9 +16,13 @@
     "@faker-js/faker": "^8.4.1",
     "@types/cookie-parser": "^1.4.7",
     "@types/express": "^4.17.21",
+    "@types/express-session": "^1.18.0",
+    "@types/mocha": "^10.0.6",
     "@types/node": "^20.11.25",
+    "@types/passport": "^1.0.16",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.6",
+    "mocha": "^10.3.0",
     "nodemon": "^3.1.0",
     "oxlint": "^0.2.13"
   },

@@ -102,7 +102,7 @@ paths:
       - Products
       summary: Gets a product by name
       parameters:
-      - in: path
+      - in: body
         name: name
         required: true
         description: Name of the product to retrieve
