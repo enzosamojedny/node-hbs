@@ -2,6 +2,7 @@ const { faker } = require("@faker-js/faker");
 const { Router } = require("express");
 const mockProduct = Router();
 const mongoose = require("mongoose");
+
 function generateProduct() {
   const products = [];
   for (let i = 0; i < 100; i++) {
@@ -28,15 +29,4 @@ function generateProduct() {
     throw new Error("Unable to generate any products.");
   }
 }
-
-mockProduct.get("/mockingproducts", (req, res, next) => {
-  const productsArray = generateProduct();
-  res.json(productsArray);
-});
-
-mockProduct.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ error: "Algo salió mal!" });
-});
-
-module.exports = mockProduct;
+module.exports = generateProduct;
