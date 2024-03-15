@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const mockProduct = Router();
-const generateProduct = require("../mocks/generators/productGenerator.service");
+const generateProduct = require("./generators/productGenerator.service");
 
 mockProduct.get("/mockingproducts", (req, res, next) => {
   const productsArray = generateProduct();

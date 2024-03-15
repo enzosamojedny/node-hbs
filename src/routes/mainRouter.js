@@ -13,8 +13,8 @@ const productViewsRouter = require("./viewRoutes/productViews");
 const messageViewsRouter = require("./viewRoutes/messageViews");
 const cartViewsRouter = require("./viewRoutes/cartViews");
 const ticketViewsRouter = require("./viewRoutes/ticketViews");
-const mockProduct = require("../../test/mocks/mockProducts.service.test");
-const mockUser = require("../../test/mocks/mockUsers.service.test");
+const mockProduct = require("../../test/mocks/mockProductsRoutes.service");
+const mockUser = require("../../test/mocks/mockUsersRoutes.service");
 const documentationRouter = require("../routes/apiRoutes/Documentation");
 
 mainRouter.use(

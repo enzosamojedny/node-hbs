@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const mockUser = Router();
-const generateUser = require("../mocks/generators/userGenerator.service");
+const generateUser = require("./generators/userGenerator.service");
 
 mockUser.get("/mockingusers", (req, res, next) => {
   const newUser = generateUser();
