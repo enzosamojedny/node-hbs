@@ -57,14 +57,13 @@ class ProductManagerMongoDB {
           try {
             const updatedProduct = await Products.findByIdAndUpdate(
               _id,
-              { quantity },
+              quantity,
               { new: true }
             ).lean();
 
             if (!updatedProduct) {
               return { error: `Product with id ${_id} couldn't be updated` };
             }
-
             return updatedProduct;
           } catch (error) {
             return {
@@ -73,7 +72,6 @@ class ProductManagerMongoDB {
           }
         })
       );
-
       const errors = updatedProducts?.filter((product) => product.error);
 
       if (errors.length > 0) {
@@ -83,7 +81,6 @@ class ProductManagerMongoDB {
             .join(", ")}`
         );
       }
-
       return updatedProducts?.filter((product) => !product.error);
     } catch (error) {
       throw new Error(`Error updating products: ${error.message}`);

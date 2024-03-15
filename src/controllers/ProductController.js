@@ -1,4 +1,4 @@
-const ProductManagerMongoDB = require("../daos/managers/ProductManagerMongoDB");
+const ProductManagerMongoDB = require("../daos/managers/ProductManager");
 const productManagerMongoDB = new ProductManagerMongoDB();
 const ProductPaginationModel = require("../daos/models/Products");
 //PRODUCTS
@@ -87,7 +87,6 @@ const AddProduct = async (req, res, next) => {
       );
     }
     const addedProduct = await productManagerMongoDB.addProduct(productDetails);
-    //! error in res when i post several products
     res.status(200).json({ product: addedProduct });
   } catch (error) {
     next(error);
@@ -100,10 +99,7 @@ const UpdateProductQuantity = async (req, res, next) => {
     if (!_id || !quantity) {
       throw new Error("Both _id and quantity are required to update products");
     }
-    const updateProduct = await productManagerMongoDB.updateProduct(
-      _id,
-      quantity
-    );
+    const updateProduct = await productManagerMongoDB.updateProducts(req.body);
     res.status(200).json({
       message: "Product updated successfully",
       product: updateProduct,
