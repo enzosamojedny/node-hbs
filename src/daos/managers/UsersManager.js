@@ -1,4 +1,4 @@
-const Users = require("../models/Users.js");
+const { Users } = require("../models/Users.js");
 
 const bcrypt = require("bcrypt");
 class UsersManager {
@@ -15,6 +15,8 @@ class UsersManager {
 
   async getUserByEmail(data) {
     const found = await Users.findOne(data).lean();
+    console.log("data", data);
+    console.log("user found", found);
     if (!found) {
       throw new Error(`No match found`);
     } else {

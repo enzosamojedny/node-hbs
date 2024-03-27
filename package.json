@@ -4,7 +4,7 @@
   "description": "",
   "main": "App.js",
   "scripts": {
-    "test": "mocha --recursive -w",
+    "test": "mocha --recursive",
     "debug": "node --inspect src/App.js",
     "start": "nodemon src/App.js",
     "dev": "nodemon -e js,yaml src/App.js"

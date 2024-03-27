@@ -4,18 +4,21 @@ const UsersManager = require("../../../src/daos/managers/UsersManager");
 const usersManager = new UsersManager();
 const bcrypt = require("bcrypt");
 
-async function encryptPassword() {
-  let password = await bcrypt.hash(faker.word.sample(), 10);
-  return password;
+function encryptPassword() {
+  let unencryptedPassword = faker.word.sample();
+  let encryptedPassword = bcrypt.hash(unencryptedPassword, 10);
+  return { unencryptedPassword, encryptedPassword };
 }
+
 async function generateUser() {
-  const password = await encryptPassword();
+  const { unencryptedPassword, encryptedPassword } = encryptPassword();
   const data = {
     get _id() {
       return new mongoose.Types.ObjectId();
     },
     email: faker.internet.email(),
-    password: password,
+    // password: unencryptedPassword,
+    password: await encryptedPassword,
     first_name: faker.person.firstName(),
     last_name: faker.person.lastName(),
     gender: faker.person.gender(),
@@ -23,7 +26,7 @@ async function generateUser() {
     address: faker.word.noun(),
   };
 
-  // usersManager.registerUser(data);
+  usersManager.registerUser(data);
   return data;
 }
 module.exports = generateUser;

@@ -39,7 +39,7 @@ usersRoutes.post("/api/users", (req, res, next) => {
 usersRoutes.get("/api/users/:id", onlyLoggedApi, onlyAdmins, getUserId);
 usersRoutes.get("/api/users", onlyLoggedApi, onlyAdmins, GetUsers);
 usersRoutes.put("/api/users/:id", onlyLoggedApi, onlyAdmins, UpdateUser);
-usersRoutes.post("/api/getuserbyemail", onlyLoggedApi, getUsername); //!
+usersRoutes.post("/api/getuserbyemail", getUsername); //!
 usersRoutes.delete("/api/users/:id", onlyLoggedApi, DeleteUser);
 usersRoutes.post("/api/resetpassword", ResetPassword);
 usersRoutes.get("/api/session/current", onlyLoggedApi, getCurrentSession);

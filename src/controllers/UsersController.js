@@ -24,7 +24,7 @@ const getUsername = async (req, res, next) => {
     const user = await usersManagerMongoDB.getUserByEmail(email);
 
     if (user) {
-      res.status(200).json({ status: "success", message: user.email });
+      res.status(200).json({ status: "success", message: user });
     } else {
       throw new Error(`User not found in the database`);
     }
