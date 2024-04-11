@@ -61,6 +61,7 @@ function getCurrentSession(req, res, next) {
         message: "Internal Server Error",
       });
     }
+    console.log(user);
     res.json({ status: "success", payload: user });
   })(req, res, next);
 }

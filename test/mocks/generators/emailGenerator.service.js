@@ -13,7 +13,7 @@ class FakeEmailService {
       emailOptions.to = faker.internet.email();
     }
     if (!subject) {
-      emailOptions.subject = faker.random.words();
+      emailOptions.subject = faker.lorem.words();
     }
     if (!text) {
       emailOptions.text = faker.lorem.sentence();
@@ -24,6 +24,7 @@ class FakeEmailService {
     }
 
     console.log(JSON.stringify(emailOptions, null, 2));
+    return JSON.stringify(emailOptions, null, 2);
   }
 }
 

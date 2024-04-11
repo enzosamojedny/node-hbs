@@ -1,22 +1,18 @@
-const UsersManager = require("../../src/daos/managers/UsersManager");
-const usersManagerMongoDB = new UsersManager();
 const generateUser = require("../mocks/generators/userGenerator.service");
-const mongoose = require("mongoose");
 const assert = require("assert");
 const fakeEmailService = require("../mocks/generators/emailGenerator.service");
+const sessionGenerator = require("../mocks/generators/sessionGenerator.service");
 
-describe("User Service", () => {
-  describe("Register", () => {
+describe("Session Service", () => {
+  describe("Login", () => {
     describe("With valid data", async () => {
-      it("Create a user with a new ObjectID", async () => {
-        const userData = await generateUser();
-        const userId = userData._id;
-        if (!userId) {
+      it("Login a user", async () => {
+        const session = await sessionGenerator.generateSession();
+        if (!session) {
           throw new Error("ObjectID is missing!");
         }
-        assert.strictEqual(mongoose.Types.ObjectId.isValid(userId), true);
-        return userId;
       });
+
       it("Valid password", async () => {
         const userData = await generateUser();
         const password = userData.password;
