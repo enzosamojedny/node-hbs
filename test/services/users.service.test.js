@@ -18,19 +18,12 @@ describe("User Service", () => {
       });
       it("Valid password", async () => {
         const userData = await generateUser();
-        // const user = await usersManagerMongoDB.getUserByEmail({
-        //   email: userData.email,
-        // });
-
-        // const encryptedPassword = user.password;
         const password = userData.password;
         if (!password) {
           throw new Error("Password is missing!");
         }
         assert.strictEqual(typeof password, "string");
         assert.notStrictEqual(password, "");
-
-        // assert.strictEqual(password, encryptedPassword);
       });
       it("Saves the user in DB", () => {
         //test goes here

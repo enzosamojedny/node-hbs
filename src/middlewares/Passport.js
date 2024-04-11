@@ -22,9 +22,6 @@ passport.deserializeUser((user, next) => {
 const sessionMiddleware = createSessionMiddleware({
   store: MongoStore.create({
     mongoUrl: process.env.MONGODB_CNX_STR,
-    mongoOptions: {
-      useUnifiedTopology: true,
-    },
     ttl: 3600,
   }),
   secret: process.env.JWT_KEY,

@@ -5,7 +5,7 @@ const ProductPaginationModel = require("../daos/models/Products");
 
 const Products = async (req, res, next) => {
   try {
-    const products = await productManagerMongoDB.getProductsOverview();
+    await productManagerMongoDB.getProductsOverview(); //!
     const limit = parseInt(req.query.limit) || 10;
     const page = parseInt(req.query.page) || 1;
     const sort = req.query.sort || "asc";

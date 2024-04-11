@@ -1,3 +1,4 @@
+const EmailService = require("../../services/email.service");
 const Ticket = require("../models/Ticket");
 
 class TicketManagerMongoDB {
@@ -37,7 +38,13 @@ class TicketManagerMongoDB {
         await ticket.validate();
 
         const ticketCreated = await ticket.save();
-
+        //envio de email
+        //en vez de enviar strings, puedo enviar HTML, convertirlo a PDF con alguna libreria y usar eso
+        await EmailService.sendEmail(
+          purchaser,
+          "Thanks for buying us!",
+          `Your item(s) were correctly bought, order number is ${existingTicket?.code}`
+        );
         return {
           payload: ticketCreated.toObject(),
           status: "created new ticket for user",
@@ -51,7 +58,7 @@ class TicketManagerMongoDB {
   async getTicketByEmail(userEmail) {
     const found = await Ticket.findOne({ email: userEmail }).lean();
     if (!found) {
-      throw new Error(`Ticket with id ${userEmail} not found`);
+      throw new Error(`Ticket for email ${userEmail} not found`);
     } else {
       return found;
       //? or found.ticket en payload
