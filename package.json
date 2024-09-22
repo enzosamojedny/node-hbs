@@ -53,8 +53,8 @@
     "passport-local": "^1.0.0",
     "passport-oauth2": "^1.7.0",
     "rivescript": "^2.2.1",
-    "socket.io": "^4.7.5",
-    "socket.io-client": "^4.7.5",
+    "socket.io": "^4.8.0",
+    "socket.io-client": "^4.8.0",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
     "sweetalert2": "^11.10.7"
